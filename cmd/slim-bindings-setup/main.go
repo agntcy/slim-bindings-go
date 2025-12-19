@@ -113,8 +113,8 @@ func IsLibraryInstalled() bool {
 // DownloadLibrary downloads the library for the current platform.
 func DownloadLibrary() error {
 	rustTarget := GetRustTarget()
-	version := Version()
-	// version := "slim-test-bindings-v0.7.2"
+	// version := Version()
+	version := "slim-test-bindings-v0.7.2"
 
 	cacheDir, err := GetCacheDir()
 	if err != nil {
