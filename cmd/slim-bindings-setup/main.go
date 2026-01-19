@@ -236,6 +236,8 @@ func DownloadLibrary(target string) error {
 func main() {
 	// Parse command-line flags
 	targetFlag := flag.String("target", "", "Rust target triple (e.g., x86_64-unknown-linux-gnu). If not provided, uses current OS/arch.")
+	archFlag := flag.String("arch", "", "Architecture (e.g., amd64, arm64). If not provided, uses current arch.")
+	osFlag := flag.String("os", "", "Operating system (e.g., linux, windows, darwin). If not provided, uses current OS.")
 	flag.Parse()
 
 	// Determine the target
@@ -243,7 +245,11 @@ func main() {
 	if *targetFlag != "" {
 		target = *targetFlag
 	} else {
-		target = GetTarget("", "")
+		target = GetTarget(*osFlag, *archFlag)
+		if target == "" {
+			fmt.Fprintf(os.Stderr, "❌ Invalid target: %s/%s\n", *osFlag, *archFlag)
+			os.Exit(1)
+		}
 	}
 
 	fmt.Println("╔═══════════════════════════════════════════════════════════╗")
