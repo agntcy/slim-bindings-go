@@ -772,15 +772,6 @@ func uniffiCheckChecksums() {
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
-			return C.uniffi_slim_bindings_checksum_method_name_as_string()
-		})
-		if checksum != 25170 {
-			// If this happens try cleaning and rebuilding your project
-			panic("slim_bindings: uniffi_slim_bindings_checksum_method_name_as_string: UniFFI API checksum mismatch")
-		}
-	}
-	{
-		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_slim_bindings_checksum_method_name_components()
 		})
 		if checksum != 49977 {
@@ -2421,7 +2412,6 @@ func (_ FfiDestroyerCompletionHandle) Destroy(value *CompletionHandle) {
 
 // Name type for SLIM (Secure Low-Latency Interactive Messaging)
 type NameInterface interface {
-	AsString() string
 	// Get the name components as a vector of strings
 	Components() []string
 	// Get the name ID
@@ -2447,17 +2437,6 @@ func NameNewWithId(component0 string, component1 string, component2 string, id u
 	}))
 }
 
-func (_self *Name) AsString() string {
-	_pointer := _self.ffiObject.incrementPointer("*Name")
-	defer _self.ffiObject.decrementPointer()
-	return FfiConverterStringINSTANCE.Lift(rustCall(func(_uniffiStatus *C.RustCallStatus) RustBufferI {
-		return GoRustBuffer{
-			inner: C.uniffi_slim_bindings_fn_method_name_as_string(
-				_pointer, _uniffiStatus),
-		}
-	}))
-}
-
 // Get the name components as a vector of strings
 func (_self *Name) Components() []string {
 	_pointer := _self.ffiObject.incrementPointer("*Name")
@@ -2479,6 +2458,47 @@ func (_self *Name) Id() uint64 {
 			_pointer, _uniffiStatus)
 	}))
 }
+
+func (_self *Name) DebugString() string {
+	_pointer := _self.ffiObject.incrementPointer("*Name")
+	defer _self.ffiObject.decrementPointer()
+	return FfiConverterStringINSTANCE.Lift(rustCall(func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+		return GoRustBuffer{
+			inner: C.uniffi_slim_bindings_fn_method_name_uniffi_trait_debug(
+				_pointer, _uniffiStatus),
+		}
+	}))
+}
+
+func (_self *Name) String() string {
+	_pointer := _self.ffiObject.incrementPointer("*Name")
+	defer _self.ffiObject.decrementPointer()
+	return FfiConverterStringINSTANCE.Lift(rustCall(func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+		return GoRustBuffer{
+			inner: C.uniffi_slim_bindings_fn_method_name_uniffi_trait_display(
+				_pointer, _uniffiStatus),
+		}
+	}))
+}
+
+func (_self *Name) Eq(other *Name) bool {
+	_pointer := _self.ffiObject.incrementPointer("*Name")
+	defer _self.ffiObject.decrementPointer()
+	return FfiConverterBoolINSTANCE.Lift(rustCall(func(_uniffiStatus *C.RustCallStatus) C.int8_t {
+		return C.uniffi_slim_bindings_fn_method_name_uniffi_trait_eq_eq(
+			_pointer, FfiConverterNameINSTANCE.Lower(other), _uniffiStatus)
+	}))
+}
+
+func (_self *Name) Ne(other *Name) bool {
+	_pointer := _self.ffiObject.incrementPointer("*Name")
+	defer _self.ffiObject.decrementPointer()
+	return FfiConverterBoolINSTANCE.Lift(rustCall(func(_uniffiStatus *C.RustCallStatus) C.int8_t {
+		return C.uniffi_slim_bindings_fn_method_name_uniffi_trait_eq_ne(
+			_pointer, FfiConverterNameINSTANCE.Lower(other), _uniffiStatus)
+	}))
+}
+
 func (object *Name) Destroy() {
 	runtime.SetFinalizer(object, nil)
 	object.ffiObject.destroy()

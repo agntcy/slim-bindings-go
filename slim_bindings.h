@@ -548,11 +548,6 @@ void* uniffi_slim_bindings_fn_constructor_name_new(RustBuffer component0, RustBu
 void* uniffi_slim_bindings_fn_constructor_name_new_with_id(RustBuffer component0, RustBuffer component1, RustBuffer component2, uint64_t id, RustCallStatus *out_status
 );
 #endif
-#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_NAME_AS_STRING
-#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_NAME_AS_STRING
-RustBuffer uniffi_slim_bindings_fn_method_name_as_string(void* ptr, RustCallStatus *out_status
-);
-#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_NAME_COMPONENTS
 #define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_NAME_COMPONENTS
 RustBuffer uniffi_slim_bindings_fn_method_name_components(void* ptr, RustCallStatus *out_status
@@ -561,6 +556,26 @@ RustBuffer uniffi_slim_bindings_fn_method_name_components(void* ptr, RustCallSta
 #ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_NAME_ID
 #define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_NAME_ID
 uint64_t uniffi_slim_bindings_fn_method_name_id(void* ptr, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_NAME_UNIFFI_TRAIT_DEBUG
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_NAME_UNIFFI_TRAIT_DEBUG
+RustBuffer uniffi_slim_bindings_fn_method_name_uniffi_trait_debug(void* ptr, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_NAME_UNIFFI_TRAIT_DISPLAY
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_NAME_UNIFFI_TRAIT_DISPLAY
+RustBuffer uniffi_slim_bindings_fn_method_name_uniffi_trait_display(void* ptr, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_NAME_UNIFFI_TRAIT_EQ_EQ
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_NAME_UNIFFI_TRAIT_EQ_EQ
+int8_t uniffi_slim_bindings_fn_method_name_uniffi_trait_eq_eq(void* ptr, void* other, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_NAME_UNIFFI_TRAIT_EQ_NE
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_NAME_UNIFFI_TRAIT_EQ_NE
+int8_t uniffi_slim_bindings_fn_method_name_uniffi_trait_eq_ne(void* ptr, void* other, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_CLONE_SERVICE
@@ -1498,12 +1513,6 @@ uint16_t uniffi_slim_bindings_checksum_method_completionhandle_wait_for(void
 #ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_COMPLETIONHANDLE_WAIT_FOR_ASYNC
 #define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_COMPLETIONHANDLE_WAIT_FOR_ASYNC
 uint16_t uniffi_slim_bindings_checksum_method_completionhandle_wait_for_async(void
-    
-);
-#endif
-#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_NAME_AS_STRING
-#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_NAME_AS_STRING
-uint16_t uniffi_slim_bindings_checksum_method_name_as_string(void
     
 );
 #endif
