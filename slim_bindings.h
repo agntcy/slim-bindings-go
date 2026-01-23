@@ -393,6 +393,11 @@ void uniffi_slim_bindings_fn_free_app(void* ptr, RustCallStatus *out_status
 void* uniffi_slim_bindings_fn_constructor_app_new(void* base_name, RustBuffer identity_provider_config, RustBuffer identity_verifier_config, RustCallStatus *out_status
 );
 #endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_CONSTRUCTOR_APP_NEW_WITH_DIRECTION
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_CONSTRUCTOR_APP_NEW_WITH_DIRECTION
+void* uniffi_slim_bindings_fn_constructor_app_new_with_direction(void* name, RustBuffer identity_provider_config, RustBuffer identity_verifier_config, RustBuffer direction, RustCallStatus *out_status
+);
+#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_CONSTRUCTOR_APP_NEW_WITH_SECRET
 #define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_CONSTRUCTOR_APP_NEW_WITH_SECRET
 void* uniffi_slim_bindings_fn_constructor_app_new_with_secret(void* name, RustBuffer secret, RustCallStatus *out_status
@@ -548,11 +553,6 @@ void* uniffi_slim_bindings_fn_constructor_name_new(RustBuffer component0, RustBu
 void* uniffi_slim_bindings_fn_constructor_name_new_with_id(RustBuffer component0, RustBuffer component1, RustBuffer component2, uint64_t id, RustCallStatus *out_status
 );
 #endif
-#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_NAME_AS_STRING
-#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_NAME_AS_STRING
-RustBuffer uniffi_slim_bindings_fn_method_name_as_string(void* ptr, RustCallStatus *out_status
-);
-#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_NAME_COMPONENTS
 #define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_NAME_COMPONENTS
 RustBuffer uniffi_slim_bindings_fn_method_name_components(void* ptr, RustCallStatus *out_status
@@ -561,6 +561,26 @@ RustBuffer uniffi_slim_bindings_fn_method_name_components(void* ptr, RustCallSta
 #ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_NAME_ID
 #define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_NAME_ID
 uint64_t uniffi_slim_bindings_fn_method_name_id(void* ptr, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_NAME_UNIFFI_TRAIT_DEBUG
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_NAME_UNIFFI_TRAIT_DEBUG
+RustBuffer uniffi_slim_bindings_fn_method_name_uniffi_trait_debug(void* ptr, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_NAME_UNIFFI_TRAIT_DISPLAY
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_NAME_UNIFFI_TRAIT_DISPLAY
+RustBuffer uniffi_slim_bindings_fn_method_name_uniffi_trait_display(void* ptr, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_NAME_UNIFFI_TRAIT_EQ_EQ
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_NAME_UNIFFI_TRAIT_EQ_EQ
+int8_t uniffi_slim_bindings_fn_method_name_uniffi_trait_eq_eq(void* ptr, void* other, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_NAME_UNIFFI_TRAIT_EQ_NE
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_NAME_UNIFFI_TRAIT_EQ_NE
+int8_t uniffi_slim_bindings_fn_method_name_uniffi_trait_eq_ne(void* ptr, void* other, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_CLONE_SERVICE
@@ -606,6 +626,16 @@ void* uniffi_slim_bindings_fn_method_service_create_app(void* ptr, void* base_na
 #ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_SERVICE_CREATE_APP_ASYNC
 #define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_SERVICE_CREATE_APP_ASYNC
 uint64_t uniffi_slim_bindings_fn_method_service_create_app_async(void* ptr, void* base_name, RustBuffer identity_provider_config, RustBuffer identity_verifier_config
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_SERVICE_CREATE_APP_WITH_DIRECTION
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_SERVICE_CREATE_APP_WITH_DIRECTION
+void* uniffi_slim_bindings_fn_method_service_create_app_with_direction(void* ptr, void* base_name, RustBuffer identity_provider_config, RustBuffer identity_verifier_config, RustBuffer direction, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_SERVICE_CREATE_APP_WITH_DIRECTION_ASYNC
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_SERVICE_CREATE_APP_WITH_DIRECTION_ASYNC
+uint64_t uniffi_slim_bindings_fn_method_service_create_app_with_direction_async(void* ptr, void* name, RustBuffer identity_provider_config, RustBuffer identity_verifier_config, RustBuffer direction
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_SERVICE_CREATE_APP_WITH_SECRET
@@ -1501,12 +1531,6 @@ uint16_t uniffi_slim_bindings_checksum_method_completionhandle_wait_for_async(vo
     
 );
 #endif
-#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_NAME_AS_STRING
-#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_NAME_AS_STRING
-uint16_t uniffi_slim_bindings_checksum_method_name_as_string(void
-    
-);
-#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_NAME_COMPONENTS
 #define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_NAME_COMPONENTS
 uint16_t uniffi_slim_bindings_checksum_method_name_components(void
@@ -1546,6 +1570,18 @@ uint16_t uniffi_slim_bindings_checksum_method_service_create_app(void
 #ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_SERVICE_CREATE_APP_ASYNC
 #define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_SERVICE_CREATE_APP_ASYNC
 uint16_t uniffi_slim_bindings_checksum_method_service_create_app_async(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_SERVICE_CREATE_APP_WITH_DIRECTION
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_SERVICE_CREATE_APP_WITH_DIRECTION
+uint16_t uniffi_slim_bindings_checksum_method_service_create_app_with_direction(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_SERVICE_CREATE_APP_WITH_DIRECTION_ASYNC
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_SERVICE_CREATE_APP_WITH_DIRECTION_ASYNC
+uint16_t uniffi_slim_bindings_checksum_method_service_create_app_with_direction_async(void
     
 );
 #endif
@@ -1798,6 +1834,12 @@ uint16_t uniffi_slim_bindings_checksum_method_session_source(void
 #ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_CONSTRUCTOR_APP_NEW
 #define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_CONSTRUCTOR_APP_NEW
 uint16_t uniffi_slim_bindings_checksum_constructor_app_new(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_CONSTRUCTOR_APP_NEW_WITH_DIRECTION
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_CONSTRUCTOR_APP_NEW_WITH_DIRECTION
+uint16_t uniffi_slim_bindings_checksum_constructor_app_new_with_direction(void
     
 );
 #endif

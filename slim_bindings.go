@@ -772,15 +772,6 @@ func uniffiCheckChecksums() {
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
-			return C.uniffi_slim_bindings_checksum_method_name_as_string()
-		})
-		if checksum != 25170 {
-			// If this happens try cleaning and rebuilding your project
-			panic("slim_bindings: uniffi_slim_bindings_checksum_method_name_as_string: UniFFI API checksum mismatch")
-		}
-	}
-	{
-		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_slim_bindings_checksum_method_name_components()
 		})
 		if checksum != 49977 {
@@ -840,6 +831,24 @@ func uniffiCheckChecksums() {
 		if checksum != 17578 {
 			// If this happens try cleaning and rebuilding your project
 			panic("slim_bindings: uniffi_slim_bindings_checksum_method_service_create_app_async: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_method_service_create_app_with_direction()
+		})
+		if checksum != 32611 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_method_service_create_app_with_direction: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_method_service_create_app_with_direction_async()
+		})
+		if checksum != 55495 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_method_service_create_app_with_direction_async: UniFFI API checksum mismatch")
 		}
 	}
 	{
@@ -1218,6 +1227,15 @@ func uniffiCheckChecksums() {
 		if checksum != 29282 {
 			// If this happens try cleaning and rebuilding your project
 			panic("slim_bindings: uniffi_slim_bindings_checksum_constructor_app_new: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_constructor_app_new_with_direction()
+		})
+		if checksum != 10680 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_constructor_app_new_with_direction: UniFFI API checksum mismatch")
 		}
 	}
 	{
@@ -1642,6 +1660,32 @@ type App struct {
 func NewApp(baseName *Name, identityProviderConfig IdentityProviderConfig, identityVerifierConfig IdentityVerifierConfig) (*App, error) {
 	_uniffiRV, _uniffiErr := rustCallWithError[SlimError](FfiConverterSlimError{}, func(_uniffiStatus *C.RustCallStatus) unsafe.Pointer {
 		return C.uniffi_slim_bindings_fn_constructor_app_new(FfiConverterNameINSTANCE.Lower(baseName), FfiConverterIdentityProviderConfigINSTANCE.Lower(identityProviderConfig), FfiConverterIdentityVerifierConfigINSTANCE.Lower(identityVerifierConfig), _uniffiStatus)
+	})
+	if _uniffiErr != nil {
+		var _uniffiDefaultValue *App
+		return _uniffiDefaultValue, _uniffiErr
+	} else {
+		return FfiConverterAppINSTANCE.Lift(_uniffiRV), nil
+	}
+}
+
+// Create a new App with traffic direction (blocking version)
+//
+// This is a convenience function for creating a SLIM application with configurable
+// traffic direction (send-only, receive-only, bidirectional, or none).
+//
+// # Arguments
+// * `name` - The base name for the app (without ID)
+// * `identity_provider_config` - Configuration for proving identity to others
+// * `identity_verifier_config` - Configuration for verifying identity of others
+// * `direction` - Traffic direction for sessions (Send, Recv, Bidirectional, or None)
+//
+// # Returns
+// * `Ok(Arc<App>)` - Successfully created app
+// * `Err(SlimError)` - If app creation fails
+func AppNewWithDirection(name *Name, identityProviderConfig IdentityProviderConfig, identityVerifierConfig IdentityVerifierConfig, direction Direction) (*App, error) {
+	_uniffiRV, _uniffiErr := rustCallWithError[SlimError](FfiConverterSlimError{}, func(_uniffiStatus *C.RustCallStatus) unsafe.Pointer {
+		return C.uniffi_slim_bindings_fn_constructor_app_new_with_direction(FfiConverterNameINSTANCE.Lower(name), FfiConverterIdentityProviderConfigINSTANCE.Lower(identityProviderConfig), FfiConverterIdentityVerifierConfigINSTANCE.Lower(identityVerifierConfig), FfiConverterDirectionINSTANCE.Lower(direction), _uniffiStatus)
 	})
 	if _uniffiErr != nil {
 		var _uniffiDefaultValue *App
@@ -2421,7 +2465,6 @@ func (_ FfiDestroyerCompletionHandle) Destroy(value *CompletionHandle) {
 
 // Name type for SLIM (Secure Low-Latency Interactive Messaging)
 type NameInterface interface {
-	AsString() string
 	// Get the name components as a vector of strings
 	Components() []string
 	// Get the name ID
@@ -2447,17 +2490,6 @@ func NameNewWithId(component0 string, component1 string, component2 string, id u
 	}))
 }
 
-func (_self *Name) AsString() string {
-	_pointer := _self.ffiObject.incrementPointer("*Name")
-	defer _self.ffiObject.decrementPointer()
-	return FfiConverterStringINSTANCE.Lift(rustCall(func(_uniffiStatus *C.RustCallStatus) RustBufferI {
-		return GoRustBuffer{
-			inner: C.uniffi_slim_bindings_fn_method_name_as_string(
-				_pointer, _uniffiStatus),
-		}
-	}))
-}
-
 // Get the name components as a vector of strings
 func (_self *Name) Components() []string {
 	_pointer := _self.ffiObject.incrementPointer("*Name")
@@ -2479,6 +2511,47 @@ func (_self *Name) Id() uint64 {
 			_pointer, _uniffiStatus)
 	}))
 }
+
+func (_self *Name) DebugString() string {
+	_pointer := _self.ffiObject.incrementPointer("*Name")
+	defer _self.ffiObject.decrementPointer()
+	return FfiConverterStringINSTANCE.Lift(rustCall(func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+		return GoRustBuffer{
+			inner: C.uniffi_slim_bindings_fn_method_name_uniffi_trait_debug(
+				_pointer, _uniffiStatus),
+		}
+	}))
+}
+
+func (_self *Name) String() string {
+	_pointer := _self.ffiObject.incrementPointer("*Name")
+	defer _self.ffiObject.decrementPointer()
+	return FfiConverterStringINSTANCE.Lift(rustCall(func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+		return GoRustBuffer{
+			inner: C.uniffi_slim_bindings_fn_method_name_uniffi_trait_display(
+				_pointer, _uniffiStatus),
+		}
+	}))
+}
+
+func (_self *Name) Eq(other *Name) bool {
+	_pointer := _self.ffiObject.incrementPointer("*Name")
+	defer _self.ffiObject.decrementPointer()
+	return FfiConverterBoolINSTANCE.Lift(rustCall(func(_uniffiStatus *C.RustCallStatus) C.int8_t {
+		return C.uniffi_slim_bindings_fn_method_name_uniffi_trait_eq_eq(
+			_pointer, FfiConverterNameINSTANCE.Lower(other), _uniffiStatus)
+	}))
+}
+
+func (_self *Name) Ne(other *Name) bool {
+	_pointer := _self.ffiObject.incrementPointer("*Name")
+	defer _self.ffiObject.decrementPointer()
+	return FfiConverterBoolINSTANCE.Lift(rustCall(func(_uniffiStatus *C.RustCallStatus) C.int8_t {
+		return C.uniffi_slim_bindings_fn_method_name_uniffi_trait_eq_ne(
+			_pointer, FfiConverterNameINSTANCE.Lower(other), _uniffiStatus)
+	}))
+}
+
 func (object *Name) Destroy() {
 	runtime.SetFinalizer(object, nil)
 	object.ffiObject.destroy()
@@ -2564,6 +2637,38 @@ type ServiceInterface interface {
 	// * `Ok(Arc<App>)` - Successfully created adapter
 	// * `Err(SlimError)` - If adapter creation fails
 	CreateAppAsync(baseName *Name, identityProviderConfig IdentityProviderConfig, identityVerifierConfig IdentityVerifierConfig) (*App, error)
+	// Create a new App with authentication configuration and traffic direction (blocking version)
+	//
+	// This method initializes authentication providers/verifiers and creates an App
+	// on this service instance. The direction parameter controls whether the app
+	// can send messages, receive messages, both, or neither.
+	//
+	// # Arguments
+	// * `base_name` - The base name for the app (without ID)
+	// * `identity_provider_config` - Configuration for proving identity to others
+	// * `identity_verifier_config` - Configuration for verifying identity of others
+	// * `direction` - Traffic direction: Send, Recv, Bidirectional, or None
+	//
+	// # Returns
+	// * `Ok(Arc<App>)` - Successfully created adapter
+	// * `Err(SlimError)` - If adapter creation fails
+	CreateAppWithDirection(baseName *Name, identityProviderConfig IdentityProviderConfig, identityVerifierConfig IdentityVerifierConfig, direction Direction) (*App, error)
+	// Create a new App with authentication configuration and traffic direction (async version)
+	//
+	// This method initializes authentication providers/verifiers and creates an App
+	// on this service instance. The direction parameter controls whether the app
+	// can send messages, receive messages, both, or neither.
+	//
+	// # Arguments
+	// * `base_name` - The base name for the app (without ID)
+	// * `identity_provider_config` - Configuration for proving identity to others
+	// * `identity_verifier_config` - Configuration for verifying identity of others
+	// * `direction` - Traffic direction: Send, Recv, Bidirectional, or None
+	//
+	// # Returns
+	// * `Ok(Arc<App>)` - Successfully created adapter
+	// * `Err(SlimError)` - If adapter creation fails
+	CreateAppWithDirectionAsync(name *Name, identityProviderConfig IdentityProviderConfig, identityVerifierConfig IdentityVerifierConfig, direction Direction) (*App, error)
 	// Create a new App with SharedSecret authentication (helper function)
 	//
 	// This is a convenience function for creating a SLIM application using SharedSecret authentication
@@ -2746,6 +2851,80 @@ func (_self *Service) CreateAppAsync(baseName *Name, identityProviderConfig Iden
 		},
 		C.uniffi_slim_bindings_fn_method_service_create_app_async(
 			_pointer, FfiConverterNameINSTANCE.Lower(baseName), FfiConverterIdentityProviderConfigINSTANCE.Lower(identityProviderConfig), FfiConverterIdentityVerifierConfigINSTANCE.Lower(identityVerifierConfig)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_slim_bindings_rust_future_poll_pointer(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_slim_bindings_rust_future_free_pointer(handle)
+		},
+	)
+
+	return res, err
+}
+
+// Create a new App with authentication configuration and traffic direction (blocking version)
+//
+// This method initializes authentication providers/verifiers and creates an App
+// on this service instance. The direction parameter controls whether the app
+// can send messages, receive messages, both, or neither.
+//
+// # Arguments
+// * `base_name` - The base name for the app (without ID)
+// * `identity_provider_config` - Configuration for proving identity to others
+// * `identity_verifier_config` - Configuration for verifying identity of others
+// * `direction` - Traffic direction: Send, Recv, Bidirectional, or None
+//
+// # Returns
+// * `Ok(Arc<App>)` - Successfully created adapter
+// * `Err(SlimError)` - If adapter creation fails
+func (_self *Service) CreateAppWithDirection(baseName *Name, identityProviderConfig IdentityProviderConfig, identityVerifierConfig IdentityVerifierConfig, direction Direction) (*App, error) {
+	_pointer := _self.ffiObject.incrementPointer("*Service")
+	defer _self.ffiObject.decrementPointer()
+	_uniffiRV, _uniffiErr := rustCallWithError[SlimError](FfiConverterSlimError{}, func(_uniffiStatus *C.RustCallStatus) unsafe.Pointer {
+		return C.uniffi_slim_bindings_fn_method_service_create_app_with_direction(
+			_pointer, FfiConverterNameINSTANCE.Lower(baseName), FfiConverterIdentityProviderConfigINSTANCE.Lower(identityProviderConfig), FfiConverterIdentityVerifierConfigINSTANCE.Lower(identityVerifierConfig), FfiConverterDirectionINSTANCE.Lower(direction), _uniffiStatus)
+	})
+	if _uniffiErr != nil {
+		var _uniffiDefaultValue *App
+		return _uniffiDefaultValue, _uniffiErr
+	} else {
+		return FfiConverterAppINSTANCE.Lift(_uniffiRV), nil
+	}
+}
+
+// Create a new App with authentication configuration and traffic direction (async version)
+//
+// This method initializes authentication providers/verifiers and creates an App
+// on this service instance. The direction parameter controls whether the app
+// can send messages, receive messages, both, or neither.
+//
+// # Arguments
+// * `base_name` - The base name for the app (without ID)
+// * `identity_provider_config` - Configuration for proving identity to others
+// * `identity_verifier_config` - Configuration for verifying identity of others
+// * `direction` - Traffic direction: Send, Recv, Bidirectional, or None
+//
+// # Returns
+// * `Ok(Arc<App>)` - Successfully created adapter
+// * `Err(SlimError)` - If adapter creation fails
+func (_self *Service) CreateAppWithDirectionAsync(name *Name, identityProviderConfig IdentityProviderConfig, identityVerifierConfig IdentityVerifierConfig, direction Direction) (*App, error) {
+	_pointer := _self.ffiObject.incrementPointer("*Service")
+	defer _self.ffiObject.decrementPointer()
+	res, err := uniffiRustCallAsync[SlimError](
+		FfiConverterSlimErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) unsafe.Pointer {
+			res := C.ffi_slim_bindings_rust_future_complete_pointer(handle, status)
+			return res
+		},
+		// liftFn
+		func(ffi unsafe.Pointer) *App {
+			return FfiConverterAppINSTANCE.Lift(ffi)
+		},
+		C.uniffi_slim_bindings_fn_method_service_create_app_with_direction_async(
+			_pointer, FfiConverterNameINSTANCE.Lower(name), FfiConverterIdentityProviderConfigINSTANCE.Lower(identityProviderConfig), FfiConverterIdentityVerifierConfigINSTANCE.Lower(identityVerifierConfig), FfiConverterDirectionINSTANCE.Lower(direction)),
 		// pollFn
 		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
 			C.ffi_slim_bindings_rust_future_poll_pointer(handle, continuation, data)
@@ -5572,6 +5751,42 @@ func (FfiConverterCompressionType) Write(writer io.Writer, value CompressionType
 type FfiDestroyerCompressionType struct{}
 
 func (_ FfiDestroyerCompressionType) Destroy(value CompressionType) {
+}
+
+// Direction enum
+// Indicates whether the App can send, receive, both, or neither.
+type Direction uint
+
+const (
+	DirectionSend          Direction = 1
+	DirectionRecv          Direction = 2
+	DirectionBidirectional Direction = 3
+	DirectionNone          Direction = 4
+)
+
+type FfiConverterDirection struct{}
+
+var FfiConverterDirectionINSTANCE = FfiConverterDirection{}
+
+func (c FfiConverterDirection) Lift(rb RustBufferI) Direction {
+	return LiftFromRustBuffer[Direction](c, rb)
+}
+
+func (c FfiConverterDirection) Lower(value Direction) C.RustBuffer {
+	return LowerIntoRustBuffer[Direction](c, value)
+}
+func (FfiConverterDirection) Read(reader io.Reader) Direction {
+	id := readInt32(reader)
+	return Direction(id)
+}
+
+func (FfiConverterDirection) Write(writer io.Writer, value Direction) {
+	writeInt32(writer, int32(value))
+}
+
+type FfiDestroyerDirection struct{}
+
+func (_ FfiDestroyerDirection) Destroy(value Direction) {
 }
 
 // Identity provider configuration - used to prove identity to others
