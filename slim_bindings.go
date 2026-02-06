@@ -1788,6 +1788,10 @@ func (_self *App) CreateSessionAndWaitAsync(config SessionConfig, destination *N
 		},
 	)
 
+	if err == nil {
+		return res, nil
+	}
+
 	return res, err
 }
 
@@ -1824,6 +1828,10 @@ func (_self *App) CreateSessionAsync(config SessionConfig, destination *Name) (S
 			C.ffi_slim_bindings_rust_future_free_rust_buffer(handle)
 		},
 	)
+
+	if err == nil {
+		return res, nil
+	}
 
 	return res, err
 }
@@ -1887,6 +1895,10 @@ func (_self *App) DeleteSessionAndWaitAsync(session *Session) error {
 		},
 	)
 
+	if err == nil {
+		return nil
+	}
+
 	return err
 }
 
@@ -1918,6 +1930,10 @@ func (_self *App) DeleteSessionAsync(session *Session) (*CompletionHandle, error
 			C.ffi_slim_bindings_rust_future_free_pointer(handle)
 		},
 	)
+
+	if err == nil {
+		return res, nil
+	}
 
 	return res, err
 }
@@ -1975,6 +1991,10 @@ func (_self *App) ListenForSessionAsync(timeout *time.Duration) (*Session, error
 		},
 	)
 
+	if err == nil {
+		return res, nil
+	}
+
 	return res, err
 }
 
@@ -2025,6 +2045,10 @@ func (_self *App) RemoveRouteAsync(name *Name, connectionId uint64) error {
 		},
 	)
 
+	if err == nil {
+		return nil
+	}
+
 	return err
 }
 
@@ -2064,6 +2088,10 @@ func (_self *App) SetRouteAsync(name *Name, connectionId uint64) error {
 			C.ffi_slim_bindings_rust_future_free_void(handle)
 		},
 	)
+
+	if err == nil {
+		return nil
+	}
 
 	return err
 }
@@ -2105,6 +2133,10 @@ func (_self *App) SubscribeAsync(name *Name, connectionId *uint64) error {
 		},
 	)
 
+	if err == nil {
+		return nil
+	}
+
 	return err
 }
 
@@ -2144,6 +2176,10 @@ func (_self *App) UnsubscribeAsync(name *Name, connectionId *uint64) error {
 			C.ffi_slim_bindings_rust_future_free_void(handle)
 		},
 	)
+
+	if err == nil {
+		return nil
+	}
 
 	return err
 }
@@ -2343,6 +2379,10 @@ func (_self *CompletionHandle) WaitAsync() error {
 		},
 	)
 
+	if err == nil {
+		return nil
+	}
+
 	return err
 }
 
@@ -2411,6 +2451,10 @@ func (_self *CompletionHandle) WaitForAsync(timeout time.Duration) error {
 			C.ffi_slim_bindings_rust_future_free_void(handle)
 		},
 	)
+
+	if err == nil {
+		return nil
+	}
 
 	return err
 }
@@ -2791,6 +2835,10 @@ func (_self *Service) ConnectAsync(config ClientConfig) (uint64, error) {
 		},
 	)
 
+	if err == nil {
+		return res, nil
+	}
+
 	return res, err
 }
 
@@ -2860,6 +2908,10 @@ func (_self *Service) CreateAppAsync(baseName *Name, identityProviderConfig Iden
 			C.ffi_slim_bindings_rust_future_free_pointer(handle)
 		},
 	)
+
+	if err == nil {
+		return res, nil
+	}
 
 	return res, err
 }
@@ -2935,6 +2987,10 @@ func (_self *Service) CreateAppWithDirectionAsync(name *Name, identityProviderCo
 		},
 	)
 
+	if err == nil {
+		return res, nil
+	}
+
 	return res, err
 }
 
@@ -3002,6 +3058,10 @@ func (_self *Service) CreateAppWithSecretAsync(name *Name, secret string) (*App,
 			C.ffi_slim_bindings_rust_future_free_pointer(handle)
 		},
 	)
+
+	if err == nil {
+		return res, nil
+	}
 
 	return res, err
 }
@@ -3079,6 +3139,10 @@ func (_self *Service) RunAsync() error {
 		},
 	)
 
+	if err == nil {
+		return nil
+	}
+
 	return err
 }
 
@@ -3119,6 +3183,10 @@ func (_self *Service) RunServerAsync(config ServerConfig) error {
 		},
 	)
 
+	if err == nil {
+		return nil
+	}
+
 	return err
 }
 
@@ -3158,6 +3226,10 @@ func (_self *Service) ShutdownAsync() error {
 			C.ffi_slim_bindings_rust_future_free_void(handle)
 		},
 	)
+
+	if err == nil {
+		return nil
+	}
 
 	return err
 }
@@ -3462,6 +3534,10 @@ func (_self *Session) GetMessageAsync(timeout *time.Duration) (ReceivedMessage, 
 		},
 	)
 
+	if err == nil {
+		return res, nil
+	}
+
 	return res, err
 }
 
@@ -3524,6 +3600,10 @@ func (_self *Session) InviteAndWaitAsync(participant *Name) error {
 		},
 	)
 
+	if err == nil {
+		return nil
+	}
+
 	return err
 }
 
@@ -3555,6 +3635,10 @@ func (_self *Session) InviteAsync(participant *Name) (*CompletionHandle, error) 
 			C.ffi_slim_bindings_rust_future_free_pointer(handle)
 		},
 	)
+
+	if err == nil {
+		return res, nil
+	}
 
 	return res, err
 }
@@ -3640,6 +3724,10 @@ func (_self *Session) ParticipantsListAsync() ([]*Name, error) {
 		},
 	)
 
+	if err == nil {
+		return res, nil
+	}
+
 	return res, err
 }
 
@@ -3717,6 +3805,10 @@ func (_self *Session) PublishAndWaitAsync(data []byte, payloadType *string, meta
 		},
 	)
 
+	if err == nil {
+		return nil
+	}
+
 	return err
 }
 
@@ -3748,6 +3840,10 @@ func (_self *Session) PublishAsync(data []byte, payloadType *string, metadata *m
 			C.ffi_slim_bindings_rust_future_free_pointer(handle)
 		},
 	)
+
+	if err == nil {
+		return res, nil
+	}
 
 	return res, err
 }
@@ -3825,6 +3921,10 @@ func (_self *Session) PublishToAndWaitAsync(messageContext MessageContext, data 
 		},
 	)
 
+	if err == nil {
+		return nil
+	}
+
 	return err
 }
 
@@ -3856,6 +3956,10 @@ func (_self *Session) PublishToAsync(messageContext MessageContext, data []byte,
 			C.ffi_slim_bindings_rust_future_free_pointer(handle)
 		},
 	)
+
+	if err == nil {
+		return res, nil
+	}
 
 	return res, err
 }
@@ -3907,6 +4011,10 @@ func (_self *Session) PublishWithParamsAsync(destination *Name, fanout uint32, d
 			C.ffi_slim_bindings_rust_future_free_void(handle)
 		},
 	)
+
+	if err == nil {
+		return nil
+	}
 
 	return err
 }
@@ -3970,6 +4078,10 @@ func (_self *Session) RemoveAndWaitAsync(participant *Name) error {
 		},
 	)
 
+	if err == nil {
+		return nil
+	}
+
 	return err
 }
 
@@ -4001,6 +4113,10 @@ func (_self *Session) RemoveAsync(participant *Name) (*CompletionHandle, error) 
 			C.ffi_slim_bindings_rust_future_free_pointer(handle)
 		},
 	)
+
+	if err == nil {
+		return res, nil
+	}
 
 	return res, err
 }
