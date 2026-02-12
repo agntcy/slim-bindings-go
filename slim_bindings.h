@@ -378,6 +378,94 @@ static void call_UniffiForeignFutureCompleteVoid(
 
 
 #endif
+#ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_STREAM_STREAM_HANDLER_METHOD0
+#define UNIFFI_FFIDEF_CALLBACK_INTERFACE_STREAM_STREAM_HANDLER_METHOD0
+typedef void (*UniffiCallbackInterfaceStreamStreamHandlerMethod0)(uint64_t uniffi_handle, void* stream, void* context, void* sink, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+
+// Making function static works arround:
+// https://github.com/golang/go/issues/11263
+static void call_UniffiCallbackInterfaceStreamStreamHandlerMethod0(
+				UniffiCallbackInterfaceStreamStreamHandlerMethod0 cb, uint64_t uniffi_handle, void* stream, void* context, void* sink, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return)
+{
+	return cb(uniffi_handle, stream, context, sink, uniffi_future_callback, uniffi_callback_data, uniffi_out_return);
+}
+
+
+#endif
+#ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_STREAM_UNARY_HANDLER_METHOD0
+#define UNIFFI_FFIDEF_CALLBACK_INTERFACE_STREAM_UNARY_HANDLER_METHOD0
+typedef void (*UniffiCallbackInterfaceStreamUnaryHandlerMethod0)(uint64_t uniffi_handle, void* stream, void* context, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+
+// Making function static works arround:
+// https://github.com/golang/go/issues/11263
+static void call_UniffiCallbackInterfaceStreamUnaryHandlerMethod0(
+				UniffiCallbackInterfaceStreamUnaryHandlerMethod0 cb, uint64_t uniffi_handle, void* stream, void* context, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return)
+{
+	return cb(uniffi_handle, stream, context, uniffi_future_callback, uniffi_callback_data, uniffi_out_return);
+}
+
+
+#endif
+#ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_UNARY_STREAM_HANDLER_METHOD0
+#define UNIFFI_FFIDEF_CALLBACK_INTERFACE_UNARY_STREAM_HANDLER_METHOD0
+typedef void (*UniffiCallbackInterfaceUnaryStreamHandlerMethod0)(uint64_t uniffi_handle, RustBuffer request, void* context, void* sink, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+
+// Making function static works arround:
+// https://github.com/golang/go/issues/11263
+static void call_UniffiCallbackInterfaceUnaryStreamHandlerMethod0(
+				UniffiCallbackInterfaceUnaryStreamHandlerMethod0 cb, uint64_t uniffi_handle, RustBuffer request, void* context, void* sink, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return)
+{
+	return cb(uniffi_handle, request, context, sink, uniffi_future_callback, uniffi_callback_data, uniffi_out_return);
+}
+
+
+#endif
+#ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_UNARY_UNARY_HANDLER_METHOD0
+#define UNIFFI_FFIDEF_CALLBACK_INTERFACE_UNARY_UNARY_HANDLER_METHOD0
+typedef void (*UniffiCallbackInterfaceUnaryUnaryHandlerMethod0)(uint64_t uniffi_handle, RustBuffer request, void* context, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+
+// Making function static works arround:
+// https://github.com/golang/go/issues/11263
+static void call_UniffiCallbackInterfaceUnaryUnaryHandlerMethod0(
+				UniffiCallbackInterfaceUnaryUnaryHandlerMethod0 cb, uint64_t uniffi_handle, RustBuffer request, void* context, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return)
+{
+	return cb(uniffi_handle, request, context, uniffi_future_callback, uniffi_callback_data, uniffi_out_return);
+}
+
+
+#endif
+#ifndef UNIFFI_FFIDEF_V_TABLE_CALLBACK_INTERFACE_STREAM_STREAM_HANDLER
+#define UNIFFI_FFIDEF_V_TABLE_CALLBACK_INTERFACE_STREAM_STREAM_HANDLER
+typedef struct UniffiVTableCallbackInterfaceStreamStreamHandler {
+    UniffiCallbackInterfaceStreamStreamHandlerMethod0 handle;
+    UniffiCallbackInterfaceFree uniffiFree;
+} UniffiVTableCallbackInterfaceStreamStreamHandler;
+
+#endif
+#ifndef UNIFFI_FFIDEF_V_TABLE_CALLBACK_INTERFACE_STREAM_UNARY_HANDLER
+#define UNIFFI_FFIDEF_V_TABLE_CALLBACK_INTERFACE_STREAM_UNARY_HANDLER
+typedef struct UniffiVTableCallbackInterfaceStreamUnaryHandler {
+    UniffiCallbackInterfaceStreamUnaryHandlerMethod0 handle;
+    UniffiCallbackInterfaceFree uniffiFree;
+} UniffiVTableCallbackInterfaceStreamUnaryHandler;
+
+#endif
+#ifndef UNIFFI_FFIDEF_V_TABLE_CALLBACK_INTERFACE_UNARY_STREAM_HANDLER
+#define UNIFFI_FFIDEF_V_TABLE_CALLBACK_INTERFACE_UNARY_STREAM_HANDLER
+typedef struct UniffiVTableCallbackInterfaceUnaryStreamHandler {
+    UniffiCallbackInterfaceUnaryStreamHandlerMethod0 handle;
+    UniffiCallbackInterfaceFree uniffiFree;
+} UniffiVTableCallbackInterfaceUnaryStreamHandler;
+
+#endif
+#ifndef UNIFFI_FFIDEF_V_TABLE_CALLBACK_INTERFACE_UNARY_UNARY_HANDLER
+#define UNIFFI_FFIDEF_V_TABLE_CALLBACK_INTERFACE_UNARY_UNARY_HANDLER
+typedef struct UniffiVTableCallbackInterfaceUnaryUnaryHandler {
+    UniffiCallbackInterfaceUnaryUnaryHandlerMethod0 handle;
+    UniffiCallbackInterfaceFree uniffiFree;
+} UniffiVTableCallbackInterfaceUnaryUnaryHandler;
+
+#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_CLONE_APP
 #define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_CLONE_APP
 void* uniffi_slim_bindings_fn_clone_app(void* ptr, RustCallStatus *out_status
@@ -503,6 +591,96 @@ void uniffi_slim_bindings_fn_method_app_unsubscribe(void* ptr, void* name, RustB
 uint64_t uniffi_slim_bindings_fn_method_app_unsubscribe_async(void* ptr, void* name, RustBuffer connection_id
 );
 #endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_CLONE_BIDISTREAMHANDLER
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_CLONE_BIDISTREAMHANDLER
+void* uniffi_slim_bindings_fn_clone_bidistreamhandler(void* ptr, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_FREE_BIDISTREAMHANDLER
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_FREE_BIDISTREAMHANDLER
+void uniffi_slim_bindings_fn_free_bidistreamhandler(void* ptr, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_BIDISTREAMHANDLER_CLOSE_SEND
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_BIDISTREAMHANDLER_CLOSE_SEND
+void uniffi_slim_bindings_fn_method_bidistreamhandler_close_send(void* ptr, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_BIDISTREAMHANDLER_CLOSE_SEND_ASYNC
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_BIDISTREAMHANDLER_CLOSE_SEND_ASYNC
+uint64_t uniffi_slim_bindings_fn_method_bidistreamhandler_close_send_async(void* ptr
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_BIDISTREAMHANDLER_RECV
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_BIDISTREAMHANDLER_RECV
+RustBuffer uniffi_slim_bindings_fn_method_bidistreamhandler_recv(void* ptr, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_BIDISTREAMHANDLER_RECV_ASYNC
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_BIDISTREAMHANDLER_RECV_ASYNC
+uint64_t uniffi_slim_bindings_fn_method_bidistreamhandler_recv_async(void* ptr
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_BIDISTREAMHANDLER_SEND
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_BIDISTREAMHANDLER_SEND
+void uniffi_slim_bindings_fn_method_bidistreamhandler_send(void* ptr, RustBuffer data, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_BIDISTREAMHANDLER_SEND_ASYNC
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_BIDISTREAMHANDLER_SEND_ASYNC
+uint64_t uniffi_slim_bindings_fn_method_bidistreamhandler_send_async(void* ptr, RustBuffer data
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_CLONE_CHANNEL
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_CLONE_CHANNEL
+void* uniffi_slim_bindings_fn_clone_channel(void* ptr, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_FREE_CHANNEL
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_FREE_CHANNEL
+void uniffi_slim_bindings_fn_free_channel(void* ptr, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_CONSTRUCTOR_CHANNEL_NEW
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_CONSTRUCTOR_CHANNEL_NEW
+void* uniffi_slim_bindings_fn_constructor_channel_new(void* app, void* remote, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_CONSTRUCTOR_CHANNEL_NEW_WITH_CONNECTION
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_CONSTRUCTOR_CHANNEL_NEW_WITH_CONNECTION
+void* uniffi_slim_bindings_fn_constructor_channel_new_with_connection(void* app, void* remote, RustBuffer connection_id, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_CHANNEL_CALL_STREAM_STREAM
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_CHANNEL_CALL_STREAM_STREAM
+void* uniffi_slim_bindings_fn_method_channel_call_stream_stream(void* ptr, RustBuffer service_name, RustBuffer method_name, RustBuffer timeout, RustBuffer metadata, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_CHANNEL_CALL_STREAM_UNARY
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_CHANNEL_CALL_STREAM_UNARY
+void* uniffi_slim_bindings_fn_method_channel_call_stream_unary(void* ptr, RustBuffer service_name, RustBuffer method_name, RustBuffer timeout, RustBuffer metadata, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_CHANNEL_CALL_UNARY
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_CHANNEL_CALL_UNARY
+RustBuffer uniffi_slim_bindings_fn_method_channel_call_unary(void* ptr, RustBuffer service_name, RustBuffer method_name, RustBuffer request, RustBuffer timeout, RustBuffer metadata, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_CHANNEL_CALL_UNARY_ASYNC
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_CHANNEL_CALL_UNARY_ASYNC
+uint64_t uniffi_slim_bindings_fn_method_channel_call_unary_async(void* ptr, RustBuffer service_name, RustBuffer method_name, RustBuffer request, RustBuffer timeout, RustBuffer metadata
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_CHANNEL_CALL_UNARY_STREAM
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_CHANNEL_CALL_UNARY_STREAM
+void* uniffi_slim_bindings_fn_method_channel_call_unary_stream(void* ptr, RustBuffer service_name, RustBuffer method_name, RustBuffer request, RustBuffer timeout, RustBuffer metadata, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_CHANNEL_CALL_UNARY_STREAM_ASYNC
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_CHANNEL_CALL_UNARY_STREAM_ASYNC
+uint64_t uniffi_slim_bindings_fn_method_channel_call_unary_stream_async(void* ptr, RustBuffer service_name, RustBuffer method_name, RustBuffer request, RustBuffer timeout, RustBuffer metadata
+);
+#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_CLONE_COMPLETIONHANDLE
 #define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_CLONE_COMPLETIONHANDLE
 void* uniffi_slim_bindings_fn_clone_completionhandle(void* ptr, RustCallStatus *out_status
@@ -531,6 +709,41 @@ void uniffi_slim_bindings_fn_method_completionhandle_wait_for(void* ptr, RustBuf
 #ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_COMPLETIONHANDLE_WAIT_FOR_ASYNC
 #define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_COMPLETIONHANDLE_WAIT_FOR_ASYNC
 uint64_t uniffi_slim_bindings_fn_method_completionhandle_wait_for_async(void* ptr, RustBuffer timeout
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_CLONE_CONTEXT
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_CLONE_CONTEXT
+void* uniffi_slim_bindings_fn_clone_context(void* ptr, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_FREE_CONTEXT
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_FREE_CONTEXT
+void uniffi_slim_bindings_fn_free_context(void* ptr, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_CONTEXT_DEADLINE
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_CONTEXT_DEADLINE
+RustBuffer uniffi_slim_bindings_fn_method_context_deadline(void* ptr, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_CONTEXT_IS_DEADLINE_EXCEEDED
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_CONTEXT_IS_DEADLINE_EXCEEDED
+int8_t uniffi_slim_bindings_fn_method_context_is_deadline_exceeded(void* ptr, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_CONTEXT_METADATA
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_CONTEXT_METADATA
+RustBuffer uniffi_slim_bindings_fn_method_context_metadata(void* ptr, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_CONTEXT_REMAINING_TIME
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_CONTEXT_REMAINING_TIME
+RustBuffer uniffi_slim_bindings_fn_method_context_remaining_time(void* ptr, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_CONTEXT_SESSION_ID
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_CONTEXT_SESSION_ID
+RustBuffer uniffi_slim_bindings_fn_method_context_session_id(void* ptr, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_CLONE_NAME
@@ -581,6 +794,186 @@ int8_t uniffi_slim_bindings_fn_method_name_uniffi_trait_eq_eq(void* ptr, void* o
 #ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_NAME_UNIFFI_TRAIT_EQ_NE
 #define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_NAME_UNIFFI_TRAIT_EQ_NE
 int8_t uniffi_slim_bindings_fn_method_name_uniffi_trait_eq_ne(void* ptr, void* other, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_CLONE_REQUESTSTREAM
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_CLONE_REQUESTSTREAM
+void* uniffi_slim_bindings_fn_clone_requeststream(void* ptr, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_FREE_REQUESTSTREAM
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_FREE_REQUESTSTREAM
+void uniffi_slim_bindings_fn_free_requeststream(void* ptr, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_REQUESTSTREAM_NEXT
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_REQUESTSTREAM_NEXT
+RustBuffer uniffi_slim_bindings_fn_method_requeststream_next(void* ptr, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_REQUESTSTREAM_NEXT_ASYNC
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_REQUESTSTREAM_NEXT_ASYNC
+uint64_t uniffi_slim_bindings_fn_method_requeststream_next_async(void* ptr
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_CLONE_REQUESTSTREAMWRITER
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_CLONE_REQUESTSTREAMWRITER
+void* uniffi_slim_bindings_fn_clone_requeststreamwriter(void* ptr, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_FREE_REQUESTSTREAMWRITER
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_FREE_REQUESTSTREAMWRITER
+void uniffi_slim_bindings_fn_free_requeststreamwriter(void* ptr, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_REQUESTSTREAMWRITER_FINALIZE
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_REQUESTSTREAMWRITER_FINALIZE
+RustBuffer uniffi_slim_bindings_fn_method_requeststreamwriter_finalize(void* ptr, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_REQUESTSTREAMWRITER_FINALIZE_ASYNC
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_REQUESTSTREAMWRITER_FINALIZE_ASYNC
+uint64_t uniffi_slim_bindings_fn_method_requeststreamwriter_finalize_async(void* ptr
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_REQUESTSTREAMWRITER_SEND
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_REQUESTSTREAMWRITER_SEND
+void uniffi_slim_bindings_fn_method_requeststreamwriter_send(void* ptr, RustBuffer data, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_REQUESTSTREAMWRITER_SEND_ASYNC
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_REQUESTSTREAMWRITER_SEND_ASYNC
+uint64_t uniffi_slim_bindings_fn_method_requeststreamwriter_send_async(void* ptr, RustBuffer data
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_CLONE_RESPONSESINK
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_CLONE_RESPONSESINK
+void* uniffi_slim_bindings_fn_clone_responsesink(void* ptr, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_FREE_RESPONSESINK
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_FREE_RESPONSESINK
+void uniffi_slim_bindings_fn_free_responsesink(void* ptr, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_RESPONSESINK_CLOSE
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_RESPONSESINK_CLOSE
+void uniffi_slim_bindings_fn_method_responsesink_close(void* ptr, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_RESPONSESINK_CLOSE_ASYNC
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_RESPONSESINK_CLOSE_ASYNC
+uint64_t uniffi_slim_bindings_fn_method_responsesink_close_async(void* ptr
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_RESPONSESINK_IS_CLOSED
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_RESPONSESINK_IS_CLOSED
+int8_t uniffi_slim_bindings_fn_method_responsesink_is_closed(void* ptr, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_RESPONSESINK_IS_CLOSED_ASYNC
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_RESPONSESINK_IS_CLOSED_ASYNC
+uint64_t uniffi_slim_bindings_fn_method_responsesink_is_closed_async(void* ptr
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_RESPONSESINK_SEND
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_RESPONSESINK_SEND
+void uniffi_slim_bindings_fn_method_responsesink_send(void* ptr, RustBuffer data, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_RESPONSESINK_SEND_ASYNC
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_RESPONSESINK_SEND_ASYNC
+uint64_t uniffi_slim_bindings_fn_method_responsesink_send_async(void* ptr, RustBuffer data
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_RESPONSESINK_SEND_ERROR
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_RESPONSESINK_SEND_ERROR
+void uniffi_slim_bindings_fn_method_responsesink_send_error(void* ptr, RustBuffer error, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_RESPONSESINK_SEND_ERROR_ASYNC
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_RESPONSESINK_SEND_ERROR_ASYNC
+uint64_t uniffi_slim_bindings_fn_method_responsesink_send_error_async(void* ptr, RustBuffer error
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_CLONE_RESPONSESTREAMREADER
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_CLONE_RESPONSESTREAMREADER
+void* uniffi_slim_bindings_fn_clone_responsestreamreader(void* ptr, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_FREE_RESPONSESTREAMREADER
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_FREE_RESPONSESTREAMREADER
+void uniffi_slim_bindings_fn_free_responsestreamreader(void* ptr, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_RESPONSESTREAMREADER_NEXT
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_RESPONSESTREAMREADER_NEXT
+RustBuffer uniffi_slim_bindings_fn_method_responsestreamreader_next(void* ptr, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_RESPONSESTREAMREADER_NEXT_ASYNC
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_RESPONSESTREAMREADER_NEXT_ASYNC
+uint64_t uniffi_slim_bindings_fn_method_responsestreamreader_next_async(void* ptr
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_CLONE_SERVER
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_CLONE_SERVER
+void* uniffi_slim_bindings_fn_clone_server(void* ptr, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_FREE_SERVER
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_FREE_SERVER
+void uniffi_slim_bindings_fn_free_server(void* ptr, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_CONSTRUCTOR_SERVER_NEW
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_CONSTRUCTOR_SERVER_NEW
+void* uniffi_slim_bindings_fn_constructor_server_new(void* app, void* base_name, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_CONSTRUCTOR_SERVER_NEW_WITH_CONNECTION
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_CONSTRUCTOR_SERVER_NEW_WITH_CONNECTION
+void* uniffi_slim_bindings_fn_constructor_server_new_with_connection(void* app, void* base_name, RustBuffer connection_id, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_SERVER_REGISTER_STREAM_STREAM
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_SERVER_REGISTER_STREAM_STREAM
+void uniffi_slim_bindings_fn_method_server_register_stream_stream(void* ptr, RustBuffer service_name, RustBuffer method_name, void* handler, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_SERVER_REGISTER_STREAM_UNARY
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_SERVER_REGISTER_STREAM_UNARY
+void uniffi_slim_bindings_fn_method_server_register_stream_unary(void* ptr, RustBuffer service_name, RustBuffer method_name, void* handler, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_SERVER_REGISTER_UNARY_STREAM
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_SERVER_REGISTER_UNARY_STREAM
+void uniffi_slim_bindings_fn_method_server_register_unary_stream(void* ptr, RustBuffer service_name, RustBuffer method_name, void* handler, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_SERVER_REGISTER_UNARY_UNARY
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_SERVER_REGISTER_UNARY_UNARY
+void uniffi_slim_bindings_fn_method_server_register_unary_unary(void* ptr, RustBuffer service_name, RustBuffer method_name, void* handler, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_SERVER_SERVE
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_SERVER_SERVE
+void uniffi_slim_bindings_fn_method_server_serve(void* ptr, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_SERVER_SERVE_ASYNC
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_SERVER_SERVE_ASYNC
+uint64_t uniffi_slim_bindings_fn_method_server_serve_async(void* ptr
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_SERVER_SHUTDOWN
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_SERVER_SHUTDOWN
+void uniffi_slim_bindings_fn_method_server_shutdown(void* ptr, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_SERVER_SHUTDOWN_ASYNC
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_SERVER_SHUTDOWN_ASYNC
+uint64_t uniffi_slim_bindings_fn_method_server_shutdown_async(void* ptr
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_CLONE_SERVICE
@@ -851,6 +1244,86 @@ RustBuffer uniffi_slim_bindings_fn_method_session_session_type(void* ptr, RustCa
 #ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_SESSION_SOURCE
 #define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_SESSION_SOURCE
 void* uniffi_slim_bindings_fn_method_session_source(void* ptr, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_CLONE_STREAMSTREAMHANDLER
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_CLONE_STREAMSTREAMHANDLER
+void* uniffi_slim_bindings_fn_clone_streamstreamhandler(void* ptr, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_FREE_STREAMSTREAMHANDLER
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_FREE_STREAMSTREAMHANDLER
+void uniffi_slim_bindings_fn_free_streamstreamhandler(void* ptr, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_INIT_CALLBACK_VTABLE_STREAMSTREAMHANDLER
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_INIT_CALLBACK_VTABLE_STREAMSTREAMHANDLER
+void uniffi_slim_bindings_fn_init_callback_vtable_streamstreamhandler(UniffiVTableCallbackInterfaceStreamStreamHandler* vtable
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_STREAMSTREAMHANDLER_HANDLE
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_STREAMSTREAMHANDLER_HANDLE
+uint64_t uniffi_slim_bindings_fn_method_streamstreamhandler_handle(void* ptr, void* stream, void* context, void* sink
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_CLONE_STREAMUNARYHANDLER
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_CLONE_STREAMUNARYHANDLER
+void* uniffi_slim_bindings_fn_clone_streamunaryhandler(void* ptr, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_FREE_STREAMUNARYHANDLER
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_FREE_STREAMUNARYHANDLER
+void uniffi_slim_bindings_fn_free_streamunaryhandler(void* ptr, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_INIT_CALLBACK_VTABLE_STREAMUNARYHANDLER
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_INIT_CALLBACK_VTABLE_STREAMUNARYHANDLER
+void uniffi_slim_bindings_fn_init_callback_vtable_streamunaryhandler(UniffiVTableCallbackInterfaceStreamUnaryHandler* vtable
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_STREAMUNARYHANDLER_HANDLE
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_STREAMUNARYHANDLER_HANDLE
+uint64_t uniffi_slim_bindings_fn_method_streamunaryhandler_handle(void* ptr, void* stream, void* context
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_CLONE_UNARYSTREAMHANDLER
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_CLONE_UNARYSTREAMHANDLER
+void* uniffi_slim_bindings_fn_clone_unarystreamhandler(void* ptr, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_FREE_UNARYSTREAMHANDLER
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_FREE_UNARYSTREAMHANDLER
+void uniffi_slim_bindings_fn_free_unarystreamhandler(void* ptr, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_INIT_CALLBACK_VTABLE_UNARYSTREAMHANDLER
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_INIT_CALLBACK_VTABLE_UNARYSTREAMHANDLER
+void uniffi_slim_bindings_fn_init_callback_vtable_unarystreamhandler(UniffiVTableCallbackInterfaceUnaryStreamHandler* vtable
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_UNARYSTREAMHANDLER_HANDLE
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_UNARYSTREAMHANDLER_HANDLE
+uint64_t uniffi_slim_bindings_fn_method_unarystreamhandler_handle(void* ptr, RustBuffer request, void* context, void* sink
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_CLONE_UNARYUNARYHANDLER
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_CLONE_UNARYUNARYHANDLER
+void* uniffi_slim_bindings_fn_clone_unaryunaryhandler(void* ptr, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_FREE_UNARYUNARYHANDLER
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_FREE_UNARYUNARYHANDLER
+void uniffi_slim_bindings_fn_free_unaryunaryhandler(void* ptr, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_INIT_CALLBACK_VTABLE_UNARYUNARYHANDLER
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_INIT_CALLBACK_VTABLE_UNARYUNARYHANDLER
+void uniffi_slim_bindings_fn_init_callback_vtable_unaryunaryhandler(UniffiVTableCallbackInterfaceUnaryUnaryHandler* vtable
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_UNARYUNARYHANDLER_HANDLE
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_UNARYUNARYHANDLER_HANDLE
+uint64_t uniffi_slim_bindings_fn_method_unaryunaryhandler_handle(void* ptr, RustBuffer request, void* context
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_FUNC_CREATE_SERVICE
@@ -1507,6 +1980,78 @@ uint16_t uniffi_slim_bindings_checksum_method_app_unsubscribe_async(void
     
 );
 #endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_BIDISTREAMHANDLER_CLOSE_SEND
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_BIDISTREAMHANDLER_CLOSE_SEND
+uint16_t uniffi_slim_bindings_checksum_method_bidistreamhandler_close_send(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_BIDISTREAMHANDLER_CLOSE_SEND_ASYNC
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_BIDISTREAMHANDLER_CLOSE_SEND_ASYNC
+uint16_t uniffi_slim_bindings_checksum_method_bidistreamhandler_close_send_async(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_BIDISTREAMHANDLER_RECV
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_BIDISTREAMHANDLER_RECV
+uint16_t uniffi_slim_bindings_checksum_method_bidistreamhandler_recv(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_BIDISTREAMHANDLER_RECV_ASYNC
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_BIDISTREAMHANDLER_RECV_ASYNC
+uint16_t uniffi_slim_bindings_checksum_method_bidistreamhandler_recv_async(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_BIDISTREAMHANDLER_SEND
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_BIDISTREAMHANDLER_SEND
+uint16_t uniffi_slim_bindings_checksum_method_bidistreamhandler_send(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_BIDISTREAMHANDLER_SEND_ASYNC
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_BIDISTREAMHANDLER_SEND_ASYNC
+uint16_t uniffi_slim_bindings_checksum_method_bidistreamhandler_send_async(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_CHANNEL_CALL_STREAM_STREAM
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_CHANNEL_CALL_STREAM_STREAM
+uint16_t uniffi_slim_bindings_checksum_method_channel_call_stream_stream(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_CHANNEL_CALL_STREAM_UNARY
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_CHANNEL_CALL_STREAM_UNARY
+uint16_t uniffi_slim_bindings_checksum_method_channel_call_stream_unary(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_CHANNEL_CALL_UNARY
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_CHANNEL_CALL_UNARY
+uint16_t uniffi_slim_bindings_checksum_method_channel_call_unary(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_CHANNEL_CALL_UNARY_ASYNC
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_CHANNEL_CALL_UNARY_ASYNC
+uint16_t uniffi_slim_bindings_checksum_method_channel_call_unary_async(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_CHANNEL_CALL_UNARY_STREAM
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_CHANNEL_CALL_UNARY_STREAM
+uint16_t uniffi_slim_bindings_checksum_method_channel_call_unary_stream(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_CHANNEL_CALL_UNARY_STREAM_ASYNC
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_CHANNEL_CALL_UNARY_STREAM_ASYNC
+uint16_t uniffi_slim_bindings_checksum_method_channel_call_unary_stream_async(void
+    
+);
+#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_COMPLETIONHANDLE_WAIT
 #define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_COMPLETIONHANDLE_WAIT
 uint16_t uniffi_slim_bindings_checksum_method_completionhandle_wait(void
@@ -1531,6 +2076,36 @@ uint16_t uniffi_slim_bindings_checksum_method_completionhandle_wait_for_async(vo
     
 );
 #endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_CONTEXT_DEADLINE
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_CONTEXT_DEADLINE
+uint16_t uniffi_slim_bindings_checksum_method_context_deadline(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_CONTEXT_IS_DEADLINE_EXCEEDED
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_CONTEXT_IS_DEADLINE_EXCEEDED
+uint16_t uniffi_slim_bindings_checksum_method_context_is_deadline_exceeded(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_CONTEXT_METADATA
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_CONTEXT_METADATA
+uint16_t uniffi_slim_bindings_checksum_method_context_metadata(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_CONTEXT_REMAINING_TIME
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_CONTEXT_REMAINING_TIME
+uint16_t uniffi_slim_bindings_checksum_method_context_remaining_time(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_CONTEXT_SESSION_ID
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_CONTEXT_SESSION_ID
+uint16_t uniffi_slim_bindings_checksum_method_context_session_id(void
+    
+);
+#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_NAME_COMPONENTS
 #define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_NAME_COMPONENTS
 uint16_t uniffi_slim_bindings_checksum_method_name_components(void
@@ -1540,6 +2115,150 @@ uint16_t uniffi_slim_bindings_checksum_method_name_components(void
 #ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_NAME_ID
 #define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_NAME_ID
 uint16_t uniffi_slim_bindings_checksum_method_name_id(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_REQUESTSTREAM_NEXT
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_REQUESTSTREAM_NEXT
+uint16_t uniffi_slim_bindings_checksum_method_requeststream_next(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_REQUESTSTREAM_NEXT_ASYNC
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_REQUESTSTREAM_NEXT_ASYNC
+uint16_t uniffi_slim_bindings_checksum_method_requeststream_next_async(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_REQUESTSTREAMWRITER_FINALIZE
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_REQUESTSTREAMWRITER_FINALIZE
+uint16_t uniffi_slim_bindings_checksum_method_requeststreamwriter_finalize(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_REQUESTSTREAMWRITER_FINALIZE_ASYNC
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_REQUESTSTREAMWRITER_FINALIZE_ASYNC
+uint16_t uniffi_slim_bindings_checksum_method_requeststreamwriter_finalize_async(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_REQUESTSTREAMWRITER_SEND
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_REQUESTSTREAMWRITER_SEND
+uint16_t uniffi_slim_bindings_checksum_method_requeststreamwriter_send(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_REQUESTSTREAMWRITER_SEND_ASYNC
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_REQUESTSTREAMWRITER_SEND_ASYNC
+uint16_t uniffi_slim_bindings_checksum_method_requeststreamwriter_send_async(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_RESPONSESINK_CLOSE
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_RESPONSESINK_CLOSE
+uint16_t uniffi_slim_bindings_checksum_method_responsesink_close(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_RESPONSESINK_CLOSE_ASYNC
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_RESPONSESINK_CLOSE_ASYNC
+uint16_t uniffi_slim_bindings_checksum_method_responsesink_close_async(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_RESPONSESINK_IS_CLOSED
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_RESPONSESINK_IS_CLOSED
+uint16_t uniffi_slim_bindings_checksum_method_responsesink_is_closed(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_RESPONSESINK_IS_CLOSED_ASYNC
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_RESPONSESINK_IS_CLOSED_ASYNC
+uint16_t uniffi_slim_bindings_checksum_method_responsesink_is_closed_async(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_RESPONSESINK_SEND
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_RESPONSESINK_SEND
+uint16_t uniffi_slim_bindings_checksum_method_responsesink_send(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_RESPONSESINK_SEND_ASYNC
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_RESPONSESINK_SEND_ASYNC
+uint16_t uniffi_slim_bindings_checksum_method_responsesink_send_async(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_RESPONSESINK_SEND_ERROR
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_RESPONSESINK_SEND_ERROR
+uint16_t uniffi_slim_bindings_checksum_method_responsesink_send_error(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_RESPONSESINK_SEND_ERROR_ASYNC
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_RESPONSESINK_SEND_ERROR_ASYNC
+uint16_t uniffi_slim_bindings_checksum_method_responsesink_send_error_async(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_RESPONSESTREAMREADER_NEXT
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_RESPONSESTREAMREADER_NEXT
+uint16_t uniffi_slim_bindings_checksum_method_responsestreamreader_next(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_RESPONSESTREAMREADER_NEXT_ASYNC
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_RESPONSESTREAMREADER_NEXT_ASYNC
+uint16_t uniffi_slim_bindings_checksum_method_responsestreamreader_next_async(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_SERVER_REGISTER_STREAM_STREAM
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_SERVER_REGISTER_STREAM_STREAM
+uint16_t uniffi_slim_bindings_checksum_method_server_register_stream_stream(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_SERVER_REGISTER_STREAM_UNARY
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_SERVER_REGISTER_STREAM_UNARY
+uint16_t uniffi_slim_bindings_checksum_method_server_register_stream_unary(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_SERVER_REGISTER_UNARY_STREAM
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_SERVER_REGISTER_UNARY_STREAM
+uint16_t uniffi_slim_bindings_checksum_method_server_register_unary_stream(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_SERVER_REGISTER_UNARY_UNARY
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_SERVER_REGISTER_UNARY_UNARY
+uint16_t uniffi_slim_bindings_checksum_method_server_register_unary_unary(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_SERVER_SERVE
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_SERVER_SERVE
+uint16_t uniffi_slim_bindings_checksum_method_server_serve(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_SERVER_SERVE_ASYNC
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_SERVER_SERVE_ASYNC
+uint16_t uniffi_slim_bindings_checksum_method_server_serve_async(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_SERVER_SHUTDOWN
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_SERVER_SHUTDOWN
+uint16_t uniffi_slim_bindings_checksum_method_server_shutdown(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_SERVER_SHUTDOWN_ASYNC
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_SERVER_SHUTDOWN_ASYNC
+uint16_t uniffi_slim_bindings_checksum_method_server_shutdown_async(void
     
 );
 #endif
@@ -1831,6 +2550,30 @@ uint16_t uniffi_slim_bindings_checksum_method_session_source(void
     
 );
 #endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_STREAMSTREAMHANDLER_HANDLE
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_STREAMSTREAMHANDLER_HANDLE
+uint16_t uniffi_slim_bindings_checksum_method_streamstreamhandler_handle(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_STREAMUNARYHANDLER_HANDLE
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_STREAMUNARYHANDLER_HANDLE
+uint16_t uniffi_slim_bindings_checksum_method_streamunaryhandler_handle(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_UNARYSTREAMHANDLER_HANDLE
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_UNARYSTREAMHANDLER_HANDLE
+uint16_t uniffi_slim_bindings_checksum_method_unarystreamhandler_handle(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_UNARYUNARYHANDLER_HANDLE
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_UNARYUNARYHANDLER_HANDLE
+uint16_t uniffi_slim_bindings_checksum_method_unaryunaryhandler_handle(void
+    
+);
+#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_CONSTRUCTOR_APP_NEW
 #define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_CONSTRUCTOR_APP_NEW
 uint16_t uniffi_slim_bindings_checksum_constructor_app_new(void
@@ -1849,6 +2592,18 @@ uint16_t uniffi_slim_bindings_checksum_constructor_app_new_with_secret(void
     
 );
 #endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_CONSTRUCTOR_CHANNEL_NEW
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_CONSTRUCTOR_CHANNEL_NEW
+uint16_t uniffi_slim_bindings_checksum_constructor_channel_new(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_CONSTRUCTOR_CHANNEL_NEW_WITH_CONNECTION
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_CONSTRUCTOR_CHANNEL_NEW_WITH_CONNECTION
+uint16_t uniffi_slim_bindings_checksum_constructor_channel_new_with_connection(void
+    
+);
+#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_CONSTRUCTOR_NAME_NEW
 #define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_CONSTRUCTOR_NAME_NEW
 uint16_t uniffi_slim_bindings_checksum_constructor_name_new(void
@@ -1858,6 +2613,18 @@ uint16_t uniffi_slim_bindings_checksum_constructor_name_new(void
 #ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_CONSTRUCTOR_NAME_NEW_WITH_ID
 #define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_CONSTRUCTOR_NAME_NEW_WITH_ID
 uint16_t uniffi_slim_bindings_checksum_constructor_name_new_with_id(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_CONSTRUCTOR_SERVER_NEW
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_CONSTRUCTOR_SERVER_NEW
+uint16_t uniffi_slim_bindings_checksum_constructor_server_new(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_CONSTRUCTOR_SERVER_NEW_WITH_CONNECTION
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_CONSTRUCTOR_SERVER_NEW_WITH_CONNECTION
+uint16_t uniffi_slim_bindings_checksum_constructor_server_new_with_connection(void
     
 );
 #endif
@@ -1880,6 +2647,14 @@ uint32_t ffi_slim_bindings_uniffi_contract_version(void
 );
 #endif
 
+ void slim_bindings_cgo_dispatchCallbackInterfaceStreamStreamHandlerMethod0(uint64_t uniffi_handle, void* stream, void* context, void* sink, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+ void slim_bindings_cgo_dispatchCallbackInterfaceStreamStreamHandlerFree(uint64_t handle);
+ void slim_bindings_cgo_dispatchCallbackInterfaceStreamUnaryHandlerMethod0(uint64_t uniffi_handle, void* stream, void* context, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+ void slim_bindings_cgo_dispatchCallbackInterfaceStreamUnaryHandlerFree(uint64_t handle);
+ void slim_bindings_cgo_dispatchCallbackInterfaceUnaryStreamHandlerMethod0(uint64_t uniffi_handle, RustBuffer request, void* context, void* sink, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+ void slim_bindings_cgo_dispatchCallbackInterfaceUnaryStreamHandlerFree(uint64_t handle);
+ void slim_bindings_cgo_dispatchCallbackInterfaceUnaryUnaryHandlerMethod0(uint64_t uniffi_handle, RustBuffer request, void* context, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+ void slim_bindings_cgo_dispatchCallbackInterfaceUnaryUnaryHandlerFree(uint64_t handle);
 
 #ifdef _WIN32
 __declspec(dllexport) void slim_bindings_uniffiFutureContinuationCallback(uint64_t, int8_t);

@@ -74,3 +74,7 @@ You should see:
 
 - **Setup is one-time**: You only need to run `slim-bindings-setup` once
 - **Native dependencies**: The bindings use native libraries under the hood via [CGO](https://go.dev/wiki/cgo), so a C compiler is required
+
+## slimrpc (SLIM Remote Procedure Call)
+
+For information about using slimrpc to build protobuf-based RPC services over SLIM, see the [SLIMRPC documentation](SLIMRPC.md).

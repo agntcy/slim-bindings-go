@@ -14,11 +14,13 @@ import "C"
 import (
 	"bytes"
 	"encoding/binary"
+	"errors"
 	"fmt"
 	"io"
 	"math"
 	"runtime"
 	"runtime/cgo"
+	"sync"
 	"sync/atomic"
 	"time"
 	"unsafe"
@@ -342,6 +344,10 @@ func readFloat64(reader io.Reader) float64 {
 
 func init() {
 
+	FfiConverterStreamStreamHandlerINSTANCE.register()
+	FfiConverterStreamUnaryHandlerINSTANCE.register()
+	FfiConverterUnaryStreamHandlerINSTANCE.register()
+	FfiConverterUnaryUnaryHandlerINSTANCE.register()
 	uniffiCheckChecksums()
 }
 
@@ -736,6 +742,114 @@ func uniffiCheckChecksums() {
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_method_bidistreamhandler_close_send()
+		})
+		if checksum != 34987 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_method_bidistreamhandler_close_send: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_method_bidistreamhandler_close_send_async()
+		})
+		if checksum != 43985 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_method_bidistreamhandler_close_send_async: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_method_bidistreamhandler_recv()
+		})
+		if checksum != 35283 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_method_bidistreamhandler_recv: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_method_bidistreamhandler_recv_async()
+		})
+		if checksum != 62278 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_method_bidistreamhandler_recv_async: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_method_bidistreamhandler_send()
+		})
+		if checksum != 33730 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_method_bidistreamhandler_send: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_method_bidistreamhandler_send_async()
+		})
+		if checksum != 54011 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_method_bidistreamhandler_send_async: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_method_channel_call_stream_stream()
+		})
+		if checksum != 2107 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_method_channel_call_stream_stream: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_method_channel_call_stream_unary()
+		})
+		if checksum != 40967 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_method_channel_call_stream_unary: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_method_channel_call_unary()
+		})
+		if checksum != 65159 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_method_channel_call_unary: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_method_channel_call_unary_async()
+		})
+		if checksum != 43673 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_method_channel_call_unary_async: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_method_channel_call_unary_stream()
+		})
+		if checksum != 13465 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_method_channel_call_unary_stream: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_method_channel_call_unary_stream_async()
+		})
+		if checksum != 61723 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_method_channel_call_unary_stream_async: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_slim_bindings_checksum_method_completionhandle_wait()
 		})
 		if checksum != 24983 {
@@ -772,6 +886,51 @@ func uniffiCheckChecksums() {
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_method_context_deadline()
+		})
+		if checksum != 6991 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_method_context_deadline: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_method_context_is_deadline_exceeded()
+		})
+		if checksum != 2375 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_method_context_is_deadline_exceeded: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_method_context_metadata()
+		})
+		if checksum != 36093 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_method_context_metadata: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_method_context_remaining_time()
+		})
+		if checksum != 408 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_method_context_remaining_time: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_method_context_session_id()
+		})
+		if checksum != 4038 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_method_context_session_id: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_slim_bindings_checksum_method_name_components()
 		})
 		if checksum != 49977 {
@@ -786,6 +945,222 @@ func uniffiCheckChecksums() {
 		if checksum != 28732 {
 			// If this happens try cleaning and rebuilding your project
 			panic("slim_bindings: uniffi_slim_bindings_checksum_method_name_id: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_method_requeststream_next()
+		})
+		if checksum != 31564 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_method_requeststream_next: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_method_requeststream_next_async()
+		})
+		if checksum != 16598 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_method_requeststream_next_async: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_method_requeststreamwriter_finalize()
+		})
+		if checksum != 64754 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_method_requeststreamwriter_finalize: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_method_requeststreamwriter_finalize_async()
+		})
+		if checksum != 16474 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_method_requeststreamwriter_finalize_async: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_method_requeststreamwriter_send()
+		})
+		if checksum != 2655 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_method_requeststreamwriter_send: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_method_requeststreamwriter_send_async()
+		})
+		if checksum != 12842 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_method_requeststreamwriter_send_async: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_method_responsesink_close()
+		})
+		if checksum != 41933 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_method_responsesink_close: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_method_responsesink_close_async()
+		})
+		if checksum != 30800 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_method_responsesink_close_async: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_method_responsesink_is_closed()
+		})
+		if checksum != 2540 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_method_responsesink_is_closed: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_method_responsesink_is_closed_async()
+		})
+		if checksum != 57028 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_method_responsesink_is_closed_async: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_method_responsesink_send()
+		})
+		if checksum != 4243 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_method_responsesink_send: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_method_responsesink_send_async()
+		})
+		if checksum != 18881 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_method_responsesink_send_async: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_method_responsesink_send_error()
+		})
+		if checksum != 4313 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_method_responsesink_send_error: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_method_responsesink_send_error_async()
+		})
+		if checksum != 29805 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_method_responsesink_send_error_async: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_method_responsestreamreader_next()
+		})
+		if checksum != 10992 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_method_responsestreamreader_next: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_method_responsestreamreader_next_async()
+		})
+		if checksum != 58848 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_method_responsestreamreader_next_async: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_method_server_register_stream_stream()
+		})
+		if checksum != 15236 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_method_server_register_stream_stream: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_method_server_register_stream_unary()
+		})
+		if checksum != 333 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_method_server_register_stream_unary: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_method_server_register_unary_stream()
+		})
+		if checksum != 50458 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_method_server_register_unary_stream: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_method_server_register_unary_unary()
+		})
+		if checksum != 16842 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_method_server_register_unary_unary: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_method_server_serve()
+		})
+		if checksum != 52691 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_method_server_serve: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_method_server_serve_async()
+		})
+		if checksum != 28652 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_method_server_serve_async: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_method_server_shutdown()
+		})
+		if checksum != 39578 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_method_server_shutdown: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_method_server_shutdown_async()
+		})
+		if checksum != 36033 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_method_server_shutdown_async: UniFFI API checksum mismatch")
 		}
 	}
 	{
@@ -1222,6 +1597,42 @@ func uniffiCheckChecksums() {
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_method_streamstreamhandler_handle()
+		})
+		if checksum != 34812 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_method_streamstreamhandler_handle: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_method_streamunaryhandler_handle()
+		})
+		if checksum != 10750 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_method_streamunaryhandler_handle: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_method_unarystreamhandler_handle()
+		})
+		if checksum != 24216 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_method_unarystreamhandler_handle: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_method_unaryunaryhandler_handle()
+		})
+		if checksum != 57903 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_method_unaryunaryhandler_handle: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_slim_bindings_checksum_constructor_app_new()
 		})
 		if checksum != 29282 {
@@ -1249,6 +1660,24 @@ func uniffiCheckChecksums() {
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_constructor_channel_new()
+		})
+		if checksum != 43717 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_constructor_channel_new: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_constructor_channel_new_with_connection()
+		})
+		if checksum != 2629 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_constructor_channel_new_with_connection: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_slim_bindings_checksum_constructor_name_new()
 		})
 		if checksum != 17614 {
@@ -1263,6 +1692,24 @@ func uniffiCheckChecksums() {
 		if checksum != 54828 {
 			// If this happens try cleaning and rebuilding your project
 			panic("slim_bindings: uniffi_slim_bindings_checksum_constructor_name_new_with_id: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_constructor_server_new()
+		})
+		if checksum != 43254 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_constructor_server_new: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_constructor_server_new_with_connection()
+		})
+		if checksum != 37943 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_constructor_server_new_with_connection: UniFFI API checksum mismatch")
 		}
 	}
 	{
@@ -1457,6 +1904,46 @@ func (c FfiConverterBytes) Read(reader io.Reader) []byte {
 type FfiDestroyerBytes struct{}
 
 func (FfiDestroyerBytes) Destroy(_ []byte) {}
+
+type FfiConverterTimestamp struct{}
+
+var FfiConverterTimestampINSTANCE = FfiConverterTimestamp{}
+
+func (c FfiConverterTimestamp) Lift(rb RustBufferI) time.Time {
+	return LiftFromRustBuffer[time.Time](c, rb)
+}
+
+func (c FfiConverterTimestamp) Read(reader io.Reader) time.Time {
+	sec := readInt64(reader)
+	nsec := readUint32(reader)
+
+	var sign int64 = 1
+	if sec < 0 {
+		sign = -1
+	}
+
+	return time.Unix(sec, int64(nsec)*sign)
+}
+
+func (c FfiConverterTimestamp) Lower(value time.Time) C.RustBuffer {
+	return LowerIntoRustBuffer[time.Time](c, value)
+}
+
+func (c FfiConverterTimestamp) Write(writer io.Writer, value time.Time) {
+	sec := value.Unix()
+	nsec := uint32(value.Nanosecond())
+	if value.Unix() < 0 {
+		nsec = 1_000_000_000 - nsec
+		sec += 1
+	}
+
+	writeInt64(writer, sec)
+	writeUint32(writer, nsec)
+}
+
+type FfiDestroyerTimestamp struct{}
+
+func (FfiDestroyerTimestamp) Destroy(_ time.Time) {}
 
 // FfiConverterDuration converts between uniffi duration and Go duration.
 type FfiConverterDuration struct{}
@@ -2232,6 +2719,582 @@ func (_ FfiDestroyerApp) Destroy(value *App) {
 	value.Destroy()
 }
 
+// Bidirectional stream handler for stream-to-stream RPC calls
+//
+// Allows sending and receiving messages concurrently.
+type BidiStreamHandlerInterface interface {
+	// Close the request stream (no more messages will be sent)
+	CloseSend() error
+	// Close the request stream (async version)
+	CloseSendAsync() error
+	// Receive the next response message (blocking version)
+	Recv() StreamMessage
+	// Receive the next response message (async version)
+	RecvAsync() StreamMessage
+	// Send a request message to the stream (blocking version)
+	Send(data []byte) error
+	// Send a request message to the stream (async version)
+	SendAsync(data []byte) error
+}
+
+// Bidirectional stream handler for stream-to-stream RPC calls
+//
+// Allows sending and receiving messages concurrently.
+type BidiStreamHandler struct {
+	ffiObject FfiObject
+}
+
+// Close the request stream (no more messages will be sent)
+func (_self *BidiStreamHandler) CloseSend() error {
+	_pointer := _self.ffiObject.incrementPointer("*BidiStreamHandler")
+	defer _self.ffiObject.decrementPointer()
+	_, _uniffiErr := rustCallWithError[RpcError](FfiConverterRpcError{}, func(_uniffiStatus *C.RustCallStatus) bool {
+		C.uniffi_slim_bindings_fn_method_bidistreamhandler_close_send(
+			_pointer, _uniffiStatus)
+		return false
+	})
+	return _uniffiErr.AsError()
+}
+
+// Close the request stream (async version)
+func (_self *BidiStreamHandler) CloseSendAsync() error {
+	_pointer := _self.ffiObject.incrementPointer("*BidiStreamHandler")
+	defer _self.ffiObject.decrementPointer()
+	_, err := uniffiRustCallAsync[RpcError](
+		FfiConverterRpcErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) struct{} {
+			C.ffi_slim_bindings_rust_future_complete_void(handle, status)
+			return struct{}{}
+		},
+		// liftFn
+		func(_ struct{}) struct{} { return struct{}{} },
+		C.uniffi_slim_bindings_fn_method_bidistreamhandler_close_send_async(
+			_pointer),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_slim_bindings_rust_future_poll_void(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_slim_bindings_rust_future_free_void(handle)
+		},
+	)
+
+	if err == nil {
+		return nil
+	}
+
+	return err
+}
+
+// Receive the next response message (blocking version)
+func (_self *BidiStreamHandler) Recv() StreamMessage {
+	_pointer := _self.ffiObject.incrementPointer("*BidiStreamHandler")
+	defer _self.ffiObject.decrementPointer()
+	return FfiConverterStreamMessageINSTANCE.Lift(rustCall(func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+		return GoRustBuffer{
+			inner: C.uniffi_slim_bindings_fn_method_bidistreamhandler_recv(
+				_pointer, _uniffiStatus),
+		}
+	}))
+}
+
+// Receive the next response message (async version)
+func (_self *BidiStreamHandler) RecvAsync() StreamMessage {
+	_pointer := _self.ffiObject.incrementPointer("*BidiStreamHandler")
+	defer _self.ffiObject.decrementPointer()
+	res, _ := uniffiRustCallAsync[error](
+		nil,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
+			res := C.ffi_slim_bindings_rust_future_complete_rust_buffer(handle, status)
+			return GoRustBuffer{
+				inner: res,
+			}
+		},
+		// liftFn
+		func(ffi RustBufferI) StreamMessage {
+			return FfiConverterStreamMessageINSTANCE.Lift(ffi)
+		},
+		C.uniffi_slim_bindings_fn_method_bidistreamhandler_recv_async(
+			_pointer),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_slim_bindings_rust_future_poll_rust_buffer(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_slim_bindings_rust_future_free_rust_buffer(handle)
+		},
+	)
+
+	return res
+}
+
+// Send a request message to the stream (blocking version)
+func (_self *BidiStreamHandler) Send(data []byte) error {
+	_pointer := _self.ffiObject.incrementPointer("*BidiStreamHandler")
+	defer _self.ffiObject.decrementPointer()
+	_, _uniffiErr := rustCallWithError[RpcError](FfiConverterRpcError{}, func(_uniffiStatus *C.RustCallStatus) bool {
+		C.uniffi_slim_bindings_fn_method_bidistreamhandler_send(
+			_pointer, FfiConverterBytesINSTANCE.Lower(data), _uniffiStatus)
+		return false
+	})
+	return _uniffiErr.AsError()
+}
+
+// Send a request message to the stream (async version)
+func (_self *BidiStreamHandler) SendAsync(data []byte) error {
+	_pointer := _self.ffiObject.incrementPointer("*BidiStreamHandler")
+	defer _self.ffiObject.decrementPointer()
+	_, err := uniffiRustCallAsync[RpcError](
+		FfiConverterRpcErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) struct{} {
+			C.ffi_slim_bindings_rust_future_complete_void(handle, status)
+			return struct{}{}
+		},
+		// liftFn
+		func(_ struct{}) struct{} { return struct{}{} },
+		C.uniffi_slim_bindings_fn_method_bidistreamhandler_send_async(
+			_pointer, FfiConverterBytesINSTANCE.Lower(data)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_slim_bindings_rust_future_poll_void(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_slim_bindings_rust_future_free_void(handle)
+		},
+	)
+
+	if err == nil {
+		return nil
+	}
+
+	return err
+}
+func (object *BidiStreamHandler) Destroy() {
+	runtime.SetFinalizer(object, nil)
+	object.ffiObject.destroy()
+}
+
+type FfiConverterBidiStreamHandler struct{}
+
+var FfiConverterBidiStreamHandlerINSTANCE = FfiConverterBidiStreamHandler{}
+
+func (c FfiConverterBidiStreamHandler) Lift(pointer unsafe.Pointer) *BidiStreamHandler {
+	result := &BidiStreamHandler{
+		newFfiObject(
+			pointer,
+			func(pointer unsafe.Pointer, status *C.RustCallStatus) unsafe.Pointer {
+				return C.uniffi_slim_bindings_fn_clone_bidistreamhandler(pointer, status)
+			},
+			func(pointer unsafe.Pointer, status *C.RustCallStatus) {
+				C.uniffi_slim_bindings_fn_free_bidistreamhandler(pointer, status)
+			},
+		),
+	}
+	runtime.SetFinalizer(result, (*BidiStreamHandler).Destroy)
+	return result
+}
+
+func (c FfiConverterBidiStreamHandler) Read(reader io.Reader) *BidiStreamHandler {
+	return c.Lift(unsafe.Pointer(uintptr(readUint64(reader))))
+}
+
+func (c FfiConverterBidiStreamHandler) Lower(value *BidiStreamHandler) unsafe.Pointer {
+	// TODO: this is bad - all synchronization from ObjectRuntime.go is discarded here,
+	// because the pointer will be decremented immediately after this function returns,
+	// and someone will be left holding onto a non-locked pointer.
+	pointer := value.ffiObject.incrementPointer("*BidiStreamHandler")
+	defer value.ffiObject.decrementPointer()
+	return pointer
+
+}
+
+func (c FfiConverterBidiStreamHandler) Write(writer io.Writer, value *BidiStreamHandler) {
+	writeUint64(writer, uint64(uintptr(c.Lower(value))))
+}
+
+type FfiDestroyerBidiStreamHandler struct{}
+
+func (_ FfiDestroyerBidiStreamHandler) Destroy(value *BidiStreamHandler) {
+	value.Destroy()
+}
+
+// Client-side channel for making RPC calls
+//
+// A Channel manages the connection to a remote service and provides methods
+// for making RPC calls with different streaming patterns.
+//
+// Each RPC call creates a new session which is closed after the RPC completes.
+type ChannelInterface interface {
+	// Make a stream-to-stream RPC call (blocking version)
+	//
+	// # Arguments
+	// * `service_name` - The service name
+	// * `method_name` - The method name
+	// * `timeout` - Optional timeout duration
+	//
+	// # Returns
+	// A BidiStreamHandler for sending and receiving messages
+	//
+	// # Note
+	// This returns a BidiStreamHandler that can be used to send request messages
+	// and read response messages concurrently.
+	CallStreamStream(serviceName string, methodName string, timeout *time.Duration, metadata *map[string]string) *BidiStreamHandler
+	// Make a stream-to-unary RPC call (blocking version)
+	//
+	// # Arguments
+	// * `service_name` - The service name
+	// * `method_name` - The method name
+	// * `timeout` - Optional timeout duration
+	//
+	// # Returns
+	// A RequestStreamWriter for sending request messages and getting the final response
+	//
+	// # Note
+	// This returns a RequestStreamWriter that can be used to send multiple request
+	// messages and then finalize to get the single response.
+	CallStreamUnary(serviceName string, methodName string, timeout *time.Duration, metadata *map[string]string) *RequestStreamWriter
+	// Make a unary-to-unary RPC call (blocking version)
+	//
+	// # Arguments
+	// * `service_name` - The service name (e.g., "MyService")
+	// * `method_name` - The method name (e.g., "GetUser")
+	// * `request` - The request message bytes
+	// * `timeout` - Optional timeout duration
+	//
+	// # Returns
+	// The response message bytes or an error
+	CallUnary(serviceName string, methodName string, request []byte, timeout *time.Duration, metadata *map[string]string) ([]byte, error)
+	// Make a unary-to-unary RPC call (async version)
+	//
+	// # Arguments
+	// * `service_name` - The service name (e.g., "MyService")
+	// * `method_name` - The method name (e.g., "GetUser")
+	// * `request` - The request message bytes
+	// * `timeout` - Optional timeout duration
+	//
+	// # Returns
+	// The response message bytes or an error
+	CallUnaryAsync(serviceName string, methodName string, request []byte, timeout *time.Duration, metadata *map[string]string) ([]byte, error)
+	// Make a unary-to-stream RPC call (blocking version)
+	//
+	// # Arguments
+	// * `service_name` - The service name
+	// * `method_name` - The method name
+	// * `request` - The request message bytes
+	// * `timeout` - Optional timeout duration
+	//
+	// # Returns
+	// A stream reader for pulling response messages
+	//
+	// # Note
+	// This returns a ResponseStreamReader that can be used to pull messages
+	// one at a time from the response stream.
+	CallUnaryStream(serviceName string, methodName string, request []byte, timeout *time.Duration, metadata *map[string]string) (*ResponseStreamReader, error)
+	// Make a unary-to-stream RPC call (async version)
+	//
+	// # Arguments
+	// * `service_name` - The service name
+	// * `method_name` - The method name
+	// * `request` - The request message bytes
+	// * `timeout` - Optional timeout duration
+	//
+	// # Returns
+	// A stream reader for pulling response messages
+	//
+	// # Note
+	// This returns a ResponseStreamReader that can be used to pull messages
+	// one at a time from the response stream.
+	CallUnaryStreamAsync(serviceName string, methodName string, request []byte, timeout *time.Duration, metadata *map[string]string) (*ResponseStreamReader, error)
+}
+
+// Client-side channel for making RPC calls
+//
+// A Channel manages the connection to a remote service and provides methods
+// for making RPC calls with different streaming patterns.
+//
+// Each RPC call creates a new session which is closed after the RPC completes.
+type Channel struct {
+	ffiObject FfiObject
+}
+
+// Create a new RPC channel
+//
+// # Arguments
+// * `app` - The SLIM application instance
+// * `remote` - The remote service name to connect to
+//
+// # Returns
+// A new channel instance
+func NewChannel(app *App, remote *Name) *Channel {
+	return FfiConverterChannelINSTANCE.Lift(rustCall(func(_uniffiStatus *C.RustCallStatus) unsafe.Pointer {
+		return C.uniffi_slim_bindings_fn_constructor_channel_new(FfiConverterAppINSTANCE.Lower(app), FfiConverterNameINSTANCE.Lower(remote), _uniffiStatus)
+	}))
+}
+
+// Create a new RPC channel with optional connection ID
+//
+// The connection ID is used to set up routing before making RPC calls,
+// enabling multi-hop RPC calls through specific connections.
+//
+// # Arguments
+// * `app` - The SLIM application instance
+// * `remote` - The remote service name to connect to
+// * `connection_id` - Optional connection ID for routing setup
+//
+// # Returns
+// A new channel instance
+func ChannelNewWithConnection(app *App, remote *Name, connectionId *uint64) *Channel {
+	return FfiConverterChannelINSTANCE.Lift(rustCall(func(_uniffiStatus *C.RustCallStatus) unsafe.Pointer {
+		return C.uniffi_slim_bindings_fn_constructor_channel_new_with_connection(FfiConverterAppINSTANCE.Lower(app), FfiConverterNameINSTANCE.Lower(remote), FfiConverterOptionalUint64INSTANCE.Lower(connectionId), _uniffiStatus)
+	}))
+}
+
+// Make a stream-to-stream RPC call (blocking version)
+//
+// # Arguments
+// * `service_name` - The service name
+// * `method_name` - The method name
+// * `timeout` - Optional timeout duration
+//
+// # Returns
+// A BidiStreamHandler for sending and receiving messages
+//
+// # Note
+// This returns a BidiStreamHandler that can be used to send request messages
+// and read response messages concurrently.
+func (_self *Channel) CallStreamStream(serviceName string, methodName string, timeout *time.Duration, metadata *map[string]string) *BidiStreamHandler {
+	_pointer := _self.ffiObject.incrementPointer("*Channel")
+	defer _self.ffiObject.decrementPointer()
+	return FfiConverterBidiStreamHandlerINSTANCE.Lift(rustCall(func(_uniffiStatus *C.RustCallStatus) unsafe.Pointer {
+		return C.uniffi_slim_bindings_fn_method_channel_call_stream_stream(
+			_pointer, FfiConverterStringINSTANCE.Lower(serviceName), FfiConverterStringINSTANCE.Lower(methodName), FfiConverterOptionalDurationINSTANCE.Lower(timeout), FfiConverterOptionalMapStringStringINSTANCE.Lower(metadata), _uniffiStatus)
+	}))
+}
+
+// Make a stream-to-unary RPC call (blocking version)
+//
+// # Arguments
+// * `service_name` - The service name
+// * `method_name` - The method name
+// * `timeout` - Optional timeout duration
+//
+// # Returns
+// A RequestStreamWriter for sending request messages and getting the final response
+//
+// # Note
+// This returns a RequestStreamWriter that can be used to send multiple request
+// messages and then finalize to get the single response.
+func (_self *Channel) CallStreamUnary(serviceName string, methodName string, timeout *time.Duration, metadata *map[string]string) *RequestStreamWriter {
+	_pointer := _self.ffiObject.incrementPointer("*Channel")
+	defer _self.ffiObject.decrementPointer()
+	return FfiConverterRequestStreamWriterINSTANCE.Lift(rustCall(func(_uniffiStatus *C.RustCallStatus) unsafe.Pointer {
+		return C.uniffi_slim_bindings_fn_method_channel_call_stream_unary(
+			_pointer, FfiConverterStringINSTANCE.Lower(serviceName), FfiConverterStringINSTANCE.Lower(methodName), FfiConverterOptionalDurationINSTANCE.Lower(timeout), FfiConverterOptionalMapStringStringINSTANCE.Lower(metadata), _uniffiStatus)
+	}))
+}
+
+// Make a unary-to-unary RPC call (blocking version)
+//
+// # Arguments
+// * `service_name` - The service name (e.g., "MyService")
+// * `method_name` - The method name (e.g., "GetUser")
+// * `request` - The request message bytes
+// * `timeout` - Optional timeout duration
+//
+// # Returns
+// The response message bytes or an error
+func (_self *Channel) CallUnary(serviceName string, methodName string, request []byte, timeout *time.Duration, metadata *map[string]string) ([]byte, error) {
+	_pointer := _self.ffiObject.incrementPointer("*Channel")
+	defer _self.ffiObject.decrementPointer()
+	_uniffiRV, _uniffiErr := rustCallWithError[RpcError](FfiConverterRpcError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+		return GoRustBuffer{
+			inner: C.uniffi_slim_bindings_fn_method_channel_call_unary(
+				_pointer, FfiConverterStringINSTANCE.Lower(serviceName), FfiConverterStringINSTANCE.Lower(methodName), FfiConverterBytesINSTANCE.Lower(request), FfiConverterOptionalDurationINSTANCE.Lower(timeout), FfiConverterOptionalMapStringStringINSTANCE.Lower(metadata), _uniffiStatus),
+		}
+	})
+	if _uniffiErr != nil {
+		var _uniffiDefaultValue []byte
+		return _uniffiDefaultValue, _uniffiErr
+	} else {
+		return FfiConverterBytesINSTANCE.Lift(_uniffiRV), nil
+	}
+}
+
+// Make a unary-to-unary RPC call (async version)
+//
+// # Arguments
+// * `service_name` - The service name (e.g., "MyService")
+// * `method_name` - The method name (e.g., "GetUser")
+// * `request` - The request message bytes
+// * `timeout` - Optional timeout duration
+//
+// # Returns
+// The response message bytes or an error
+func (_self *Channel) CallUnaryAsync(serviceName string, methodName string, request []byte, timeout *time.Duration, metadata *map[string]string) ([]byte, error) {
+	_pointer := _self.ffiObject.incrementPointer("*Channel")
+	defer _self.ffiObject.decrementPointer()
+	res, err := uniffiRustCallAsync[RpcError](
+		FfiConverterRpcErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
+			res := C.ffi_slim_bindings_rust_future_complete_rust_buffer(handle, status)
+			return GoRustBuffer{
+				inner: res,
+			}
+		},
+		// liftFn
+		func(ffi RustBufferI) []byte {
+			return FfiConverterBytesINSTANCE.Lift(ffi)
+		},
+		C.uniffi_slim_bindings_fn_method_channel_call_unary_async(
+			_pointer, FfiConverterStringINSTANCE.Lower(serviceName), FfiConverterStringINSTANCE.Lower(methodName), FfiConverterBytesINSTANCE.Lower(request), FfiConverterOptionalDurationINSTANCE.Lower(timeout), FfiConverterOptionalMapStringStringINSTANCE.Lower(metadata)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_slim_bindings_rust_future_poll_rust_buffer(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_slim_bindings_rust_future_free_rust_buffer(handle)
+		},
+	)
+
+	if err == nil {
+		return res, nil
+	}
+
+	return res, err
+}
+
+// Make a unary-to-stream RPC call (blocking version)
+//
+// # Arguments
+// * `service_name` - The service name
+// * `method_name` - The method name
+// * `request` - The request message bytes
+// * `timeout` - Optional timeout duration
+//
+// # Returns
+// A stream reader for pulling response messages
+//
+// # Note
+// This returns a ResponseStreamReader that can be used to pull messages
+// one at a time from the response stream.
+func (_self *Channel) CallUnaryStream(serviceName string, methodName string, request []byte, timeout *time.Duration, metadata *map[string]string) (*ResponseStreamReader, error) {
+	_pointer := _self.ffiObject.incrementPointer("*Channel")
+	defer _self.ffiObject.decrementPointer()
+	_uniffiRV, _uniffiErr := rustCallWithError[RpcError](FfiConverterRpcError{}, func(_uniffiStatus *C.RustCallStatus) unsafe.Pointer {
+		return C.uniffi_slim_bindings_fn_method_channel_call_unary_stream(
+			_pointer, FfiConverterStringINSTANCE.Lower(serviceName), FfiConverterStringINSTANCE.Lower(methodName), FfiConverterBytesINSTANCE.Lower(request), FfiConverterOptionalDurationINSTANCE.Lower(timeout), FfiConverterOptionalMapStringStringINSTANCE.Lower(metadata), _uniffiStatus)
+	})
+	if _uniffiErr != nil {
+		var _uniffiDefaultValue *ResponseStreamReader
+		return _uniffiDefaultValue, _uniffiErr
+	} else {
+		return FfiConverterResponseStreamReaderINSTANCE.Lift(_uniffiRV), nil
+	}
+}
+
+// Make a unary-to-stream RPC call (async version)
+//
+// # Arguments
+// * `service_name` - The service name
+// * `method_name` - The method name
+// * `request` - The request message bytes
+// * `timeout` - Optional timeout duration
+//
+// # Returns
+// A stream reader for pulling response messages
+//
+// # Note
+// This returns a ResponseStreamReader that can be used to pull messages
+// one at a time from the response stream.
+func (_self *Channel) CallUnaryStreamAsync(serviceName string, methodName string, request []byte, timeout *time.Duration, metadata *map[string]string) (*ResponseStreamReader, error) {
+	_pointer := _self.ffiObject.incrementPointer("*Channel")
+	defer _self.ffiObject.decrementPointer()
+	res, err := uniffiRustCallAsync[RpcError](
+		FfiConverterRpcErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) unsafe.Pointer {
+			res := C.ffi_slim_bindings_rust_future_complete_pointer(handle, status)
+			return res
+		},
+		// liftFn
+		func(ffi unsafe.Pointer) *ResponseStreamReader {
+			return FfiConverterResponseStreamReaderINSTANCE.Lift(ffi)
+		},
+		C.uniffi_slim_bindings_fn_method_channel_call_unary_stream_async(
+			_pointer, FfiConverterStringINSTANCE.Lower(serviceName), FfiConverterStringINSTANCE.Lower(methodName), FfiConverterBytesINSTANCE.Lower(request), FfiConverterOptionalDurationINSTANCE.Lower(timeout), FfiConverterOptionalMapStringStringINSTANCE.Lower(metadata)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_slim_bindings_rust_future_poll_pointer(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_slim_bindings_rust_future_free_pointer(handle)
+		},
+	)
+
+	if err == nil {
+		return res, nil
+	}
+
+	return res, err
+}
+func (object *Channel) Destroy() {
+	runtime.SetFinalizer(object, nil)
+	object.ffiObject.destroy()
+}
+
+type FfiConverterChannel struct{}
+
+var FfiConverterChannelINSTANCE = FfiConverterChannel{}
+
+func (c FfiConverterChannel) Lift(pointer unsafe.Pointer) *Channel {
+	result := &Channel{
+		newFfiObject(
+			pointer,
+			func(pointer unsafe.Pointer, status *C.RustCallStatus) unsafe.Pointer {
+				return C.uniffi_slim_bindings_fn_clone_channel(pointer, status)
+			},
+			func(pointer unsafe.Pointer, status *C.RustCallStatus) {
+				C.uniffi_slim_bindings_fn_free_channel(pointer, status)
+			},
+		),
+	}
+	runtime.SetFinalizer(result, (*Channel).Destroy)
+	return result
+}
+
+func (c FfiConverterChannel) Read(reader io.Reader) *Channel {
+	return c.Lift(unsafe.Pointer(uintptr(readUint64(reader))))
+}
+
+func (c FfiConverterChannel) Lower(value *Channel) unsafe.Pointer {
+	// TODO: this is bad - all synchronization from ObjectRuntime.go is discarded here,
+	// because the pointer will be decremented immediately after this function returns,
+	// and someone will be left holding onto a non-locked pointer.
+	pointer := value.ffiObject.incrementPointer("*Channel")
+	defer value.ffiObject.decrementPointer()
+	return pointer
+
+}
+
+func (c FfiConverterChannel) Write(writer io.Writer, value *Channel) {
+	writeUint64(writer, uint64(uintptr(c.Lower(value))))
+}
+
+type FfiDestroyerChannel struct{}
+
+func (_ FfiDestroyerChannel) Destroy(value *Channel) {
+	value.Destroy()
+}
+
 // FFI-compatible completion handle for async operations
 //
 // Represents a pending operation that can be awaited to ensure completion.
@@ -2507,6 +3570,147 @@ func (_ FfiDestroyerCompletionHandle) Destroy(value *CompletionHandle) {
 	value.Destroy()
 }
 
+// Context passed to RPC handlers
+//
+// Contains all contextual information about an RPC call including:
+// - Session information (source, destination, session ID)
+// - Metadata (key-value pairs)
+// - Deadline/timeout information
+// - Message routing details
+type ContextInterface interface {
+	// Get the deadline for this RPC call
+	Deadline() time.Time
+	// Check if the deadline has been exceeded
+	IsDeadlineExceeded() bool
+	// Get the rpc session metadata
+	Metadata() map[string]string
+	// Get the remaining time until deadline
+	//
+	// Returns Duration::ZERO if the deadline has already passed
+	RemainingTime() time.Duration
+	// Get the session ID
+	SessionId() string
+}
+
+// Context passed to RPC handlers
+//
+// Contains all contextual information about an RPC call including:
+// - Session information (source, destination, session ID)
+// - Metadata (key-value pairs)
+// - Deadline/timeout information
+// - Message routing details
+type Context struct {
+	ffiObject FfiObject
+}
+
+// Get the deadline for this RPC call
+func (_self *Context) Deadline() time.Time {
+	_pointer := _self.ffiObject.incrementPointer("*Context")
+	defer _self.ffiObject.decrementPointer()
+	return FfiConverterTimestampINSTANCE.Lift(rustCall(func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+		return GoRustBuffer{
+			inner: C.uniffi_slim_bindings_fn_method_context_deadline(
+				_pointer, _uniffiStatus),
+		}
+	}))
+}
+
+// Check if the deadline has been exceeded
+func (_self *Context) IsDeadlineExceeded() bool {
+	_pointer := _self.ffiObject.incrementPointer("*Context")
+	defer _self.ffiObject.decrementPointer()
+	return FfiConverterBoolINSTANCE.Lift(rustCall(func(_uniffiStatus *C.RustCallStatus) C.int8_t {
+		return C.uniffi_slim_bindings_fn_method_context_is_deadline_exceeded(
+			_pointer, _uniffiStatus)
+	}))
+}
+
+// Get the rpc session metadata
+func (_self *Context) Metadata() map[string]string {
+	_pointer := _self.ffiObject.incrementPointer("*Context")
+	defer _self.ffiObject.decrementPointer()
+	return FfiConverterMapStringStringINSTANCE.Lift(rustCall(func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+		return GoRustBuffer{
+			inner: C.uniffi_slim_bindings_fn_method_context_metadata(
+				_pointer, _uniffiStatus),
+		}
+	}))
+}
+
+// Get the remaining time until deadline
+//
+// Returns Duration::ZERO if the deadline has already passed
+func (_self *Context) RemainingTime() time.Duration {
+	_pointer := _self.ffiObject.incrementPointer("*Context")
+	defer _self.ffiObject.decrementPointer()
+	return FfiConverterDurationINSTANCE.Lift(rustCall(func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+		return GoRustBuffer{
+			inner: C.uniffi_slim_bindings_fn_method_context_remaining_time(
+				_pointer, _uniffiStatus),
+		}
+	}))
+}
+
+// Get the session ID
+func (_self *Context) SessionId() string {
+	_pointer := _self.ffiObject.incrementPointer("*Context")
+	defer _self.ffiObject.decrementPointer()
+	return FfiConverterStringINSTANCE.Lift(rustCall(func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+		return GoRustBuffer{
+			inner: C.uniffi_slim_bindings_fn_method_context_session_id(
+				_pointer, _uniffiStatus),
+		}
+	}))
+}
+func (object *Context) Destroy() {
+	runtime.SetFinalizer(object, nil)
+	object.ffiObject.destroy()
+}
+
+type FfiConverterContext struct{}
+
+var FfiConverterContextINSTANCE = FfiConverterContext{}
+
+func (c FfiConverterContext) Lift(pointer unsafe.Pointer) *Context {
+	result := &Context{
+		newFfiObject(
+			pointer,
+			func(pointer unsafe.Pointer, status *C.RustCallStatus) unsafe.Pointer {
+				return C.uniffi_slim_bindings_fn_clone_context(pointer, status)
+			},
+			func(pointer unsafe.Pointer, status *C.RustCallStatus) {
+				C.uniffi_slim_bindings_fn_free_context(pointer, status)
+			},
+		),
+	}
+	runtime.SetFinalizer(result, (*Context).Destroy)
+	return result
+}
+
+func (c FfiConverterContext) Read(reader io.Reader) *Context {
+	return c.Lift(unsafe.Pointer(uintptr(readUint64(reader))))
+}
+
+func (c FfiConverterContext) Lower(value *Context) unsafe.Pointer {
+	// TODO: this is bad - all synchronization from ObjectRuntime.go is discarded here,
+	// because the pointer will be decremented immediately after this function returns,
+	// and someone will be left holding onto a non-locked pointer.
+	pointer := value.ffiObject.incrementPointer("*Context")
+	defer value.ffiObject.decrementPointer()
+	return pointer
+
+}
+
+func (c FfiConverterContext) Write(writer io.Writer, value *Context) {
+	writeUint64(writer, uint64(uintptr(c.Lower(value))))
+}
+
+type FfiDestroyerContext struct{}
+
+func (_ FfiDestroyerContext) Destroy(value *Context) {
+	value.Destroy()
+}
+
 // Name type for SLIM (Secure Low-Latency Interactive Messaging)
 type NameInterface interface {
 	// Get the name components as a vector of strings
@@ -2642,6 +3846,1076 @@ func (c FfiConverterName) Write(writer io.Writer, value *Name) {
 type FfiDestroyerName struct{}
 
 func (_ FfiDestroyerName) Destroy(value *Name) {
+	value.Destroy()
+}
+
+// Request stream reader
+//
+// Allows pulling messages from a client request stream.
+// This wraps the underlying async stream and provides a blocking interface
+// suitable for UniFFI callback traits.
+type RequestStreamInterface interface {
+	// Pull the next message from the stream (blocking version)
+	//
+	// Returns a StreamMessage indicating the result
+	Next() StreamMessage
+	// Pull the next message from the stream (async version)
+	//
+	// Returns a StreamMessage indicating the result
+	NextAsync() StreamMessage
+}
+
+// Request stream reader
+//
+// Allows pulling messages from a client request stream.
+// This wraps the underlying async stream and provides a blocking interface
+// suitable for UniFFI callback traits.
+type RequestStream struct {
+	ffiObject FfiObject
+}
+
+// Pull the next message from the stream (blocking version)
+//
+// Returns a StreamMessage indicating the result
+func (_self *RequestStream) Next() StreamMessage {
+	_pointer := _self.ffiObject.incrementPointer("*RequestStream")
+	defer _self.ffiObject.decrementPointer()
+	return FfiConverterStreamMessageINSTANCE.Lift(rustCall(func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+		return GoRustBuffer{
+			inner: C.uniffi_slim_bindings_fn_method_requeststream_next(
+				_pointer, _uniffiStatus),
+		}
+	}))
+}
+
+// Pull the next message from the stream (async version)
+//
+// Returns a StreamMessage indicating the result
+func (_self *RequestStream) NextAsync() StreamMessage {
+	_pointer := _self.ffiObject.incrementPointer("*RequestStream")
+	defer _self.ffiObject.decrementPointer()
+	res, _ := uniffiRustCallAsync[error](
+		nil,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
+			res := C.ffi_slim_bindings_rust_future_complete_rust_buffer(handle, status)
+			return GoRustBuffer{
+				inner: res,
+			}
+		},
+		// liftFn
+		func(ffi RustBufferI) StreamMessage {
+			return FfiConverterStreamMessageINSTANCE.Lift(ffi)
+		},
+		C.uniffi_slim_bindings_fn_method_requeststream_next_async(
+			_pointer),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_slim_bindings_rust_future_poll_rust_buffer(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_slim_bindings_rust_future_free_rust_buffer(handle)
+		},
+	)
+
+	return res
+}
+func (object *RequestStream) Destroy() {
+	runtime.SetFinalizer(object, nil)
+	object.ffiObject.destroy()
+}
+
+type FfiConverterRequestStream struct{}
+
+var FfiConverterRequestStreamINSTANCE = FfiConverterRequestStream{}
+
+func (c FfiConverterRequestStream) Lift(pointer unsafe.Pointer) *RequestStream {
+	result := &RequestStream{
+		newFfiObject(
+			pointer,
+			func(pointer unsafe.Pointer, status *C.RustCallStatus) unsafe.Pointer {
+				return C.uniffi_slim_bindings_fn_clone_requeststream(pointer, status)
+			},
+			func(pointer unsafe.Pointer, status *C.RustCallStatus) {
+				C.uniffi_slim_bindings_fn_free_requeststream(pointer, status)
+			},
+		),
+	}
+	runtime.SetFinalizer(result, (*RequestStream).Destroy)
+	return result
+}
+
+func (c FfiConverterRequestStream) Read(reader io.Reader) *RequestStream {
+	return c.Lift(unsafe.Pointer(uintptr(readUint64(reader))))
+}
+
+func (c FfiConverterRequestStream) Lower(value *RequestStream) unsafe.Pointer {
+	// TODO: this is bad - all synchronization from ObjectRuntime.go is discarded here,
+	// because the pointer will be decremented immediately after this function returns,
+	// and someone will be left holding onto a non-locked pointer.
+	pointer := value.ffiObject.incrementPointer("*RequestStream")
+	defer value.ffiObject.decrementPointer()
+	return pointer
+
+}
+
+func (c FfiConverterRequestStream) Write(writer io.Writer, value *RequestStream) {
+	writeUint64(writer, uint64(uintptr(c.Lower(value))))
+}
+
+type FfiDestroyerRequestStream struct{}
+
+func (_ FfiDestroyerRequestStream) Destroy(value *RequestStream) {
+	value.Destroy()
+}
+
+// Request stream writer for stream-to-unary RPC calls
+//
+// Allows sending multiple request messages and getting a final response.
+type RequestStreamWriterInterface interface {
+	// Finalize the stream and get the response (blocking version)
+	Finalize() ([]byte, error)
+	// Finalize the stream and get the response (async version)
+	FinalizeAsync() ([]byte, error)
+	// Send a request message to the stream (blocking version)
+	Send(data []byte) error
+	// Send a request message to the stream (async version)
+	SendAsync(data []byte) error
+}
+
+// Request stream writer for stream-to-unary RPC calls
+//
+// Allows sending multiple request messages and getting a final response.
+type RequestStreamWriter struct {
+	ffiObject FfiObject
+}
+
+// Finalize the stream and get the response (blocking version)
+func (_self *RequestStreamWriter) Finalize() ([]byte, error) {
+	_pointer := _self.ffiObject.incrementPointer("*RequestStreamWriter")
+	defer _self.ffiObject.decrementPointer()
+	_uniffiRV, _uniffiErr := rustCallWithError[RpcError](FfiConverterRpcError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+		return GoRustBuffer{
+			inner: C.uniffi_slim_bindings_fn_method_requeststreamwriter_finalize(
+				_pointer, _uniffiStatus),
+		}
+	})
+	if _uniffiErr != nil {
+		var _uniffiDefaultValue []byte
+		return _uniffiDefaultValue, _uniffiErr
+	} else {
+		return FfiConverterBytesINSTANCE.Lift(_uniffiRV), nil
+	}
+}
+
+// Finalize the stream and get the response (async version)
+func (_self *RequestStreamWriter) FinalizeAsync() ([]byte, error) {
+	_pointer := _self.ffiObject.incrementPointer("*RequestStreamWriter")
+	defer _self.ffiObject.decrementPointer()
+	res, err := uniffiRustCallAsync[RpcError](
+		FfiConverterRpcErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
+			res := C.ffi_slim_bindings_rust_future_complete_rust_buffer(handle, status)
+			return GoRustBuffer{
+				inner: res,
+			}
+		},
+		// liftFn
+		func(ffi RustBufferI) []byte {
+			return FfiConverterBytesINSTANCE.Lift(ffi)
+		},
+		C.uniffi_slim_bindings_fn_method_requeststreamwriter_finalize_async(
+			_pointer),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_slim_bindings_rust_future_poll_rust_buffer(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_slim_bindings_rust_future_free_rust_buffer(handle)
+		},
+	)
+
+	if err == nil {
+		return res, nil
+	}
+
+	return res, err
+}
+
+// Send a request message to the stream (blocking version)
+func (_self *RequestStreamWriter) Send(data []byte) error {
+	_pointer := _self.ffiObject.incrementPointer("*RequestStreamWriter")
+	defer _self.ffiObject.decrementPointer()
+	_, _uniffiErr := rustCallWithError[RpcError](FfiConverterRpcError{}, func(_uniffiStatus *C.RustCallStatus) bool {
+		C.uniffi_slim_bindings_fn_method_requeststreamwriter_send(
+			_pointer, FfiConverterBytesINSTANCE.Lower(data), _uniffiStatus)
+		return false
+	})
+	return _uniffiErr.AsError()
+}
+
+// Send a request message to the stream (async version)
+func (_self *RequestStreamWriter) SendAsync(data []byte) error {
+	_pointer := _self.ffiObject.incrementPointer("*RequestStreamWriter")
+	defer _self.ffiObject.decrementPointer()
+	_, err := uniffiRustCallAsync[RpcError](
+		FfiConverterRpcErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) struct{} {
+			C.ffi_slim_bindings_rust_future_complete_void(handle, status)
+			return struct{}{}
+		},
+		// liftFn
+		func(_ struct{}) struct{} { return struct{}{} },
+		C.uniffi_slim_bindings_fn_method_requeststreamwriter_send_async(
+			_pointer, FfiConverterBytesINSTANCE.Lower(data)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_slim_bindings_rust_future_poll_void(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_slim_bindings_rust_future_free_void(handle)
+		},
+	)
+
+	if err == nil {
+		return nil
+	}
+
+	return err
+}
+func (object *RequestStreamWriter) Destroy() {
+	runtime.SetFinalizer(object, nil)
+	object.ffiObject.destroy()
+}
+
+type FfiConverterRequestStreamWriter struct{}
+
+var FfiConverterRequestStreamWriterINSTANCE = FfiConverterRequestStreamWriter{}
+
+func (c FfiConverterRequestStreamWriter) Lift(pointer unsafe.Pointer) *RequestStreamWriter {
+	result := &RequestStreamWriter{
+		newFfiObject(
+			pointer,
+			func(pointer unsafe.Pointer, status *C.RustCallStatus) unsafe.Pointer {
+				return C.uniffi_slim_bindings_fn_clone_requeststreamwriter(pointer, status)
+			},
+			func(pointer unsafe.Pointer, status *C.RustCallStatus) {
+				C.uniffi_slim_bindings_fn_free_requeststreamwriter(pointer, status)
+			},
+		),
+	}
+	runtime.SetFinalizer(result, (*RequestStreamWriter).Destroy)
+	return result
+}
+
+func (c FfiConverterRequestStreamWriter) Read(reader io.Reader) *RequestStreamWriter {
+	return c.Lift(unsafe.Pointer(uintptr(readUint64(reader))))
+}
+
+func (c FfiConverterRequestStreamWriter) Lower(value *RequestStreamWriter) unsafe.Pointer {
+	// TODO: this is bad - all synchronization from ObjectRuntime.go is discarded here,
+	// because the pointer will be decremented immediately after this function returns,
+	// and someone will be left holding onto a non-locked pointer.
+	pointer := value.ffiObject.incrementPointer("*RequestStreamWriter")
+	defer value.ffiObject.decrementPointer()
+	return pointer
+
+}
+
+func (c FfiConverterRequestStreamWriter) Write(writer io.Writer, value *RequestStreamWriter) {
+	writeUint64(writer, uint64(uintptr(c.Lower(value))))
+}
+
+type FfiDestroyerRequestStreamWriter struct{}
+
+func (_ FfiDestroyerRequestStreamWriter) Destroy(value *RequestStreamWriter) {
+	value.Destroy()
+}
+
+// Response stream writer
+//
+// Allows pushing messages to a client response stream.
+// This wraps an async channel sender and provides a blocking interface
+// suitable for UniFFI callback traits.
+type ResponseSinkInterface interface {
+	// Close the response stream (blocking version)
+	//
+	// Signals that no more messages will be sent.
+	// The stream will end gracefully.
+	Close() error
+	// Close the response stream (async version)
+	//
+	// Signals that no more messages will be sent.
+	// The stream will end gracefully.
+	CloseAsync() error
+	// Check if the sink has been closed (blocking version)
+	IsClosed() bool
+	// Check if the sink has been closed (async version)
+	IsClosedAsync() bool
+	// Send a message to the response stream (blocking version)
+	//
+	// Returns an error if the stream has been closed or if sending fails.
+	Send(data []byte) error
+	// Send a message to the response stream (async version)
+	//
+	// Returns an error if the stream has been closed or if sending fails.
+	SendAsync(data []byte) error
+	// Send an error to the response stream and close it (blocking version)
+	//
+	// This terminates the stream with an error status.
+	SendError(error *RpcError) error
+	// Send an error to the response stream and close it (async version)
+	//
+	// This terminates the stream with an error status.
+	SendErrorAsync(error *RpcError) error
+}
+
+// Response stream writer
+//
+// Allows pushing messages to a client response stream.
+// This wraps an async channel sender and provides a blocking interface
+// suitable for UniFFI callback traits.
+type ResponseSink struct {
+	ffiObject FfiObject
+}
+
+// Close the response stream (blocking version)
+//
+// Signals that no more messages will be sent.
+// The stream will end gracefully.
+func (_self *ResponseSink) Close() error {
+	_pointer := _self.ffiObject.incrementPointer("*ResponseSink")
+	defer _self.ffiObject.decrementPointer()
+	_, _uniffiErr := rustCallWithError[RpcError](FfiConverterRpcError{}, func(_uniffiStatus *C.RustCallStatus) bool {
+		C.uniffi_slim_bindings_fn_method_responsesink_close(
+			_pointer, _uniffiStatus)
+		return false
+	})
+	return _uniffiErr.AsError()
+}
+
+// Close the response stream (async version)
+//
+// Signals that no more messages will be sent.
+// The stream will end gracefully.
+func (_self *ResponseSink) CloseAsync() error {
+	_pointer := _self.ffiObject.incrementPointer("*ResponseSink")
+	defer _self.ffiObject.decrementPointer()
+	_, err := uniffiRustCallAsync[RpcError](
+		FfiConverterRpcErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) struct{} {
+			C.ffi_slim_bindings_rust_future_complete_void(handle, status)
+			return struct{}{}
+		},
+		// liftFn
+		func(_ struct{}) struct{} { return struct{}{} },
+		C.uniffi_slim_bindings_fn_method_responsesink_close_async(
+			_pointer),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_slim_bindings_rust_future_poll_void(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_slim_bindings_rust_future_free_void(handle)
+		},
+	)
+
+	if err == nil {
+		return nil
+	}
+
+	return err
+}
+
+// Check if the sink has been closed (blocking version)
+func (_self *ResponseSink) IsClosed() bool {
+	_pointer := _self.ffiObject.incrementPointer("*ResponseSink")
+	defer _self.ffiObject.decrementPointer()
+	return FfiConverterBoolINSTANCE.Lift(rustCall(func(_uniffiStatus *C.RustCallStatus) C.int8_t {
+		return C.uniffi_slim_bindings_fn_method_responsesink_is_closed(
+			_pointer, _uniffiStatus)
+	}))
+}
+
+// Check if the sink has been closed (async version)
+func (_self *ResponseSink) IsClosedAsync() bool {
+	_pointer := _self.ffiObject.incrementPointer("*ResponseSink")
+	defer _self.ffiObject.decrementPointer()
+	res, _ := uniffiRustCallAsync[error](
+		nil,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) C.int8_t {
+			res := C.ffi_slim_bindings_rust_future_complete_i8(handle, status)
+			return res
+		},
+		// liftFn
+		func(ffi C.int8_t) bool {
+			return FfiConverterBoolINSTANCE.Lift(ffi)
+		},
+		C.uniffi_slim_bindings_fn_method_responsesink_is_closed_async(
+			_pointer),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_slim_bindings_rust_future_poll_i8(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_slim_bindings_rust_future_free_i8(handle)
+		},
+	)
+
+	return res
+}
+
+// Send a message to the response stream (blocking version)
+//
+// Returns an error if the stream has been closed or if sending fails.
+func (_self *ResponseSink) Send(data []byte) error {
+	_pointer := _self.ffiObject.incrementPointer("*ResponseSink")
+	defer _self.ffiObject.decrementPointer()
+	_, _uniffiErr := rustCallWithError[RpcError](FfiConverterRpcError{}, func(_uniffiStatus *C.RustCallStatus) bool {
+		C.uniffi_slim_bindings_fn_method_responsesink_send(
+			_pointer, FfiConverterBytesINSTANCE.Lower(data), _uniffiStatus)
+		return false
+	})
+	return _uniffiErr.AsError()
+}
+
+// Send a message to the response stream (async version)
+//
+// Returns an error if the stream has been closed or if sending fails.
+func (_self *ResponseSink) SendAsync(data []byte) error {
+	_pointer := _self.ffiObject.incrementPointer("*ResponseSink")
+	defer _self.ffiObject.decrementPointer()
+	_, err := uniffiRustCallAsync[RpcError](
+		FfiConverterRpcErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) struct{} {
+			C.ffi_slim_bindings_rust_future_complete_void(handle, status)
+			return struct{}{}
+		},
+		// liftFn
+		func(_ struct{}) struct{} { return struct{}{} },
+		C.uniffi_slim_bindings_fn_method_responsesink_send_async(
+			_pointer, FfiConverterBytesINSTANCE.Lower(data)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_slim_bindings_rust_future_poll_void(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_slim_bindings_rust_future_free_void(handle)
+		},
+	)
+
+	if err == nil {
+		return nil
+	}
+
+	return err
+}
+
+// Send an error to the response stream and close it (blocking version)
+//
+// This terminates the stream with an error status.
+func (_self *ResponseSink) SendError(error *RpcError) error {
+	_pointer := _self.ffiObject.incrementPointer("*ResponseSink")
+	defer _self.ffiObject.decrementPointer()
+	_, _uniffiErr := rustCallWithError[RpcError](FfiConverterRpcError{}, func(_uniffiStatus *C.RustCallStatus) bool {
+		C.uniffi_slim_bindings_fn_method_responsesink_send_error(
+			_pointer, FfiConverterRpcErrorINSTANCE.Lower(error), _uniffiStatus)
+		return false
+	})
+	return _uniffiErr.AsError()
+}
+
+// Send an error to the response stream and close it (async version)
+//
+// This terminates the stream with an error status.
+func (_self *ResponseSink) SendErrorAsync(error *RpcError) error {
+	_pointer := _self.ffiObject.incrementPointer("*ResponseSink")
+	defer _self.ffiObject.decrementPointer()
+	_, err := uniffiRustCallAsync[RpcError](
+		FfiConverterRpcErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) struct{} {
+			C.ffi_slim_bindings_rust_future_complete_void(handle, status)
+			return struct{}{}
+		},
+		// liftFn
+		func(_ struct{}) struct{} { return struct{}{} },
+		C.uniffi_slim_bindings_fn_method_responsesink_send_error_async(
+			_pointer, FfiConverterRpcErrorINSTANCE.Lower(error)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_slim_bindings_rust_future_poll_void(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_slim_bindings_rust_future_free_void(handle)
+		},
+	)
+
+	if err == nil {
+		return nil
+	}
+
+	return err
+}
+func (object *ResponseSink) Destroy() {
+	runtime.SetFinalizer(object, nil)
+	object.ffiObject.destroy()
+}
+
+type FfiConverterResponseSink struct{}
+
+var FfiConverterResponseSinkINSTANCE = FfiConverterResponseSink{}
+
+func (c FfiConverterResponseSink) Lift(pointer unsafe.Pointer) *ResponseSink {
+	result := &ResponseSink{
+		newFfiObject(
+			pointer,
+			func(pointer unsafe.Pointer, status *C.RustCallStatus) unsafe.Pointer {
+				return C.uniffi_slim_bindings_fn_clone_responsesink(pointer, status)
+			},
+			func(pointer unsafe.Pointer, status *C.RustCallStatus) {
+				C.uniffi_slim_bindings_fn_free_responsesink(pointer, status)
+			},
+		),
+	}
+	runtime.SetFinalizer(result, (*ResponseSink).Destroy)
+	return result
+}
+
+func (c FfiConverterResponseSink) Read(reader io.Reader) *ResponseSink {
+	return c.Lift(unsafe.Pointer(uintptr(readUint64(reader))))
+}
+
+func (c FfiConverterResponseSink) Lower(value *ResponseSink) unsafe.Pointer {
+	// TODO: this is bad - all synchronization from ObjectRuntime.go is discarded here,
+	// because the pointer will be decremented immediately after this function returns,
+	// and someone will be left holding onto a non-locked pointer.
+	pointer := value.ffiObject.incrementPointer("*ResponseSink")
+	defer value.ffiObject.decrementPointer()
+	return pointer
+
+}
+
+func (c FfiConverterResponseSink) Write(writer io.Writer, value *ResponseSink) {
+	writeUint64(writer, uint64(uintptr(c.Lower(value))))
+}
+
+type FfiDestroyerResponseSink struct{}
+
+func (_ FfiDestroyerResponseSink) Destroy(value *ResponseSink) {
+	value.Destroy()
+}
+
+// Response stream reader for unary-to-stream RPC calls
+//
+// Allows pulling messages from a server response stream one at a time.
+type ResponseStreamReaderInterface interface {
+	// Pull the next message from the response stream (blocking version)
+	//
+	// Returns a StreamMessage indicating the result
+	Next() StreamMessage
+	// Pull the next message from the response stream (async version)
+	//
+	// Returns a StreamMessage indicating the result
+	NextAsync() StreamMessage
+}
+
+// Response stream reader for unary-to-stream RPC calls
+//
+// Allows pulling messages from a server response stream one at a time.
+type ResponseStreamReader struct {
+	ffiObject FfiObject
+}
+
+// Pull the next message from the response stream (blocking version)
+//
+// Returns a StreamMessage indicating the result
+func (_self *ResponseStreamReader) Next() StreamMessage {
+	_pointer := _self.ffiObject.incrementPointer("*ResponseStreamReader")
+	defer _self.ffiObject.decrementPointer()
+	return FfiConverterStreamMessageINSTANCE.Lift(rustCall(func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+		return GoRustBuffer{
+			inner: C.uniffi_slim_bindings_fn_method_responsestreamreader_next(
+				_pointer, _uniffiStatus),
+		}
+	}))
+}
+
+// Pull the next message from the response stream (async version)
+//
+// Returns a StreamMessage indicating the result
+func (_self *ResponseStreamReader) NextAsync() StreamMessage {
+	_pointer := _self.ffiObject.incrementPointer("*ResponseStreamReader")
+	defer _self.ffiObject.decrementPointer()
+	res, _ := uniffiRustCallAsync[error](
+		nil,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
+			res := C.ffi_slim_bindings_rust_future_complete_rust_buffer(handle, status)
+			return GoRustBuffer{
+				inner: res,
+			}
+		},
+		// liftFn
+		func(ffi RustBufferI) StreamMessage {
+			return FfiConverterStreamMessageINSTANCE.Lift(ffi)
+		},
+		C.uniffi_slim_bindings_fn_method_responsestreamreader_next_async(
+			_pointer),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_slim_bindings_rust_future_poll_rust_buffer(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_slim_bindings_rust_future_free_rust_buffer(handle)
+		},
+	)
+
+	return res
+}
+func (object *ResponseStreamReader) Destroy() {
+	runtime.SetFinalizer(object, nil)
+	object.ffiObject.destroy()
+}
+
+type FfiConverterResponseStreamReader struct{}
+
+var FfiConverterResponseStreamReaderINSTANCE = FfiConverterResponseStreamReader{}
+
+func (c FfiConverterResponseStreamReader) Lift(pointer unsafe.Pointer) *ResponseStreamReader {
+	result := &ResponseStreamReader{
+		newFfiObject(
+			pointer,
+			func(pointer unsafe.Pointer, status *C.RustCallStatus) unsafe.Pointer {
+				return C.uniffi_slim_bindings_fn_clone_responsestreamreader(pointer, status)
+			},
+			func(pointer unsafe.Pointer, status *C.RustCallStatus) {
+				C.uniffi_slim_bindings_fn_free_responsestreamreader(pointer, status)
+			},
+		),
+	}
+	runtime.SetFinalizer(result, (*ResponseStreamReader).Destroy)
+	return result
+}
+
+func (c FfiConverterResponseStreamReader) Read(reader io.Reader) *ResponseStreamReader {
+	return c.Lift(unsafe.Pointer(uintptr(readUint64(reader))))
+}
+
+func (c FfiConverterResponseStreamReader) Lower(value *ResponseStreamReader) unsafe.Pointer {
+	// TODO: this is bad - all synchronization from ObjectRuntime.go is discarded here,
+	// because the pointer will be decremented immediately after this function returns,
+	// and someone will be left holding onto a non-locked pointer.
+	pointer := value.ffiObject.incrementPointer("*ResponseStreamReader")
+	defer value.ffiObject.decrementPointer()
+	return pointer
+
+}
+
+func (c FfiConverterResponseStreamReader) Write(writer io.Writer, value *ResponseStreamReader) {
+	writeUint64(writer, uint64(uintptr(c.Lower(value))))
+}
+
+type FfiDestroyerResponseStreamReader struct{}
+
+func (_ FfiDestroyerResponseStreamReader) Destroy(value *ResponseStreamReader) {
+	value.Destroy()
+}
+
+// RPC Server
+//
+// Handles incoming RPC requests by creating sessions and dispatching
+// to registered service handlers.
+//
+// # Example
+//
+// ```no_run
+// # use slim_bindings::{Server, Context, Status, Decoder, Encoder, App, Name};
+// # use std::sync::Arc;
+// # fn main() -> Result<(), Box<dyn std::error::Error>> {
+// # use slim_bindings::{IdentityProviderConfig, IdentityVerifierConfig};
+// # let app_name = Arc::new(Name::new("test".to_string(), "app".to_string(), "v1".to_string()));
+// # let provider = IdentityProviderConfig::SharedSecret { id: "test".to_string(), data: "secret".to_string() };
+// # let verifier = IdentityVerifierConfig::SharedSecret { id: "test".to_string(), data: "secret".to_string() };
+// # let app = App::new(app_name, provider, verifier)?;
+// # let core_app = app.inner();
+// # let notification_rx = app.notification_receiver();
+// # #[derive(Default)]
+// # struct Request {}
+// # impl Decoder for Request {
+// #     fn decode(_buf: impl Into<Vec<u8>>) -> Result<Self, Status> { Ok(Request::default()) }
+// # }
+// # #[derive(Default)]
+// # struct Response {}
+// # impl Encoder for Response {
+// #     fn encode(self) -> Result<Vec<u8>, Status> { Ok(vec![]) }
+// # }
+// let base_name = Name::new("org".to_string(), "namespace".to_string(), "service".to_string());
+// let server = Server::new_with_shared_rx_and_connection(core_app, base_name.as_slim_name(), None, notification_rx, None);
+//
+// // Register handlers
+// server.register_unary_unary_internal(
+// "MyService",
+// "MyMethod",
+// |request: Request, _ctx: Context| async move {
+// Ok(Response::default())
+// }
+// );
+// # Ok(())
+// # }
+// ```
+type ServerInterface interface {
+	// Register a stream-to-stream RPC handler
+	//
+	// # Arguments
+	// * `service_name` - The service name
+	// * `method_name` - The method name
+	// * `handler` - Implementation of the StreamStreamHandler trait
+	RegisterStreamStream(serviceName string, methodName string, handler StreamStreamHandler)
+	// Register a stream-to-unary RPC handler
+	//
+	// # Arguments
+	// * `service_name` - The service name
+	// * `method_name` - The method name
+	// * `handler` - Implementation of the StreamUnaryHandler trait
+	RegisterStreamUnary(serviceName string, methodName string, handler StreamUnaryHandler)
+	// Register a unary-to-stream RPC handler
+	//
+	// # Arguments
+	// * `service_name` - The service name
+	// * `method_name` - The method name
+	// * `handler` - Implementation of the UnaryStreamHandler trait
+	RegisterUnaryStream(serviceName string, methodName string, handler UnaryStreamHandler)
+	// Register a unary-to-unary RPC handler
+	//
+	// # Arguments
+	// * `service_name` - The service name (e.g., "MyService")
+	// * `method_name` - The method name (e.g., "GetUser")
+	// * `handler` - Implementation of the UnaryUnaryHandler trait
+	RegisterUnaryUnary(serviceName string, methodName string, handler UnaryUnaryHandler)
+	// Start serving RPC requests (blocking version)
+	//
+	// This is a blocking method that runs until the server is shut down.
+	// It listens for incoming RPC calls and dispatches them to registered handlers.
+	Serve() error
+	// Start serving RPC requests (async version)
+	//
+	// This is an async method that runs until the server is shut down.
+	// It listens for incoming RPC calls and dispatches them to registered handlers.
+	ServeAsync() error
+	// Shutdown the server gracefully (blocking version)
+	//
+	// This signals the server to stop accepting new requests and wait for
+	// in-flight requests to complete.
+	Shutdown()
+	// Shutdown the server gracefully (async version)
+	//
+	// This signals the server to stop accepting new requests and wait for
+	// in-flight requests to complete.
+	ShutdownAsync()
+}
+
+// RPC Server
+//
+// Handles incoming RPC requests by creating sessions and dispatching
+// to registered service handlers.
+//
+// # Example
+//
+// ```no_run
+// # use slim_bindings::{Server, Context, Status, Decoder, Encoder, App, Name};
+// # use std::sync::Arc;
+// # fn main() -> Result<(), Box<dyn std::error::Error>> {
+// # use slim_bindings::{IdentityProviderConfig, IdentityVerifierConfig};
+// # let app_name = Arc::new(Name::new("test".to_string(), "app".to_string(), "v1".to_string()));
+// # let provider = IdentityProviderConfig::SharedSecret { id: "test".to_string(), data: "secret".to_string() };
+// # let verifier = IdentityVerifierConfig::SharedSecret { id: "test".to_string(), data: "secret".to_string() };
+// # let app = App::new(app_name, provider, verifier)?;
+// # let core_app = app.inner();
+// # let notification_rx = app.notification_receiver();
+// # #[derive(Default)]
+// # struct Request {}
+// # impl Decoder for Request {
+// #     fn decode(_buf: impl Into<Vec<u8>>) -> Result<Self, Status> { Ok(Request::default()) }
+// # }
+// # #[derive(Default)]
+// # struct Response {}
+// # impl Encoder for Response {
+// #     fn encode(self) -> Result<Vec<u8>, Status> { Ok(vec![]) }
+// # }
+// let base_name = Name::new("org".to_string(), "namespace".to_string(), "service".to_string());
+// let server = Server::new_with_shared_rx_and_connection(core_app, base_name.as_slim_name(), None, notification_rx, None);
+//
+// // Register handlers
+// server.register_unary_unary_internal(
+// "MyService",
+// "MyMethod",
+// |request: Request, _ctx: Context| async move {
+// Ok(Response::default())
+// }
+// );
+// # Ok(())
+// # }
+// ```
+type Server struct {
+	ffiObject FfiObject
+}
+
+// Create a new RPC server
+//
+// This is the primary constructor for creating an RPC server instance
+// that can handle incoming RPC requests over SLIM.
+//
+// # Arguments
+// * `app` - The SLIM application instance that provides the underlying
+// network transport and session management
+// * `base_name` - The base name for this service (e.g., org.namespace.service).
+// This name is used to construct subscription names for RPC methods.
+//
+// # Returns
+// A new RPC server instance wrapped in an Arc for shared ownership
+func NewServer(app *App, baseName *Name) *Server {
+	return FfiConverterServerINSTANCE.Lift(rustCall(func(_uniffiStatus *C.RustCallStatus) unsafe.Pointer {
+		return C.uniffi_slim_bindings_fn_constructor_server_new(FfiConverterAppINSTANCE.Lower(app), FfiConverterNameINSTANCE.Lower(baseName), _uniffiStatus)
+	}))
+}
+
+// Create a new RPC server with optional connection ID
+//
+// The connection ID is used to set up routing before serving RPC requests,
+// enabling multi-hop RPC calls through specific connections.
+//
+// # Arguments
+// * `app` - The SLIM application instance that provides the underlying
+// network transport and session management
+// * `base_name` - The base name for this service (e.g., org.namespace.service).
+// This name is used to construct subscription names for RPC methods.
+// * `connection_id` - Optional connection ID for routing setup
+//
+// # Returns
+// A new RPC server instance wrapped in an Arc for shared ownership
+func ServerNewWithConnection(app *App, baseName *Name, connectionId *uint64) *Server {
+	return FfiConverterServerINSTANCE.Lift(rustCall(func(_uniffiStatus *C.RustCallStatus) unsafe.Pointer {
+		return C.uniffi_slim_bindings_fn_constructor_server_new_with_connection(FfiConverterAppINSTANCE.Lower(app), FfiConverterNameINSTANCE.Lower(baseName), FfiConverterOptionalUint64INSTANCE.Lower(connectionId), _uniffiStatus)
+	}))
+}
+
+// Register a stream-to-stream RPC handler
+//
+// # Arguments
+// * `service_name` - The service name
+// * `method_name` - The method name
+// * `handler` - Implementation of the StreamStreamHandler trait
+func (_self *Server) RegisterStreamStream(serviceName string, methodName string, handler StreamStreamHandler) {
+	_pointer := _self.ffiObject.incrementPointer("*Server")
+	defer _self.ffiObject.decrementPointer()
+	rustCall(func(_uniffiStatus *C.RustCallStatus) bool {
+		C.uniffi_slim_bindings_fn_method_server_register_stream_stream(
+			_pointer, FfiConverterStringINSTANCE.Lower(serviceName), FfiConverterStringINSTANCE.Lower(methodName), FfiConverterStreamStreamHandlerINSTANCE.Lower(handler), _uniffiStatus)
+		return false
+	})
+}
+
+// Register a stream-to-unary RPC handler
+//
+// # Arguments
+// * `service_name` - The service name
+// * `method_name` - The method name
+// * `handler` - Implementation of the StreamUnaryHandler trait
+func (_self *Server) RegisterStreamUnary(serviceName string, methodName string, handler StreamUnaryHandler) {
+	_pointer := _self.ffiObject.incrementPointer("*Server")
+	defer _self.ffiObject.decrementPointer()
+	rustCall(func(_uniffiStatus *C.RustCallStatus) bool {
+		C.uniffi_slim_bindings_fn_method_server_register_stream_unary(
+			_pointer, FfiConverterStringINSTANCE.Lower(serviceName), FfiConverterStringINSTANCE.Lower(methodName), FfiConverterStreamUnaryHandlerINSTANCE.Lower(handler), _uniffiStatus)
+		return false
+	})
+}
+
+// Register a unary-to-stream RPC handler
+//
+// # Arguments
+// * `service_name` - The service name
+// * `method_name` - The method name
+// * `handler` - Implementation of the UnaryStreamHandler trait
+func (_self *Server) RegisterUnaryStream(serviceName string, methodName string, handler UnaryStreamHandler) {
+	_pointer := _self.ffiObject.incrementPointer("*Server")
+	defer _self.ffiObject.decrementPointer()
+	rustCall(func(_uniffiStatus *C.RustCallStatus) bool {
+		C.uniffi_slim_bindings_fn_method_server_register_unary_stream(
+			_pointer, FfiConverterStringINSTANCE.Lower(serviceName), FfiConverterStringINSTANCE.Lower(methodName), FfiConverterUnaryStreamHandlerINSTANCE.Lower(handler), _uniffiStatus)
+		return false
+	})
+}
+
+// Register a unary-to-unary RPC handler
+//
+// # Arguments
+// * `service_name` - The service name (e.g., "MyService")
+// * `method_name` - The method name (e.g., "GetUser")
+// * `handler` - Implementation of the UnaryUnaryHandler trait
+func (_self *Server) RegisterUnaryUnary(serviceName string, methodName string, handler UnaryUnaryHandler) {
+	_pointer := _self.ffiObject.incrementPointer("*Server")
+	defer _self.ffiObject.decrementPointer()
+	rustCall(func(_uniffiStatus *C.RustCallStatus) bool {
+		C.uniffi_slim_bindings_fn_method_server_register_unary_unary(
+			_pointer, FfiConverterStringINSTANCE.Lower(serviceName), FfiConverterStringINSTANCE.Lower(methodName), FfiConverterUnaryUnaryHandlerINSTANCE.Lower(handler), _uniffiStatus)
+		return false
+	})
+}
+
+// Start serving RPC requests (blocking version)
+//
+// This is a blocking method that runs until the server is shut down.
+// It listens for incoming RPC calls and dispatches them to registered handlers.
+func (_self *Server) Serve() error {
+	_pointer := _self.ffiObject.incrementPointer("*Server")
+	defer _self.ffiObject.decrementPointer()
+	_, _uniffiErr := rustCallWithError[RpcError](FfiConverterRpcError{}, func(_uniffiStatus *C.RustCallStatus) bool {
+		C.uniffi_slim_bindings_fn_method_server_serve(
+			_pointer, _uniffiStatus)
+		return false
+	})
+	return _uniffiErr.AsError()
+}
+
+// Start serving RPC requests (async version)
+//
+// This is an async method that runs until the server is shut down.
+// It listens for incoming RPC calls and dispatches them to registered handlers.
+func (_self *Server) ServeAsync() error {
+	_pointer := _self.ffiObject.incrementPointer("*Server")
+	defer _self.ffiObject.decrementPointer()
+	_, err := uniffiRustCallAsync[RpcError](
+		FfiConverterRpcErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) struct{} {
+			C.ffi_slim_bindings_rust_future_complete_void(handle, status)
+			return struct{}{}
+		},
+		// liftFn
+		func(_ struct{}) struct{} { return struct{}{} },
+		C.uniffi_slim_bindings_fn_method_server_serve_async(
+			_pointer),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_slim_bindings_rust_future_poll_void(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_slim_bindings_rust_future_free_void(handle)
+		},
+	)
+
+	if err == nil {
+		return nil
+	}
+
+	return err
+}
+
+// Shutdown the server gracefully (blocking version)
+//
+// This signals the server to stop accepting new requests and wait for
+// in-flight requests to complete.
+func (_self *Server) Shutdown() {
+	_pointer := _self.ffiObject.incrementPointer("*Server")
+	defer _self.ffiObject.decrementPointer()
+	rustCall(func(_uniffiStatus *C.RustCallStatus) bool {
+		C.uniffi_slim_bindings_fn_method_server_shutdown(
+			_pointer, _uniffiStatus)
+		return false
+	})
+}
+
+// Shutdown the server gracefully (async version)
+//
+// This signals the server to stop accepting new requests and wait for
+// in-flight requests to complete.
+func (_self *Server) ShutdownAsync() {
+	_pointer := _self.ffiObject.incrementPointer("*Server")
+	defer _self.ffiObject.decrementPointer()
+	uniffiRustCallAsync[error](
+		nil,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) struct{} {
+			C.ffi_slim_bindings_rust_future_complete_void(handle, status)
+			return struct{}{}
+		},
+		// liftFn
+		func(_ struct{}) struct{} { return struct{}{} },
+		C.uniffi_slim_bindings_fn_method_server_shutdown_async(
+			_pointer),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_slim_bindings_rust_future_poll_void(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_slim_bindings_rust_future_free_void(handle)
+		},
+	)
+
+}
+func (object *Server) Destroy() {
+	runtime.SetFinalizer(object, nil)
+	object.ffiObject.destroy()
+}
+
+type FfiConverterServer struct{}
+
+var FfiConverterServerINSTANCE = FfiConverterServer{}
+
+func (c FfiConverterServer) Lift(pointer unsafe.Pointer) *Server {
+	result := &Server{
+		newFfiObject(
+			pointer,
+			func(pointer unsafe.Pointer, status *C.RustCallStatus) unsafe.Pointer {
+				return C.uniffi_slim_bindings_fn_clone_server(pointer, status)
+			},
+			func(pointer unsafe.Pointer, status *C.RustCallStatus) {
+				C.uniffi_slim_bindings_fn_free_server(pointer, status)
+			},
+		),
+	}
+	runtime.SetFinalizer(result, (*Server).Destroy)
+	return result
+}
+
+func (c FfiConverterServer) Read(reader io.Reader) *Server {
+	return c.Lift(unsafe.Pointer(uintptr(readUint64(reader))))
+}
+
+func (c FfiConverterServer) Lower(value *Server) unsafe.Pointer {
+	// TODO: this is bad - all synchronization from ObjectRuntime.go is discarded here,
+	// because the pointer will be decremented immediately after this function returns,
+	// and someone will be left holding onto a non-locked pointer.
+	pointer := value.ffiObject.incrementPointer("*Server")
+	defer value.ffiObject.decrementPointer()
+	return pointer
+
+}
+
+func (c FfiConverterServer) Write(writer io.Writer, value *Server) {
+	writeUint64(writer, uint64(uintptr(c.Lower(value))))
+}
+
+type FfiDestroyerServer struct{}
+
+func (_ FfiDestroyerServer) Destroy(value *Server) {
 	value.Destroy()
 }
 
@@ -4217,6 +6491,846 @@ type FfiDestroyerSession struct{}
 
 func (_ FfiDestroyerSession) Destroy(value *Session) {
 	value.Destroy()
+}
+
+// Stream-to-Stream RPC handler trait
+//
+// Implement this trait to handle stream-to-stream RPC calls.
+// The handler receives multiple requests via the stream and sends multiple responses via the sink.
+type StreamStreamHandler interface {
+	// Handle a stream-to-stream RPC call
+	//
+	// # Arguments
+	// * `stream` - Request stream to pull messages from
+	// * `context` - RPC context with metadata and session information
+	// * `sink` - Response sink to send streaming responses
+	//
+	// # Returns
+	// Ok(()) if handling succeeded, or an error
+	//
+	// # Note
+	// You must call `sink.close()` or `sink.send_error()` when done.
+	Handle(stream *RequestStream, context *Context, sink *ResponseSink) error
+}
+
+// Stream-to-Stream RPC handler trait
+//
+// Implement this trait to handle stream-to-stream RPC calls.
+// The handler receives multiple requests via the stream and sends multiple responses via the sink.
+type StreamStreamHandlerImpl struct {
+	ffiObject FfiObject
+}
+
+// Handle a stream-to-stream RPC call
+//
+// # Arguments
+// * `stream` - Request stream to pull messages from
+// * `context` - RPC context with metadata and session information
+// * `sink` - Response sink to send streaming responses
+//
+// # Returns
+// Ok(()) if handling succeeded, or an error
+//
+// # Note
+// You must call `sink.close()` or `sink.send_error()` when done.
+func (_self *StreamStreamHandlerImpl) Handle(stream *RequestStream, context *Context, sink *ResponseSink) error {
+	_pointer := _self.ffiObject.incrementPointer("StreamStreamHandler")
+	defer _self.ffiObject.decrementPointer()
+	_, err := uniffiRustCallAsync[RpcError](
+		FfiConverterRpcErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) struct{} {
+			C.ffi_slim_bindings_rust_future_complete_void(handle, status)
+			return struct{}{}
+		},
+		// liftFn
+		func(_ struct{}) struct{} { return struct{}{} },
+		C.uniffi_slim_bindings_fn_method_streamstreamhandler_handle(
+			_pointer, FfiConverterRequestStreamINSTANCE.Lower(stream), FfiConverterContextINSTANCE.Lower(context), FfiConverterResponseSinkINSTANCE.Lower(sink)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_slim_bindings_rust_future_poll_void(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_slim_bindings_rust_future_free_void(handle)
+		},
+	)
+
+	if err == nil {
+		return nil
+	}
+
+	return err
+}
+func (object *StreamStreamHandlerImpl) Destroy() {
+	runtime.SetFinalizer(object, nil)
+	object.ffiObject.destroy()
+}
+
+type FfiConverterStreamStreamHandler struct {
+	handleMap *concurrentHandleMap[StreamStreamHandler]
+}
+
+var FfiConverterStreamStreamHandlerINSTANCE = FfiConverterStreamStreamHandler{
+	handleMap: newConcurrentHandleMap[StreamStreamHandler](),
+}
+
+func (c FfiConverterStreamStreamHandler) Lift(pointer unsafe.Pointer) StreamStreamHandler {
+	result := &StreamStreamHandlerImpl{
+		newFfiObject(
+			pointer,
+			func(pointer unsafe.Pointer, status *C.RustCallStatus) unsafe.Pointer {
+				return C.uniffi_slim_bindings_fn_clone_streamstreamhandler(pointer, status)
+			},
+			func(pointer unsafe.Pointer, status *C.RustCallStatus) {
+				C.uniffi_slim_bindings_fn_free_streamstreamhandler(pointer, status)
+			},
+		),
+	}
+	runtime.SetFinalizer(result, (*StreamStreamHandlerImpl).Destroy)
+	return result
+}
+
+func (c FfiConverterStreamStreamHandler) Read(reader io.Reader) StreamStreamHandler {
+	return c.Lift(unsafe.Pointer(uintptr(readUint64(reader))))
+}
+
+func (c FfiConverterStreamStreamHandler) Lower(value StreamStreamHandler) unsafe.Pointer {
+	// TODO: this is bad - all synchronization from ObjectRuntime.go is discarded here,
+	// because the pointer will be decremented immediately after this function returns,
+	// and someone will be left holding onto a non-locked pointer.
+	pointer := unsafe.Pointer(uintptr(c.handleMap.insert(value)))
+	return pointer
+
+}
+
+func (c FfiConverterStreamStreamHandler) Write(writer io.Writer, value StreamStreamHandler) {
+	writeUint64(writer, uint64(uintptr(c.Lower(value))))
+}
+
+type FfiDestroyerStreamStreamHandler struct{}
+
+func (_ FfiDestroyerStreamStreamHandler) Destroy(value StreamStreamHandler) {
+	if val, ok := value.(*StreamStreamHandlerImpl); ok {
+		val.Destroy()
+	} else {
+		panic("Expected *StreamStreamHandlerImpl")
+	}
+}
+
+type uniffiCallbackResult C.int8_t
+
+const (
+	uniffiIdxCallbackFree               uniffiCallbackResult = 0
+	uniffiCallbackResultSuccess         uniffiCallbackResult = 0
+	uniffiCallbackResultError           uniffiCallbackResult = 1
+	uniffiCallbackUnexpectedResultError uniffiCallbackResult = 2
+	uniffiCallbackCancelled             uniffiCallbackResult = 3
+)
+
+type concurrentHandleMap[T any] struct {
+	handles       map[uint64]T
+	currentHandle uint64
+	lock          sync.RWMutex
+}
+
+func newConcurrentHandleMap[T any]() *concurrentHandleMap[T] {
+	return &concurrentHandleMap[T]{
+		handles: map[uint64]T{},
+	}
+}
+
+func (cm *concurrentHandleMap[T]) insert(obj T) uint64 {
+	cm.lock.Lock()
+	defer cm.lock.Unlock()
+
+	cm.currentHandle = cm.currentHandle + 1
+	cm.handles[cm.currentHandle] = obj
+	return cm.currentHandle
+}
+
+func (cm *concurrentHandleMap[T]) remove(handle uint64) {
+	cm.lock.Lock()
+	defer cm.lock.Unlock()
+
+	delete(cm.handles, handle)
+}
+
+func (cm *concurrentHandleMap[T]) tryGet(handle uint64) (T, bool) {
+	cm.lock.RLock()
+	defer cm.lock.RUnlock()
+
+	val, ok := cm.handles[handle]
+	return val, ok
+}
+
+//export slim_bindings_cgo_dispatchCallbackInterfaceStreamStreamHandlerMethod0
+func slim_bindings_cgo_dispatchCallbackInterfaceStreamStreamHandlerMethod0(uniffiHandle C.uint64_t, stream unsafe.Pointer, context unsafe.Pointer, sink unsafe.Pointer, uniffiFutureCallback C.UniffiForeignFutureCompleteVoid, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+	handle := uint64(uniffiHandle)
+	uniffiObj, ok := FfiConverterStreamStreamHandlerINSTANCE.handleMap.tryGet(handle)
+	if !ok {
+		panic(fmt.Errorf("no callback in handle map: %d", handle))
+	}
+
+	result := make(chan C.UniffiForeignFutureStructVoid, 1)
+	cancel := make(chan struct{}, 1)
+	guardHandle := cgo.NewHandle(cancel)
+	*uniffiOutReturn = C.UniffiForeignFuture{
+		handle: C.uint64_t(guardHandle),
+		free:   C.UniffiForeignFutureFree(C.slim_bindings_uniffiFreeGorutine),
+	}
+
+	// Wait for compleation or cancel
+	go func() {
+		select {
+		case <-cancel:
+		case res := <-result:
+			C.call_UniffiForeignFutureCompleteVoid(uniffiFutureCallback, uniffiCallbackData, res)
+		}
+	}()
+
+	// Eval callback asynchroniously
+	go func() {
+		asyncResult := &C.UniffiForeignFutureStructVoid{}
+		callStatus := &asyncResult.callStatus
+		defer func() {
+			result <- *asyncResult
+		}()
+
+		err :=
+			uniffiObj.Handle(
+				FfiConverterRequestStreamINSTANCE.Lift(stream),
+				FfiConverterContextINSTANCE.Lift(context),
+				FfiConverterResponseSinkINSTANCE.Lift(sink),
+			)
+
+		if err != nil {
+			var actualError *RpcError
+			if errors.As(err, &actualError) {
+				*callStatus = C.RustCallStatus{
+					code:     C.int8_t(uniffiCallbackResultError),
+					errorBuf: FfiConverterRpcErrorINSTANCE.Lower(actualError),
+				}
+			} else {
+				*callStatus = C.RustCallStatus{
+					code: C.int8_t(uniffiCallbackUnexpectedResultError),
+				}
+			}
+			return
+		}
+
+	}()
+}
+
+var UniffiVTableCallbackInterfaceStreamStreamHandlerINSTANCE = C.UniffiVTableCallbackInterfaceStreamStreamHandler{
+	handle: (C.UniffiCallbackInterfaceStreamStreamHandlerMethod0)(C.slim_bindings_cgo_dispatchCallbackInterfaceStreamStreamHandlerMethod0),
+
+	uniffiFree: (C.UniffiCallbackInterfaceFree)(C.slim_bindings_cgo_dispatchCallbackInterfaceStreamStreamHandlerFree),
+}
+
+//export slim_bindings_cgo_dispatchCallbackInterfaceStreamStreamHandlerFree
+func slim_bindings_cgo_dispatchCallbackInterfaceStreamStreamHandlerFree(handle C.uint64_t) {
+	FfiConverterStreamStreamHandlerINSTANCE.handleMap.remove(uint64(handle))
+}
+
+func (c FfiConverterStreamStreamHandler) register() {
+	C.uniffi_slim_bindings_fn_init_callback_vtable_streamstreamhandler(&UniffiVTableCallbackInterfaceStreamStreamHandlerINSTANCE)
+}
+
+// Stream-to-Unary RPC handler trait
+//
+// Implement this trait to handle stream-to-unary RPC calls.
+// The handler receives multiple requests via the stream and returns a single response.
+type StreamUnaryHandler interface {
+	// Handle a stream-to-unary RPC call
+	//
+	// # Arguments
+	// * `stream` - Request stream to pull messages from
+	// * `context` - RPC context with metadata and session information
+	//
+	// # Returns
+	// The response message bytes or an error
+	Handle(stream *RequestStream, context *Context) ([]byte, error)
+}
+
+// Stream-to-Unary RPC handler trait
+//
+// Implement this trait to handle stream-to-unary RPC calls.
+// The handler receives multiple requests via the stream and returns a single response.
+type StreamUnaryHandlerImpl struct {
+	ffiObject FfiObject
+}
+
+// Handle a stream-to-unary RPC call
+//
+// # Arguments
+// * `stream` - Request stream to pull messages from
+// * `context` - RPC context with metadata and session information
+//
+// # Returns
+// The response message bytes or an error
+func (_self *StreamUnaryHandlerImpl) Handle(stream *RequestStream, context *Context) ([]byte, error) {
+	_pointer := _self.ffiObject.incrementPointer("StreamUnaryHandler")
+	defer _self.ffiObject.decrementPointer()
+	res, err := uniffiRustCallAsync[RpcError](
+		FfiConverterRpcErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
+			res := C.ffi_slim_bindings_rust_future_complete_rust_buffer(handle, status)
+			return GoRustBuffer{
+				inner: res,
+			}
+		},
+		// liftFn
+		func(ffi RustBufferI) []byte {
+			return FfiConverterBytesINSTANCE.Lift(ffi)
+		},
+		C.uniffi_slim_bindings_fn_method_streamunaryhandler_handle(
+			_pointer, FfiConverterRequestStreamINSTANCE.Lower(stream), FfiConverterContextINSTANCE.Lower(context)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_slim_bindings_rust_future_poll_rust_buffer(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_slim_bindings_rust_future_free_rust_buffer(handle)
+		},
+	)
+
+	if err == nil {
+		return res, nil
+	}
+
+	return res, err
+}
+func (object *StreamUnaryHandlerImpl) Destroy() {
+	runtime.SetFinalizer(object, nil)
+	object.ffiObject.destroy()
+}
+
+type FfiConverterStreamUnaryHandler struct {
+	handleMap *concurrentHandleMap[StreamUnaryHandler]
+}
+
+var FfiConverterStreamUnaryHandlerINSTANCE = FfiConverterStreamUnaryHandler{
+	handleMap: newConcurrentHandleMap[StreamUnaryHandler](),
+}
+
+func (c FfiConverterStreamUnaryHandler) Lift(pointer unsafe.Pointer) StreamUnaryHandler {
+	result := &StreamUnaryHandlerImpl{
+		newFfiObject(
+			pointer,
+			func(pointer unsafe.Pointer, status *C.RustCallStatus) unsafe.Pointer {
+				return C.uniffi_slim_bindings_fn_clone_streamunaryhandler(pointer, status)
+			},
+			func(pointer unsafe.Pointer, status *C.RustCallStatus) {
+				C.uniffi_slim_bindings_fn_free_streamunaryhandler(pointer, status)
+			},
+		),
+	}
+	runtime.SetFinalizer(result, (*StreamUnaryHandlerImpl).Destroy)
+	return result
+}
+
+func (c FfiConverterStreamUnaryHandler) Read(reader io.Reader) StreamUnaryHandler {
+	return c.Lift(unsafe.Pointer(uintptr(readUint64(reader))))
+}
+
+func (c FfiConverterStreamUnaryHandler) Lower(value StreamUnaryHandler) unsafe.Pointer {
+	// TODO: this is bad - all synchronization from ObjectRuntime.go is discarded here,
+	// because the pointer will be decremented immediately after this function returns,
+	// and someone will be left holding onto a non-locked pointer.
+	pointer := unsafe.Pointer(uintptr(c.handleMap.insert(value)))
+	return pointer
+
+}
+
+func (c FfiConverterStreamUnaryHandler) Write(writer io.Writer, value StreamUnaryHandler) {
+	writeUint64(writer, uint64(uintptr(c.Lower(value))))
+}
+
+type FfiDestroyerStreamUnaryHandler struct{}
+
+func (_ FfiDestroyerStreamUnaryHandler) Destroy(value StreamUnaryHandler) {
+	if val, ok := value.(*StreamUnaryHandlerImpl); ok {
+		val.Destroy()
+	} else {
+		panic("Expected *StreamUnaryHandlerImpl")
+	}
+}
+
+//export slim_bindings_cgo_dispatchCallbackInterfaceStreamUnaryHandlerMethod0
+func slim_bindings_cgo_dispatchCallbackInterfaceStreamUnaryHandlerMethod0(uniffiHandle C.uint64_t, stream unsafe.Pointer, context unsafe.Pointer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+	handle := uint64(uniffiHandle)
+	uniffiObj, ok := FfiConverterStreamUnaryHandlerINSTANCE.handleMap.tryGet(handle)
+	if !ok {
+		panic(fmt.Errorf("no callback in handle map: %d", handle))
+	}
+
+	result := make(chan C.UniffiForeignFutureStructRustBuffer, 1)
+	cancel := make(chan struct{}, 1)
+	guardHandle := cgo.NewHandle(cancel)
+	*uniffiOutReturn = C.UniffiForeignFuture{
+		handle: C.uint64_t(guardHandle),
+		free:   C.UniffiForeignFutureFree(C.slim_bindings_uniffiFreeGorutine),
+	}
+
+	// Wait for compleation or cancel
+	go func() {
+		select {
+		case <-cancel:
+		case res := <-result:
+			C.call_UniffiForeignFutureCompleteRustBuffer(uniffiFutureCallback, uniffiCallbackData, res)
+		}
+	}()
+
+	// Eval callback asynchroniously
+	go func() {
+		asyncResult := &C.UniffiForeignFutureStructRustBuffer{}
+		uniffiOutReturn := &asyncResult.returnValue
+		callStatus := &asyncResult.callStatus
+		defer func() {
+			result <- *asyncResult
+		}()
+
+		res, err :=
+			uniffiObj.Handle(
+				FfiConverterRequestStreamINSTANCE.Lift(stream),
+				FfiConverterContextINSTANCE.Lift(context),
+			)
+
+		if err != nil {
+			var actualError *RpcError
+			if errors.As(err, &actualError) {
+				*callStatus = C.RustCallStatus{
+					code:     C.int8_t(uniffiCallbackResultError),
+					errorBuf: FfiConverterRpcErrorINSTANCE.Lower(actualError),
+				}
+			} else {
+				*callStatus = C.RustCallStatus{
+					code: C.int8_t(uniffiCallbackUnexpectedResultError),
+				}
+			}
+			return
+		}
+
+		*uniffiOutReturn = FfiConverterBytesINSTANCE.Lower(res)
+	}()
+}
+
+var UniffiVTableCallbackInterfaceStreamUnaryHandlerINSTANCE = C.UniffiVTableCallbackInterfaceStreamUnaryHandler{
+	handle: (C.UniffiCallbackInterfaceStreamUnaryHandlerMethod0)(C.slim_bindings_cgo_dispatchCallbackInterfaceStreamUnaryHandlerMethod0),
+
+	uniffiFree: (C.UniffiCallbackInterfaceFree)(C.slim_bindings_cgo_dispatchCallbackInterfaceStreamUnaryHandlerFree),
+}
+
+//export slim_bindings_cgo_dispatchCallbackInterfaceStreamUnaryHandlerFree
+func slim_bindings_cgo_dispatchCallbackInterfaceStreamUnaryHandlerFree(handle C.uint64_t) {
+	FfiConverterStreamUnaryHandlerINSTANCE.handleMap.remove(uint64(handle))
+}
+
+func (c FfiConverterStreamUnaryHandler) register() {
+	C.uniffi_slim_bindings_fn_init_callback_vtable_streamunaryhandler(&UniffiVTableCallbackInterfaceStreamUnaryHandlerINSTANCE)
+}
+
+// Unary-to-Stream RPC handler trait
+//
+// Implement this trait to handle unary-to-stream RPC calls.
+// The handler receives a single request and sends multiple responses via the sink.
+type UnaryStreamHandler interface {
+	// Handle a unary-to-stream RPC call
+	//
+	// # Arguments
+	// * `request` - The request message bytes
+	// * `context` - RPC context with metadata and session information
+	// * `sink` - Response sink to send streaming responses
+	//
+	// # Returns
+	// Ok(()) if handling succeeded, or an error
+	//
+	// # Note
+	// You must call `sink.close()` or `sink.send_error()` when done.
+	Handle(request []byte, context *Context, sink *ResponseSink) error
+}
+
+// Unary-to-Stream RPC handler trait
+//
+// Implement this trait to handle unary-to-stream RPC calls.
+// The handler receives a single request and sends multiple responses via the sink.
+type UnaryStreamHandlerImpl struct {
+	ffiObject FfiObject
+}
+
+// Handle a unary-to-stream RPC call
+//
+// # Arguments
+// * `request` - The request message bytes
+// * `context` - RPC context with metadata and session information
+// * `sink` - Response sink to send streaming responses
+//
+// # Returns
+// Ok(()) if handling succeeded, or an error
+//
+// # Note
+// You must call `sink.close()` or `sink.send_error()` when done.
+func (_self *UnaryStreamHandlerImpl) Handle(request []byte, context *Context, sink *ResponseSink) error {
+	_pointer := _self.ffiObject.incrementPointer("UnaryStreamHandler")
+	defer _self.ffiObject.decrementPointer()
+	_, err := uniffiRustCallAsync[RpcError](
+		FfiConverterRpcErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) struct{} {
+			C.ffi_slim_bindings_rust_future_complete_void(handle, status)
+			return struct{}{}
+		},
+		// liftFn
+		func(_ struct{}) struct{} { return struct{}{} },
+		C.uniffi_slim_bindings_fn_method_unarystreamhandler_handle(
+			_pointer, FfiConverterBytesINSTANCE.Lower(request), FfiConverterContextINSTANCE.Lower(context), FfiConverterResponseSinkINSTANCE.Lower(sink)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_slim_bindings_rust_future_poll_void(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_slim_bindings_rust_future_free_void(handle)
+		},
+	)
+
+	if err == nil {
+		return nil
+	}
+
+	return err
+}
+func (object *UnaryStreamHandlerImpl) Destroy() {
+	runtime.SetFinalizer(object, nil)
+	object.ffiObject.destroy()
+}
+
+type FfiConverterUnaryStreamHandler struct {
+	handleMap *concurrentHandleMap[UnaryStreamHandler]
+}
+
+var FfiConverterUnaryStreamHandlerINSTANCE = FfiConverterUnaryStreamHandler{
+	handleMap: newConcurrentHandleMap[UnaryStreamHandler](),
+}
+
+func (c FfiConverterUnaryStreamHandler) Lift(pointer unsafe.Pointer) UnaryStreamHandler {
+	result := &UnaryStreamHandlerImpl{
+		newFfiObject(
+			pointer,
+			func(pointer unsafe.Pointer, status *C.RustCallStatus) unsafe.Pointer {
+				return C.uniffi_slim_bindings_fn_clone_unarystreamhandler(pointer, status)
+			},
+			func(pointer unsafe.Pointer, status *C.RustCallStatus) {
+				C.uniffi_slim_bindings_fn_free_unarystreamhandler(pointer, status)
+			},
+		),
+	}
+	runtime.SetFinalizer(result, (*UnaryStreamHandlerImpl).Destroy)
+	return result
+}
+
+func (c FfiConverterUnaryStreamHandler) Read(reader io.Reader) UnaryStreamHandler {
+	return c.Lift(unsafe.Pointer(uintptr(readUint64(reader))))
+}
+
+func (c FfiConverterUnaryStreamHandler) Lower(value UnaryStreamHandler) unsafe.Pointer {
+	// TODO: this is bad - all synchronization from ObjectRuntime.go is discarded here,
+	// because the pointer will be decremented immediately after this function returns,
+	// and someone will be left holding onto a non-locked pointer.
+	pointer := unsafe.Pointer(uintptr(c.handleMap.insert(value)))
+	return pointer
+
+}
+
+func (c FfiConverterUnaryStreamHandler) Write(writer io.Writer, value UnaryStreamHandler) {
+	writeUint64(writer, uint64(uintptr(c.Lower(value))))
+}
+
+type FfiDestroyerUnaryStreamHandler struct{}
+
+func (_ FfiDestroyerUnaryStreamHandler) Destroy(value UnaryStreamHandler) {
+	if val, ok := value.(*UnaryStreamHandlerImpl); ok {
+		val.Destroy()
+	} else {
+		panic("Expected *UnaryStreamHandlerImpl")
+	}
+}
+
+//export slim_bindings_cgo_dispatchCallbackInterfaceUnaryStreamHandlerMethod0
+func slim_bindings_cgo_dispatchCallbackInterfaceUnaryStreamHandlerMethod0(uniffiHandle C.uint64_t, request C.RustBuffer, context unsafe.Pointer, sink unsafe.Pointer, uniffiFutureCallback C.UniffiForeignFutureCompleteVoid, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+	handle := uint64(uniffiHandle)
+	uniffiObj, ok := FfiConverterUnaryStreamHandlerINSTANCE.handleMap.tryGet(handle)
+	if !ok {
+		panic(fmt.Errorf("no callback in handle map: %d", handle))
+	}
+
+	result := make(chan C.UniffiForeignFutureStructVoid, 1)
+	cancel := make(chan struct{}, 1)
+	guardHandle := cgo.NewHandle(cancel)
+	*uniffiOutReturn = C.UniffiForeignFuture{
+		handle: C.uint64_t(guardHandle),
+		free:   C.UniffiForeignFutureFree(C.slim_bindings_uniffiFreeGorutine),
+	}
+
+	// Wait for compleation or cancel
+	go func() {
+		select {
+		case <-cancel:
+		case res := <-result:
+			C.call_UniffiForeignFutureCompleteVoid(uniffiFutureCallback, uniffiCallbackData, res)
+		}
+	}()
+
+	// Eval callback asynchroniously
+	go func() {
+		asyncResult := &C.UniffiForeignFutureStructVoid{}
+		callStatus := &asyncResult.callStatus
+		defer func() {
+			result <- *asyncResult
+		}()
+
+		err :=
+			uniffiObj.Handle(
+				FfiConverterBytesINSTANCE.Lift(GoRustBuffer{
+					inner: request,
+				}),
+				FfiConverterContextINSTANCE.Lift(context),
+				FfiConverterResponseSinkINSTANCE.Lift(sink),
+			)
+
+		if err != nil {
+			var actualError *RpcError
+			if errors.As(err, &actualError) {
+				*callStatus = C.RustCallStatus{
+					code:     C.int8_t(uniffiCallbackResultError),
+					errorBuf: FfiConverterRpcErrorINSTANCE.Lower(actualError),
+				}
+			} else {
+				*callStatus = C.RustCallStatus{
+					code: C.int8_t(uniffiCallbackUnexpectedResultError),
+				}
+			}
+			return
+		}
+
+	}()
+}
+
+var UniffiVTableCallbackInterfaceUnaryStreamHandlerINSTANCE = C.UniffiVTableCallbackInterfaceUnaryStreamHandler{
+	handle: (C.UniffiCallbackInterfaceUnaryStreamHandlerMethod0)(C.slim_bindings_cgo_dispatchCallbackInterfaceUnaryStreamHandlerMethod0),
+
+	uniffiFree: (C.UniffiCallbackInterfaceFree)(C.slim_bindings_cgo_dispatchCallbackInterfaceUnaryStreamHandlerFree),
+}
+
+//export slim_bindings_cgo_dispatchCallbackInterfaceUnaryStreamHandlerFree
+func slim_bindings_cgo_dispatchCallbackInterfaceUnaryStreamHandlerFree(handle C.uint64_t) {
+	FfiConverterUnaryStreamHandlerINSTANCE.handleMap.remove(uint64(handle))
+}
+
+func (c FfiConverterUnaryStreamHandler) register() {
+	C.uniffi_slim_bindings_fn_init_callback_vtable_unarystreamhandler(&UniffiVTableCallbackInterfaceUnaryStreamHandlerINSTANCE)
+}
+
+// Unary-to-Unary RPC handler trait
+//
+// Implement this trait to handle unary-to-unary RPC calls.
+// The handler receives a single request and returns a single response.
+type UnaryUnaryHandler interface {
+	// Handle a unary-to-unary RPC call
+	//
+	// # Arguments
+	// * `request` - The request message bytes
+	// * `context` - RPC context with metadata and session information
+	//
+	// # Returns
+	// The response message bytes or an error
+	Handle(request []byte, context *Context) ([]byte, error)
+}
+
+// Unary-to-Unary RPC handler trait
+//
+// Implement this trait to handle unary-to-unary RPC calls.
+// The handler receives a single request and returns a single response.
+type UnaryUnaryHandlerImpl struct {
+	ffiObject FfiObject
+}
+
+// Handle a unary-to-unary RPC call
+//
+// # Arguments
+// * `request` - The request message bytes
+// * `context` - RPC context with metadata and session information
+//
+// # Returns
+// The response message bytes or an error
+func (_self *UnaryUnaryHandlerImpl) Handle(request []byte, context *Context) ([]byte, error) {
+	_pointer := _self.ffiObject.incrementPointer("UnaryUnaryHandler")
+	defer _self.ffiObject.decrementPointer()
+	res, err := uniffiRustCallAsync[RpcError](
+		FfiConverterRpcErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
+			res := C.ffi_slim_bindings_rust_future_complete_rust_buffer(handle, status)
+			return GoRustBuffer{
+				inner: res,
+			}
+		},
+		// liftFn
+		func(ffi RustBufferI) []byte {
+			return FfiConverterBytesINSTANCE.Lift(ffi)
+		},
+		C.uniffi_slim_bindings_fn_method_unaryunaryhandler_handle(
+			_pointer, FfiConverterBytesINSTANCE.Lower(request), FfiConverterContextINSTANCE.Lower(context)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_slim_bindings_rust_future_poll_rust_buffer(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_slim_bindings_rust_future_free_rust_buffer(handle)
+		},
+	)
+
+	if err == nil {
+		return res, nil
+	}
+
+	return res, err
+}
+func (object *UnaryUnaryHandlerImpl) Destroy() {
+	runtime.SetFinalizer(object, nil)
+	object.ffiObject.destroy()
+}
+
+type FfiConverterUnaryUnaryHandler struct {
+	handleMap *concurrentHandleMap[UnaryUnaryHandler]
+}
+
+var FfiConverterUnaryUnaryHandlerINSTANCE = FfiConverterUnaryUnaryHandler{
+	handleMap: newConcurrentHandleMap[UnaryUnaryHandler](),
+}
+
+func (c FfiConverterUnaryUnaryHandler) Lift(pointer unsafe.Pointer) UnaryUnaryHandler {
+	result := &UnaryUnaryHandlerImpl{
+		newFfiObject(
+			pointer,
+			func(pointer unsafe.Pointer, status *C.RustCallStatus) unsafe.Pointer {
+				return C.uniffi_slim_bindings_fn_clone_unaryunaryhandler(pointer, status)
+			},
+			func(pointer unsafe.Pointer, status *C.RustCallStatus) {
+				C.uniffi_slim_bindings_fn_free_unaryunaryhandler(pointer, status)
+			},
+		),
+	}
+	runtime.SetFinalizer(result, (*UnaryUnaryHandlerImpl).Destroy)
+	return result
+}
+
+func (c FfiConverterUnaryUnaryHandler) Read(reader io.Reader) UnaryUnaryHandler {
+	return c.Lift(unsafe.Pointer(uintptr(readUint64(reader))))
+}
+
+func (c FfiConverterUnaryUnaryHandler) Lower(value UnaryUnaryHandler) unsafe.Pointer {
+	// TODO: this is bad - all synchronization from ObjectRuntime.go is discarded here,
+	// because the pointer will be decremented immediately after this function returns,
+	// and someone will be left holding onto a non-locked pointer.
+	pointer := unsafe.Pointer(uintptr(c.handleMap.insert(value)))
+	return pointer
+
+}
+
+func (c FfiConverterUnaryUnaryHandler) Write(writer io.Writer, value UnaryUnaryHandler) {
+	writeUint64(writer, uint64(uintptr(c.Lower(value))))
+}
+
+type FfiDestroyerUnaryUnaryHandler struct{}
+
+func (_ FfiDestroyerUnaryUnaryHandler) Destroy(value UnaryUnaryHandler) {
+	if val, ok := value.(*UnaryUnaryHandlerImpl); ok {
+		val.Destroy()
+	} else {
+		panic("Expected *UnaryUnaryHandlerImpl")
+	}
+}
+
+//export slim_bindings_cgo_dispatchCallbackInterfaceUnaryUnaryHandlerMethod0
+func slim_bindings_cgo_dispatchCallbackInterfaceUnaryUnaryHandlerMethod0(uniffiHandle C.uint64_t, request C.RustBuffer, context unsafe.Pointer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+	handle := uint64(uniffiHandle)
+	uniffiObj, ok := FfiConverterUnaryUnaryHandlerINSTANCE.handleMap.tryGet(handle)
+	if !ok {
+		panic(fmt.Errorf("no callback in handle map: %d", handle))
+	}
+
+	result := make(chan C.UniffiForeignFutureStructRustBuffer, 1)
+	cancel := make(chan struct{}, 1)
+	guardHandle := cgo.NewHandle(cancel)
+	*uniffiOutReturn = C.UniffiForeignFuture{
+		handle: C.uint64_t(guardHandle),
+		free:   C.UniffiForeignFutureFree(C.slim_bindings_uniffiFreeGorutine),
+	}
+
+	// Wait for compleation or cancel
+	go func() {
+		select {
+		case <-cancel:
+		case res := <-result:
+			C.call_UniffiForeignFutureCompleteRustBuffer(uniffiFutureCallback, uniffiCallbackData, res)
+		}
+	}()
+
+	// Eval callback asynchroniously
+	go func() {
+		asyncResult := &C.UniffiForeignFutureStructRustBuffer{}
+		uniffiOutReturn := &asyncResult.returnValue
+		callStatus := &asyncResult.callStatus
+		defer func() {
+			result <- *asyncResult
+		}()
+
+		res, err :=
+			uniffiObj.Handle(
+				FfiConverterBytesINSTANCE.Lift(GoRustBuffer{
+					inner: request,
+				}),
+				FfiConverterContextINSTANCE.Lift(context),
+			)
+
+		if err != nil {
+			var actualError *RpcError
+			if errors.As(err, &actualError) {
+				*callStatus = C.RustCallStatus{
+					code:     C.int8_t(uniffiCallbackResultError),
+					errorBuf: FfiConverterRpcErrorINSTANCE.Lower(actualError),
+				}
+			} else {
+				*callStatus = C.RustCallStatus{
+					code: C.int8_t(uniffiCallbackUnexpectedResultError),
+				}
+			}
+			return
+		}
+
+		*uniffiOutReturn = FfiConverterBytesINSTANCE.Lower(res)
+	}()
+}
+
+var UniffiVTableCallbackInterfaceUnaryUnaryHandlerINSTANCE = C.UniffiVTableCallbackInterfaceUnaryUnaryHandler{
+	handle: (C.UniffiCallbackInterfaceUnaryUnaryHandlerMethod0)(C.slim_bindings_cgo_dispatchCallbackInterfaceUnaryUnaryHandlerMethod0),
+
+	uniffiFree: (C.UniffiCallbackInterfaceFree)(C.slim_bindings_cgo_dispatchCallbackInterfaceUnaryUnaryHandlerFree),
+}
+
+//export slim_bindings_cgo_dispatchCallbackInterfaceUnaryUnaryHandlerFree
+func slim_bindings_cgo_dispatchCallbackInterfaceUnaryUnaryHandlerFree(handle C.uint64_t) {
+	FfiConverterUnaryUnaryHandlerINSTANCE.handleMap.remove(uint64(handle))
+}
+
+func (c FfiConverterUnaryUnaryHandler) register() {
+	C.uniffi_slim_bindings_fn_init_callback_vtable_unaryunaryhandler(&UniffiVTableCallbackInterfaceUnaryUnaryHandlerINSTANCE)
 }
 
 // Basic authentication configuration
@@ -5830,6 +8944,71 @@ func (_ FfiDestroyerClientAuthenticationConfig) Destroy(value ClientAuthenticati
 	value.Destroy()
 }
 
+// gRPC status codes
+type Code uint16
+
+const (
+	// Success
+	CodeOk Code = 0
+	// The operation was cancelled
+	CodeCancelled Code = 1
+	// Unknown error
+	CodeUnknown Code = 2
+	// Client specified an invalid argument
+	CodeInvalidArgument Code = 3
+	// Deadline expired before operation could complete
+	CodeDeadlineExceeded Code = 4
+	// Some requested entity was not found
+	CodeNotFound Code = 5
+	// Some entity that we attempted to create already exists
+	CodeAlreadyExists Code = 6
+	// The caller does not have permission to execute the specified operation
+	CodePermissionDenied Code = 7
+	// Some resource has been exhausted
+	CodeResourceExhausted Code = 8
+	// The system is not in a state required for the operation's execution
+	CodeFailedPrecondition Code = 9
+	// The operation was aborted
+	CodeAborted Code = 10
+	// Operation was attempted past the valid range
+	CodeOutOfRange Code = 11
+	// Operation is not implemented or not supported
+	CodeUnimplemented Code = 12
+	// Internal errors
+	CodeInternal Code = 13
+	// The service is currently unavailable
+	CodeUnavailable Code = 14
+	// Unrecoverable data loss or corruption
+	CodeDataLoss Code = 15
+	// The request does not have valid authentication credentials
+	CodeUnauthenticated Code = 16
+)
+
+type FfiConverterCode struct{}
+
+var FfiConverterCodeINSTANCE = FfiConverterCode{}
+
+func (c FfiConverterCode) Lift(rb RustBufferI) Code {
+	return LiftFromRustBuffer[Code](c, rb)
+}
+
+func (c FfiConverterCode) Lower(value Code) C.RustBuffer {
+	return LowerIntoRustBuffer[Code](c, value)
+}
+func (FfiConverterCode) Read(reader io.Reader) Code {
+	id := readInt32(reader)
+	return Code(id)
+}
+
+func (FfiConverterCode) Write(writer io.Writer, value Code) {
+	writeInt32(writer, int32(value))
+}
+
+type FfiDestroyerCode struct{}
+
+func (_ FfiDestroyerCode) Destroy(value Code) {
+}
+
 // Compression type for gRPC messages
 type CompressionType uint
 
@@ -6351,6 +9530,102 @@ func (_ FfiDestroyerJwtKeyType) Destroy(value JwtKeyType) {
 	value.Destroy()
 }
 
+// UniFFI-compatible RPC error
+//
+// This wraps Status to make it compatible with UniFFI foreign language bindings.
+// UniFFI requires errors to be represented as enums with associated data.
+type RpcError struct {
+	err error
+}
+
+// Convience method to turn *RpcError into error
+// Avoiding treating nil pointer as non nil error interface
+func (err *RpcError) AsError() error {
+	if err == nil {
+		return nil
+	} else {
+		return err
+	}
+}
+
+func (err RpcError) Error() string {
+	return fmt.Sprintf("RpcError: %s", err.err.Error())
+}
+
+func (err RpcError) Unwrap() error {
+	return err.err
+}
+
+// Err* are used for checking error type with `errors.Is`
+var ErrRpcErrorRpc = fmt.Errorf("RpcErrorRpc")
+
+// Variant structs
+type RpcErrorRpc struct {
+	message string
+}
+
+func NewRpcErrorRpc() *RpcError {
+	return &RpcError{err: &RpcErrorRpc{}}
+}
+
+func (e RpcErrorRpc) destroy() {
+}
+
+func (err RpcErrorRpc) Error() string {
+	return fmt.Sprintf("Rpc: %s", err.message)
+}
+
+func (self RpcErrorRpc) Is(target error) bool {
+	return target == ErrRpcErrorRpc
+}
+
+type FfiConverterRpcError struct{}
+
+var FfiConverterRpcErrorINSTANCE = FfiConverterRpcError{}
+
+func (c FfiConverterRpcError) Lift(eb RustBufferI) *RpcError {
+	return LiftFromRustBuffer[*RpcError](c, eb)
+}
+
+func (c FfiConverterRpcError) Lower(value *RpcError) C.RustBuffer {
+	return LowerIntoRustBuffer[*RpcError](c, value)
+}
+
+func (c FfiConverterRpcError) Read(reader io.Reader) *RpcError {
+	errorID := readUint32(reader)
+
+	message := FfiConverterStringINSTANCE.Read(reader)
+	switch errorID {
+	case 1:
+		return &RpcError{&RpcErrorRpc{message}}
+	default:
+		panic(fmt.Sprintf("Unknown error code %d in FfiConverterRpcError.Read()", errorID))
+	}
+
+}
+
+func (c FfiConverterRpcError) Write(writer io.Writer, value *RpcError) {
+	switch variantValue := value.err.(type) {
+	case *RpcErrorRpc:
+		writeInt32(writer, 1)
+	default:
+		_ = variantValue
+		panic(fmt.Sprintf("invalid error value `%v` in FfiConverterRpcError.Write", value))
+	}
+}
+
+type FfiDestroyerRpcError struct{}
+
+func (_ FfiDestroyerRpcError) Destroy(value *RpcError) {
+	switch variantValue := value.err.(type) {
+	case RpcErrorRpc:
+		variantValue.destroy()
+	default:
+		_ = variantValue
+		panic(fmt.Sprintf("invalid error value `%v` in FfiDestroyerRpcError.Destroy", value))
+	}
+}
+
 // Authentication configuration enum for server
 type ServerAuthenticationConfig interface {
 	Destroy()
@@ -6491,6 +9766,7 @@ var ErrSlimErrorReceiveError = fmt.Errorf("SlimErrorReceiveError")
 var ErrSlimErrorSendError = fmt.Errorf("SlimErrorSendError")
 var ErrSlimErrorAuthError = fmt.Errorf("SlimErrorAuthError")
 var ErrSlimErrorConfigError = fmt.Errorf("SlimErrorConfigError")
+var ErrSlimErrorRpcError = fmt.Errorf("SlimErrorRpcError")
 var ErrSlimErrorTimeout = fmt.Errorf("SlimErrorTimeout")
 var ErrSlimErrorInvalidArgument = fmt.Errorf("SlimErrorInvalidArgument")
 var ErrSlimErrorInternalError = fmt.Errorf("SlimErrorInternalError")
@@ -6664,6 +9940,34 @@ func (self SlimErrorConfigError) Is(target error) bool {
 	return target == ErrSlimErrorConfigError
 }
 
+type SlimErrorRpcError struct {
+	Message string
+}
+
+func NewSlimErrorRpcError(
+	message string,
+) *SlimError {
+	return &SlimError{err: &SlimErrorRpcError{
+		Message: message}}
+}
+
+func (e SlimErrorRpcError) destroy() {
+	FfiDestroyerString{}.Destroy(e.Message)
+}
+
+func (err SlimErrorRpcError) Error() string {
+	return fmt.Sprint("RpcError",
+		": ",
+
+		"Message=",
+		err.Message,
+	)
+}
+
+func (self SlimErrorRpcError) Is(target error) bool {
+	return target == ErrSlimErrorRpcError
+}
+
 type SlimErrorTimeout struct {
 }
 
@@ -6779,12 +10083,16 @@ func (c FfiConverterSlimError) Read(reader io.Reader) *SlimError {
 			Message: FfiConverterStringINSTANCE.Read(reader),
 		}}
 	case 7:
-		return &SlimError{&SlimErrorTimeout{}}
+		return &SlimError{&SlimErrorRpcError{
+			Message: FfiConverterStringINSTANCE.Read(reader),
+		}}
 	case 8:
+		return &SlimError{&SlimErrorTimeout{}}
+	case 9:
 		return &SlimError{&SlimErrorInvalidArgument{
 			Message: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 9:
+	case 10:
 		return &SlimError{&SlimErrorInternalError{
 			Message: FfiConverterStringINSTANCE.Read(reader),
 		}}
@@ -6813,13 +10121,16 @@ func (c FfiConverterSlimError) Write(writer io.Writer, value *SlimError) {
 	case *SlimErrorConfigError:
 		writeInt32(writer, 6)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Message)
-	case *SlimErrorTimeout:
+	case *SlimErrorRpcError:
 		writeInt32(writer, 7)
-	case *SlimErrorInvalidArgument:
+		FfiConverterStringINSTANCE.Write(writer, variantValue.Message)
+	case *SlimErrorTimeout:
 		writeInt32(writer, 8)
+	case *SlimErrorInvalidArgument:
+		writeInt32(writer, 9)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Message)
 	case *SlimErrorInternalError:
-		writeInt32(writer, 9)
+		writeInt32(writer, 10)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Message)
 	default:
 		_ = variantValue
@@ -6843,6 +10154,8 @@ func (_ FfiDestroyerSlimError) Destroy(value *SlimError) {
 		variantValue.destroy()
 	case SlimErrorConfigError:
 		variantValue.destroy()
+	case SlimErrorRpcError:
+		variantValue.destroy()
 	case SlimErrorTimeout:
 		variantValue.destroy()
 	case SlimErrorInvalidArgument:
@@ -6853,6 +10166,87 @@ func (_ FfiDestroyerSlimError) Destroy(value *SlimError) {
 		_ = variantValue
 		panic(fmt.Sprintf("invalid error value `%v` in FfiDestroyerSlimError.Destroy", value))
 	}
+}
+
+// Message from a stream
+type StreamMessage interface {
+	Destroy()
+}
+
+// Successfully received data
+type StreamMessageData struct {
+	Field0 []byte
+}
+
+func (e StreamMessageData) Destroy() {
+	FfiDestroyerBytes{}.Destroy(e.Field0)
+}
+
+// Stream error occurred
+type StreamMessageError struct {
+	Field0 *RpcError
+}
+
+func (e StreamMessageError) Destroy() {
+	FfiDestroyerRpcError{}.Destroy(e.Field0)
+}
+
+// Stream has ended
+type StreamMessageEnd struct {
+}
+
+func (e StreamMessageEnd) Destroy() {
+}
+
+type FfiConverterStreamMessage struct{}
+
+var FfiConverterStreamMessageINSTANCE = FfiConverterStreamMessage{}
+
+func (c FfiConverterStreamMessage) Lift(rb RustBufferI) StreamMessage {
+	return LiftFromRustBuffer[StreamMessage](c, rb)
+}
+
+func (c FfiConverterStreamMessage) Lower(value StreamMessage) C.RustBuffer {
+	return LowerIntoRustBuffer[StreamMessage](c, value)
+}
+func (FfiConverterStreamMessage) Read(reader io.Reader) StreamMessage {
+	id := readInt32(reader)
+	switch id {
+	case 1:
+		return StreamMessageData{
+			FfiConverterBytesINSTANCE.Read(reader),
+		}
+	case 2:
+		return StreamMessageError{
+			FfiConverterRpcErrorINSTANCE.Read(reader),
+		}
+	case 3:
+		return StreamMessageEnd{}
+	default:
+		panic(fmt.Sprintf("invalid enum value %v in FfiConverterStreamMessage.Read()", id))
+	}
+}
+
+func (FfiConverterStreamMessage) Write(writer io.Writer, value StreamMessage) {
+	switch variant_value := value.(type) {
+	case StreamMessageData:
+		writeInt32(writer, 1)
+		FfiConverterBytesINSTANCE.Write(writer, variant_value.Field0)
+	case StreamMessageError:
+		writeInt32(writer, 2)
+		FfiConverterRpcErrorINSTANCE.Write(writer, variant_value.Field0)
+	case StreamMessageEnd:
+		writeInt32(writer, 3)
+	default:
+		_ = variant_value
+		panic(fmt.Sprintf("invalid enum value `%v` in FfiConverterStreamMessage.Write", value))
+	}
+}
+
+type FfiDestroyerStreamMessage struct{}
+
+func (_ FfiDestroyerStreamMessage) Destroy(value StreamMessage) {
+	value.Destroy()
 }
 
 // TLS certificate and key source configuration
