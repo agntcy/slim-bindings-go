@@ -4543,7 +4543,7 @@ func (_ FfiDestroyerResponseStreamReader) Destroy(value *ResponseStreamReader) {
 // # Example
 //
 // ```no_run
-// # use slim_bindings::{Server, Context, Status, Decoder, Encoder, App, Name};
+// # use slim_bindings::{Server, Context, RpcError, Decoder, Encoder, App, Name};
 // # use std::sync::Arc;
 // # fn main() -> Result<(), Box<dyn std::error::Error>> {
 // # use slim_bindings::{IdentityProviderConfig, IdentityVerifierConfig};
@@ -4556,12 +4556,12 @@ func (_ FfiDestroyerResponseStreamReader) Destroy(value *ResponseStreamReader) {
 // # #[derive(Default)]
 // # struct Request {}
 // # impl Decoder for Request {
-// #     fn decode(_buf: impl Into<Vec<u8>>) -> Result<Self, Status> { Ok(Request::default()) }
+// #     fn decode(_buf: impl Into<Vec<u8>>) -> Result<Self, RpcError> { Ok(Request::default()) }
 // # }
 // # #[derive(Default)]
 // # struct Response {}
 // # impl Encoder for Response {
-// #     fn encode(self) -> Result<Vec<u8>, Status> { Ok(vec![]) }
+// #     fn encode(self) -> Result<Vec<u8>, RpcError> { Ok(vec![]) }
 // # }
 // let base_name = Name::new("org".to_string(), "namespace".to_string(), "service".to_string());
 // let server = Server::new_with_shared_rx_and_connection(core_app, base_name.as_slim_name(), None, notification_rx, None);
@@ -4636,7 +4636,7 @@ type ServerInterface interface {
 // # Example
 //
 // ```no_run
-// # use slim_bindings::{Server, Context, Status, Decoder, Encoder, App, Name};
+// # use slim_bindings::{Server, Context, RpcError, Decoder, Encoder, App, Name};
 // # use std::sync::Arc;
 // # fn main() -> Result<(), Box<dyn std::error::Error>> {
 // # use slim_bindings::{IdentityProviderConfig, IdentityVerifierConfig};
@@ -4649,12 +4649,12 @@ type ServerInterface interface {
 // # #[derive(Default)]
 // # struct Request {}
 // # impl Decoder for Request {
-// #     fn decode(_buf: impl Into<Vec<u8>>) -> Result<Self, Status> { Ok(Request::default()) }
+// #     fn decode(_buf: impl Into<Vec<u8>>) -> Result<Self, RpcError> { Ok(Request::default()) }
 // # }
 // # #[derive(Default)]
 // # struct Response {}
 // # impl Encoder for Response {
-// #     fn encode(self) -> Result<Vec<u8>, Status> { Ok(vec![]) }
+// #     fn encode(self) -> Result<Vec<u8>, RpcError> { Ok(vec![]) }
 // # }
 // let base_name = Name::new("org".to_string(), "namespace".to_string(), "service".to_string());
 // let server = Server::new_with_shared_rx_and_connection(core_app, base_name.as_slim_name(), None, notification_rx, None);
@@ -8944,71 +8944,6 @@ func (_ FfiDestroyerClientAuthenticationConfig) Destroy(value ClientAuthenticati
 	value.Destroy()
 }
 
-// gRPC status codes
-type Code uint16
-
-const (
-	// Success
-	CodeOk Code = 0
-	// The operation was cancelled
-	CodeCancelled Code = 1
-	// Unknown error
-	CodeUnknown Code = 2
-	// Client specified an invalid argument
-	CodeInvalidArgument Code = 3
-	// Deadline expired before operation could complete
-	CodeDeadlineExceeded Code = 4
-	// Some requested entity was not found
-	CodeNotFound Code = 5
-	// Some entity that we attempted to create already exists
-	CodeAlreadyExists Code = 6
-	// The caller does not have permission to execute the specified operation
-	CodePermissionDenied Code = 7
-	// Some resource has been exhausted
-	CodeResourceExhausted Code = 8
-	// The system is not in a state required for the operation's execution
-	CodeFailedPrecondition Code = 9
-	// The operation was aborted
-	CodeAborted Code = 10
-	// Operation was attempted past the valid range
-	CodeOutOfRange Code = 11
-	// Operation is not implemented or not supported
-	CodeUnimplemented Code = 12
-	// Internal errors
-	CodeInternal Code = 13
-	// The service is currently unavailable
-	CodeUnavailable Code = 14
-	// Unrecoverable data loss or corruption
-	CodeDataLoss Code = 15
-	// The request does not have valid authentication credentials
-	CodeUnauthenticated Code = 16
-)
-
-type FfiConverterCode struct{}
-
-var FfiConverterCodeINSTANCE = FfiConverterCode{}
-
-func (c FfiConverterCode) Lift(rb RustBufferI) Code {
-	return LiftFromRustBuffer[Code](c, rb)
-}
-
-func (c FfiConverterCode) Lower(value Code) C.RustBuffer {
-	return LowerIntoRustBuffer[Code](c, value)
-}
-func (FfiConverterCode) Read(reader io.Reader) Code {
-	id := readInt32(reader)
-	return Code(id)
-}
-
-func (FfiConverterCode) Write(writer io.Writer, value Code) {
-	writeInt32(writer, int32(value))
-}
-
-type FfiDestroyerCode struct{}
-
-func (_ FfiDestroyerCode) Destroy(value Code) {
-}
-
 // Compression type for gRPC messages
 type CompressionType uint
 
@@ -9530,10 +9465,74 @@ func (_ FfiDestroyerJwtKeyType) Destroy(value JwtKeyType) {
 	value.Destroy()
 }
 
+// gRPC status codes
+type RpcCode uint16
+
+const (
+	// Success
+	RpcCodeOk RpcCode = 0
+	// The operation was cancelled
+	RpcCodeCancelled RpcCode = 1
+	// Unknown error
+	RpcCodeUnknown RpcCode = 2
+	// Client specified an invalid argument
+	RpcCodeInvalidArgument RpcCode = 3
+	// Deadline exceeded before operation could complete
+	RpcCodeDeadlineExceeded RpcCode = 4
+	// Some requested entity was not found
+	RpcCodeNotFound RpcCode = 5
+	// Some entity that we attempted to create already exists
+	RpcCodeAlreadyExists RpcCode = 6
+	// The caller does not have permission to execute the specified operation
+	RpcCodePermissionDenied RpcCode = 7
+	// Some resource has been exhausted
+	RpcCodeResourceExhausted RpcCode = 8
+	// The system is not in a state required for the operation's execution
+	RpcCodeFailedPrecondition RpcCode = 9
+	// The operation was aborted
+	RpcCodeAborted RpcCode = 10
+	// Operation was attempted past the valid range
+	RpcCodeOutOfRange RpcCode = 11
+	// Operation is not implemented or not supported
+	RpcCodeUnimplemented RpcCode = 12
+	// Internal errors
+	RpcCodeInternal RpcCode = 13
+	// The service is currently unavailable
+	RpcCodeUnavailable RpcCode = 14
+	// Unrecoverable data loss or corruption
+	RpcCodeDataLoss RpcCode = 15
+	// The request does not have valid authentication credentials
+	RpcCodeUnauthenticated RpcCode = 16
+)
+
+type FfiConverterRpcCode struct{}
+
+var FfiConverterRpcCodeINSTANCE = FfiConverterRpcCode{}
+
+func (c FfiConverterRpcCode) Lift(rb RustBufferI) RpcCode {
+	return LiftFromRustBuffer[RpcCode](c, rb)
+}
+
+func (c FfiConverterRpcCode) Lower(value RpcCode) C.RustBuffer {
+	return LowerIntoRustBuffer[RpcCode](c, value)
+}
+func (FfiConverterRpcCode) Read(reader io.Reader) RpcCode {
+	id := readInt32(reader)
+	return RpcCode(id)
+}
+
+func (FfiConverterRpcCode) Write(writer io.Writer, value RpcCode) {
+	writeInt32(writer, int32(value))
+}
+
+type FfiDestroyerRpcCode struct{}
+
+func (_ FfiDestroyerRpcCode) Destroy(value RpcCode) {
+}
+
 // UniFFI-compatible RPC error
 //
-// This wraps Status to make it compatible with UniFFI foreign language bindings.
-// UniFFI requires errors to be represented as enums with associated data.
+// This represents RPC errors with gRPC-compatible status codes.
 type RpcError struct {
 	err error
 }
@@ -9561,18 +9560,41 @@ var ErrRpcErrorRpc = fmt.Errorf("RpcErrorRpc")
 
 // Variant structs
 type RpcErrorRpc struct {
-	message string
+	Code    RpcCode
+	Message string
+	Details *[]byte
 }
 
-func NewRpcErrorRpc() *RpcError {
-	return &RpcError{err: &RpcErrorRpc{}}
+func NewRpcErrorRpc(
+	code RpcCode,
+	message string,
+	details *[]byte,
+) *RpcError {
+	return &RpcError{err: &RpcErrorRpc{
+		Code:    code,
+		Message: message,
+		Details: details}}
 }
 
 func (e RpcErrorRpc) destroy() {
+	FfiDestroyerRpcCode{}.Destroy(e.Code)
+	FfiDestroyerString{}.Destroy(e.Message)
+	FfiDestroyerOptionalBytes{}.Destroy(e.Details)
 }
 
 func (err RpcErrorRpc) Error() string {
-	return fmt.Sprintf("Rpc: %s", err.message)
+	return fmt.Sprint("Rpc",
+		": ",
+
+		"Code=",
+		err.Code,
+		", ",
+		"Message=",
+		err.Message,
+		", ",
+		"Details=",
+		err.Details,
+	)
 }
 
 func (self RpcErrorRpc) Is(target error) bool {
@@ -9594,20 +9616,25 @@ func (c FfiConverterRpcError) Lower(value *RpcError) C.RustBuffer {
 func (c FfiConverterRpcError) Read(reader io.Reader) *RpcError {
 	errorID := readUint32(reader)
 
-	message := FfiConverterStringINSTANCE.Read(reader)
 	switch errorID {
 	case 1:
-		return &RpcError{&RpcErrorRpc{message}}
+		return &RpcError{&RpcErrorRpc{
+			Code:    FfiConverterRpcCodeINSTANCE.Read(reader),
+			Message: FfiConverterStringINSTANCE.Read(reader),
+			Details: FfiConverterOptionalBytesINSTANCE.Read(reader),
+		}}
 	default:
 		panic(fmt.Sprintf("Unknown error code %d in FfiConverterRpcError.Read()", errorID))
 	}
-
 }
 
 func (c FfiConverterRpcError) Write(writer io.Writer, value *RpcError) {
 	switch variantValue := value.err.(type) {
 	case *RpcErrorRpc:
 		writeInt32(writer, 1)
+		FfiConverterRpcCodeINSTANCE.Write(writer, variantValue.Code)
+		FfiConverterStringINSTANCE.Write(writer, variantValue.Message)
+		FfiConverterOptionalBytesINSTANCE.Write(writer, variantValue.Details)
 	default:
 		_ = variantValue
 		panic(fmt.Sprintf("invalid error value `%v` in FfiConverterRpcError.Write", value))
@@ -10462,6 +10489,43 @@ type FfiDestroyerOptionalString struct{}
 func (_ FfiDestroyerOptionalString) Destroy(value *string) {
 	if value != nil {
 		FfiDestroyerString{}.Destroy(*value)
+	}
+}
+
+type FfiConverterOptionalBytes struct{}
+
+var FfiConverterOptionalBytesINSTANCE = FfiConverterOptionalBytes{}
+
+func (c FfiConverterOptionalBytes) Lift(rb RustBufferI) *[]byte {
+	return LiftFromRustBuffer[*[]byte](c, rb)
+}
+
+func (_ FfiConverterOptionalBytes) Read(reader io.Reader) *[]byte {
+	if readInt8(reader) == 0 {
+		return nil
+	}
+	temp := FfiConverterBytesINSTANCE.Read(reader)
+	return &temp
+}
+
+func (c FfiConverterOptionalBytes) Lower(value *[]byte) C.RustBuffer {
+	return LowerIntoRustBuffer[*[]byte](c, value)
+}
+
+func (_ FfiConverterOptionalBytes) Write(writer io.Writer, value *[]byte) {
+	if value == nil {
+		writeInt8(writer, 0)
+	} else {
+		writeInt8(writer, 1)
+		FfiConverterBytesINSTANCE.Write(writer, *value)
+	}
+}
+
+type FfiDestroyerOptionalBytes struct{}
+
+func (_ FfiDestroyerOptionalBytes) Destroy(value *[]byte) {
+	if value != nil {
+		FfiDestroyerBytes{}.Destroy(*value)
 	}
 }
 
