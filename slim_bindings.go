@@ -427,6 +427,15 @@ func uniffiCheckChecksums() {
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_func_initialize_from_config_with_error()
+		})
+		if checksum != 34014 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_func_initialize_from_config_with_error: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_slim_bindings_checksum_func_initialize_with_configs()
 		})
 		if checksum != 4551 {
@@ -495,6 +504,24 @@ func uniffiCheckChecksums() {
 		if checksum != 39801 {
 			// If this happens try cleaning and rebuilding your project
 			panic("slim_bindings: uniffi_slim_bindings_checksum_func_new_runtime_config_with: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_func_new_secure_client_config()
+		})
+		if checksum != 33630 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_func_new_secure_client_config: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_func_new_secure_server_config()
+		})
+		if checksum != 22629 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_func_new_secure_server_config: UniFFI API checksum mismatch")
 		}
 	}
 	{
@@ -967,20 +994,29 @@ func uniffiCheckChecksums() {
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
-			return C.uniffi_slim_bindings_checksum_method_requeststreamwriter_finalize()
+			return C.uniffi_slim_bindings_checksum_method_requeststreamwriter_finalize_async()
 		})
-		if checksum != 64754 {
+		if checksum != 14608 {
 			// If this happens try cleaning and rebuilding your project
-			panic("slim_bindings: uniffi_slim_bindings_checksum_method_requeststreamwriter_finalize: UniFFI API checksum mismatch")
+			panic("slim_bindings: uniffi_slim_bindings_checksum_method_requeststreamwriter_finalize_async: UniFFI API checksum mismatch")
 		}
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
-			return C.uniffi_slim_bindings_checksum_method_requeststreamwriter_finalize_async()
+			return C.uniffi_slim_bindings_checksum_method_requeststreamwriter_finalize_stream()
 		})
-		if checksum != 16474 {
+		if checksum != 4642 {
 			// If this happens try cleaning and rebuilding your project
-			panic("slim_bindings: uniffi_slim_bindings_checksum_method_requeststreamwriter_finalize_async: UniFFI API checksum mismatch")
+			panic("slim_bindings: uniffi_slim_bindings_checksum_method_requeststreamwriter_finalize_stream: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_method_requeststreamwriter_finalize_stream_async()
+		})
+		if checksum != 41469 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_method_requeststreamwriter_finalize_stream_async: UniFFI API checksum mismatch")
 		}
 	}
 	{
@@ -1674,6 +1710,15 @@ func uniffiCheckChecksums() {
 		if checksum != 2629 {
 			// If this happens try cleaning and rebuilding your project
 			panic("slim_bindings: uniffi_slim_bindings_checksum_constructor_channel_new_with_connection: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_constructor_name_from_string()
+		})
+		if checksum != 13402 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_constructor_name_from_string: UniFFI API checksum mismatch")
 		}
 	}
 	{
@@ -3731,6 +3776,22 @@ func NewName(component0 string, component1 string, component2 string) *Name {
 	}))
 }
 
+// Parse a Name from a `"org/namespace/agent"` string
+//
+// The string must contain exactly three `/`-separated components.
+// Returns an error if the format is invalid.
+func NameFromString(s string) (*Name, error) {
+	_uniffiRV, _uniffiErr := rustCallWithError[SlimError](FfiConverterSlimError{}, func(_uniffiStatus *C.RustCallStatus) unsafe.Pointer {
+		return C.uniffi_slim_bindings_fn_constructor_name_from_string(FfiConverterStringINSTANCE.Lower(s), _uniffiStatus)
+	})
+	if _uniffiErr != nil {
+		var _uniffiDefaultValue *Name
+		return _uniffiDefaultValue, _uniffiErr
+	} else {
+		return FfiConverterNameINSTANCE.Lift(_uniffiRV), nil
+	}
+}
+
 // Create a new Name from components with an ID
 func NameNewWithId(component0 string, component1 string, component2 string, id uint64) *Name {
 	return FfiConverterNameINSTANCE.Lift(rustCall(func(_uniffiStatus *C.RustCallStatus) unsafe.Pointer {
@@ -3974,10 +4035,14 @@ func (_ FfiDestroyerRequestStream) Destroy(value *RequestStream) {
 //
 // Allows sending multiple request messages and getting a final response.
 type RequestStreamWriterInterface interface {
-	// Finalize the stream and get the response (blocking version)
-	Finalize() ([]byte, error)
 	// Finalize the stream and get the response (async version)
+	//
+	// **Deprecated**: Use [`finalize_stream_async`](Self::finalize_stream_async) instead.
 	FinalizeAsync() ([]byte, error)
+	// Finalize the stream and get the response (blocking version)
+	FinalizeStream() ([]byte, error)
+	// Finalize the stream and get the response (async version)
+	FinalizeStreamAsync() ([]byte, error)
 	// Send a request message to the stream (blocking version)
 	Send(data []byte) error
 	// Send a request message to the stream (async version)
@@ -3991,25 +4056,9 @@ type RequestStreamWriter struct {
 	ffiObject FfiObject
 }
 
-// Finalize the stream and get the response (blocking version)
-func (_self *RequestStreamWriter) Finalize() ([]byte, error) {
-	_pointer := _self.ffiObject.incrementPointer("*RequestStreamWriter")
-	defer _self.ffiObject.decrementPointer()
-	_uniffiRV, _uniffiErr := rustCallWithError[RpcError](FfiConverterRpcError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
-		return GoRustBuffer{
-			inner: C.uniffi_slim_bindings_fn_method_requeststreamwriter_finalize(
-				_pointer, _uniffiStatus),
-		}
-	})
-	if _uniffiErr != nil {
-		var _uniffiDefaultValue []byte
-		return _uniffiDefaultValue, _uniffiErr
-	} else {
-		return FfiConverterBytesINSTANCE.Lift(_uniffiRV), nil
-	}
-}
-
 // Finalize the stream and get the response (async version)
+//
+// **Deprecated**: Use [`finalize_stream_async`](Self::finalize_stream_async) instead.
 func (_self *RequestStreamWriter) FinalizeAsync() ([]byte, error) {
 	_pointer := _self.ffiObject.incrementPointer("*RequestStreamWriter")
 	defer _self.ffiObject.decrementPointer()
@@ -4027,6 +4076,60 @@ func (_self *RequestStreamWriter) FinalizeAsync() ([]byte, error) {
 			return FfiConverterBytesINSTANCE.Lift(ffi)
 		},
 		C.uniffi_slim_bindings_fn_method_requeststreamwriter_finalize_async(
+			_pointer),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_slim_bindings_rust_future_poll_rust_buffer(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_slim_bindings_rust_future_free_rust_buffer(handle)
+		},
+	)
+
+	if err == nil {
+		return res, nil
+	}
+
+	return res, err
+}
+
+// Finalize the stream and get the response (blocking version)
+func (_self *RequestStreamWriter) FinalizeStream() ([]byte, error) {
+	_pointer := _self.ffiObject.incrementPointer("*RequestStreamWriter")
+	defer _self.ffiObject.decrementPointer()
+	_uniffiRV, _uniffiErr := rustCallWithError[RpcError](FfiConverterRpcError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+		return GoRustBuffer{
+			inner: C.uniffi_slim_bindings_fn_method_requeststreamwriter_finalize_stream(
+				_pointer, _uniffiStatus),
+		}
+	})
+	if _uniffiErr != nil {
+		var _uniffiDefaultValue []byte
+		return _uniffiDefaultValue, _uniffiErr
+	} else {
+		return FfiConverterBytesINSTANCE.Lift(_uniffiRV), nil
+	}
+}
+
+// Finalize the stream and get the response (async version)
+func (_self *RequestStreamWriter) FinalizeStreamAsync() ([]byte, error) {
+	_pointer := _self.ffiObject.incrementPointer("*RequestStreamWriter")
+	defer _self.ffiObject.decrementPointer()
+	res, err := uniffiRustCallAsync[RpcError](
+		FfiConverterRpcErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
+			res := C.ffi_slim_bindings_rust_future_complete_rust_buffer(handle, status)
+			return GoRustBuffer{
+				inner: res,
+			}
+		},
+		// liftFn
+		func(ffi RustBufferI) []byte {
+			return FfiConverterBytesINSTANCE.Lift(ffi)
+		},
+		C.uniffi_slim_bindings_fn_method_requeststreamwriter_finalize_stream_async(
 			_pointer),
 		// pollFn
 		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
@@ -7431,6 +7534,8 @@ func (_ FfiDestroyerBuildInfo) Destroy(value BuildInfo) {
 type ClientConfig struct {
 	// The target endpoint the client will connect to
 	Endpoint string
+	// TLS client configuration
+	Tls TlsClientConfig
 	// Origin (HTTP Host authority override) for the client
 	Origin *string
 	// Optional TLS SNI server name override
@@ -7439,43 +7544,41 @@ type ClientConfig struct {
 	Compression *CompressionType
 	// Rate limit string (e.g., "100/s" for 100 requests per second)
 	RateLimit *string
-	// TLS client configuration
-	Tls TlsClientConfig
 	// Keepalive parameters
 	Keepalive *KeepaliveConfig
 	// HTTP Proxy configuration
-	Proxy ProxyConfig
+	Proxy *ProxyConfig
 	// Connection timeout
-	ConnectTimeout time.Duration
+	ConnectTimeout *time.Duration
 	// Request timeout
-	RequestTimeout time.Duration
+	RequestTimeout *time.Duration
 	// Read buffer size in bytes
 	BufferSize *uint64
 	// Headers associated with gRPC requests
-	Headers map[string]string
+	Headers *map[string]string
 	// Authentication configuration for outgoing RPCs
-	Auth ClientAuthenticationConfig
+	Auth *ClientAuthenticationConfig
 	// Backoff retry configuration
-	Backoff BackoffConfig
+	Backoff *BackoffConfig
 	// Arbitrary user-provided metadata as JSON string
 	Metadata *string
 }
 
 func (r *ClientConfig) Destroy() {
 	FfiDestroyerString{}.Destroy(r.Endpoint)
+	FfiDestroyerTlsClientConfig{}.Destroy(r.Tls)
 	FfiDestroyerOptionalString{}.Destroy(r.Origin)
 	FfiDestroyerOptionalString{}.Destroy(r.ServerName)
 	FfiDestroyerOptionalCompressionType{}.Destroy(r.Compression)
 	FfiDestroyerOptionalString{}.Destroy(r.RateLimit)
-	FfiDestroyerTlsClientConfig{}.Destroy(r.Tls)
 	FfiDestroyerOptionalKeepaliveConfig{}.Destroy(r.Keepalive)
-	FfiDestroyerProxyConfig{}.Destroy(r.Proxy)
-	FfiDestroyerDuration{}.Destroy(r.ConnectTimeout)
-	FfiDestroyerDuration{}.Destroy(r.RequestTimeout)
+	FfiDestroyerOptionalProxyConfig{}.Destroy(r.Proxy)
+	FfiDestroyerOptionalDuration{}.Destroy(r.ConnectTimeout)
+	FfiDestroyerOptionalDuration{}.Destroy(r.RequestTimeout)
 	FfiDestroyerOptionalUint64{}.Destroy(r.BufferSize)
-	FfiDestroyerMapStringString{}.Destroy(r.Headers)
-	FfiDestroyerClientAuthenticationConfig{}.Destroy(r.Auth)
-	FfiDestroyerBackoffConfig{}.Destroy(r.Backoff)
+	FfiDestroyerOptionalMapStringString{}.Destroy(r.Headers)
+	FfiDestroyerOptionalClientAuthenticationConfig{}.Destroy(r.Auth)
+	FfiDestroyerOptionalBackoffConfig{}.Destroy(r.Backoff)
 	FfiDestroyerOptionalString{}.Destroy(r.Metadata)
 }
 
@@ -7490,19 +7593,19 @@ func (c FfiConverterClientConfig) Lift(rb RustBufferI) ClientConfig {
 func (c FfiConverterClientConfig) Read(reader io.Reader) ClientConfig {
 	return ClientConfig{
 		FfiConverterStringINSTANCE.Read(reader),
+		FfiConverterTlsClientConfigINSTANCE.Read(reader),
 		FfiConverterOptionalStringINSTANCE.Read(reader),
 		FfiConverterOptionalStringINSTANCE.Read(reader),
 		FfiConverterOptionalCompressionTypeINSTANCE.Read(reader),
 		FfiConverterOptionalStringINSTANCE.Read(reader),
-		FfiConverterTlsClientConfigINSTANCE.Read(reader),
 		FfiConverterOptionalKeepaliveConfigINSTANCE.Read(reader),
-		FfiConverterProxyConfigINSTANCE.Read(reader),
-		FfiConverterDurationINSTANCE.Read(reader),
-		FfiConverterDurationINSTANCE.Read(reader),
+		FfiConverterOptionalProxyConfigINSTANCE.Read(reader),
+		FfiConverterOptionalDurationINSTANCE.Read(reader),
+		FfiConverterOptionalDurationINSTANCE.Read(reader),
 		FfiConverterOptionalUint64INSTANCE.Read(reader),
-		FfiConverterMapStringStringINSTANCE.Read(reader),
-		FfiConverterClientAuthenticationConfigINSTANCE.Read(reader),
-		FfiConverterBackoffConfigINSTANCE.Read(reader),
+		FfiConverterOptionalMapStringStringINSTANCE.Read(reader),
+		FfiConverterOptionalClientAuthenticationConfigINSTANCE.Read(reader),
+		FfiConverterOptionalBackoffConfigINSTANCE.Read(reader),
 		FfiConverterOptionalStringINSTANCE.Read(reader),
 	}
 }
@@ -7513,19 +7616,19 @@ func (c FfiConverterClientConfig) Lower(value ClientConfig) C.RustBuffer {
 
 func (c FfiConverterClientConfig) Write(writer io.Writer, value ClientConfig) {
 	FfiConverterStringINSTANCE.Write(writer, value.Endpoint)
+	FfiConverterTlsClientConfigINSTANCE.Write(writer, value.Tls)
 	FfiConverterOptionalStringINSTANCE.Write(writer, value.Origin)
 	FfiConverterOptionalStringINSTANCE.Write(writer, value.ServerName)
 	FfiConverterOptionalCompressionTypeINSTANCE.Write(writer, value.Compression)
 	FfiConverterOptionalStringINSTANCE.Write(writer, value.RateLimit)
-	FfiConverterTlsClientConfigINSTANCE.Write(writer, value.Tls)
 	FfiConverterOptionalKeepaliveConfigINSTANCE.Write(writer, value.Keepalive)
-	FfiConverterProxyConfigINSTANCE.Write(writer, value.Proxy)
-	FfiConverterDurationINSTANCE.Write(writer, value.ConnectTimeout)
-	FfiConverterDurationINSTANCE.Write(writer, value.RequestTimeout)
+	FfiConverterOptionalProxyConfigINSTANCE.Write(writer, value.Proxy)
+	FfiConverterOptionalDurationINSTANCE.Write(writer, value.ConnectTimeout)
+	FfiConverterOptionalDurationINSTANCE.Write(writer, value.RequestTimeout)
 	FfiConverterOptionalUint64INSTANCE.Write(writer, value.BufferSize)
-	FfiConverterMapStringStringINSTANCE.Write(writer, value.Headers)
-	FfiConverterClientAuthenticationConfigINSTANCE.Write(writer, value.Auth)
-	FfiConverterBackoffConfigINSTANCE.Write(writer, value.Backoff)
+	FfiConverterOptionalMapStringStringINSTANCE.Write(writer, value.Headers)
+	FfiConverterOptionalClientAuthenticationConfigINSTANCE.Write(writer, value.Auth)
+	FfiConverterOptionalBackoffConfigINSTANCE.Write(writer, value.Backoff)
 	FfiConverterOptionalStringINSTANCE.Write(writer, value.Metadata)
 }
 
@@ -8177,7 +8280,7 @@ type ServerConfig struct {
 	// TLS server configuration
 	Tls TlsServerConfig
 	// Use HTTP/2 only (default: true)
-	Http2Only bool
+	Http2Only *bool
 	// Maximum size (in MiB) of messages accepted by the server
 	MaxFrameSize *uint32
 	// Maximum number of concurrent streams per connection
@@ -8189,9 +8292,9 @@ type ServerConfig struct {
 	// Write buffer size in bytes
 	WriteBufferSize *uint64
 	// Keepalive parameters
-	Keepalive KeepaliveServerParameters
+	Keepalive *KeepaliveServerParameters
 	// Authentication configuration for incoming requests
-	Auth ServerAuthenticationConfig
+	Auth *ServerAuthenticationConfig
 	// Arbitrary user-provided metadata as JSON string
 	Metadata *string
 }
@@ -8199,14 +8302,14 @@ type ServerConfig struct {
 func (r *ServerConfig) Destroy() {
 	FfiDestroyerString{}.Destroy(r.Endpoint)
 	FfiDestroyerTlsServerConfig{}.Destroy(r.Tls)
-	FfiDestroyerBool{}.Destroy(r.Http2Only)
+	FfiDestroyerOptionalBool{}.Destroy(r.Http2Only)
 	FfiDestroyerOptionalUint32{}.Destroy(r.MaxFrameSize)
 	FfiDestroyerOptionalUint32{}.Destroy(r.MaxConcurrentStreams)
 	FfiDestroyerOptionalUint32{}.Destroy(r.MaxHeaderListSize)
 	FfiDestroyerOptionalUint64{}.Destroy(r.ReadBufferSize)
 	FfiDestroyerOptionalUint64{}.Destroy(r.WriteBufferSize)
-	FfiDestroyerKeepaliveServerParameters{}.Destroy(r.Keepalive)
-	FfiDestroyerServerAuthenticationConfig{}.Destroy(r.Auth)
+	FfiDestroyerOptionalKeepaliveServerParameters{}.Destroy(r.Keepalive)
+	FfiDestroyerOptionalServerAuthenticationConfig{}.Destroy(r.Auth)
 	FfiDestroyerOptionalString{}.Destroy(r.Metadata)
 }
 
@@ -8222,14 +8325,14 @@ func (c FfiConverterServerConfig) Read(reader io.Reader) ServerConfig {
 	return ServerConfig{
 		FfiConverterStringINSTANCE.Read(reader),
 		FfiConverterTlsServerConfigINSTANCE.Read(reader),
-		FfiConverterBoolINSTANCE.Read(reader),
+		FfiConverterOptionalBoolINSTANCE.Read(reader),
 		FfiConverterOptionalUint32INSTANCE.Read(reader),
 		FfiConverterOptionalUint32INSTANCE.Read(reader),
 		FfiConverterOptionalUint32INSTANCE.Read(reader),
 		FfiConverterOptionalUint64INSTANCE.Read(reader),
 		FfiConverterOptionalUint64INSTANCE.Read(reader),
-		FfiConverterKeepaliveServerParametersINSTANCE.Read(reader),
-		FfiConverterServerAuthenticationConfigINSTANCE.Read(reader),
+		FfiConverterOptionalKeepaliveServerParametersINSTANCE.Read(reader),
+		FfiConverterOptionalServerAuthenticationConfigINSTANCE.Read(reader),
 		FfiConverterOptionalStringINSTANCE.Read(reader),
 	}
 }
@@ -8241,14 +8344,14 @@ func (c FfiConverterServerConfig) Lower(value ServerConfig) C.RustBuffer {
 func (c FfiConverterServerConfig) Write(writer io.Writer, value ServerConfig) {
 	FfiConverterStringINSTANCE.Write(writer, value.Endpoint)
 	FfiConverterTlsServerConfigINSTANCE.Write(writer, value.Tls)
-	FfiConverterBoolINSTANCE.Write(writer, value.Http2Only)
+	FfiConverterOptionalBoolINSTANCE.Write(writer, value.Http2Only)
 	FfiConverterOptionalUint32INSTANCE.Write(writer, value.MaxFrameSize)
 	FfiConverterOptionalUint32INSTANCE.Write(writer, value.MaxConcurrentStreams)
 	FfiConverterOptionalUint32INSTANCE.Write(writer, value.MaxHeaderListSize)
 	FfiConverterOptionalUint64INSTANCE.Write(writer, value.ReadBufferSize)
 	FfiConverterOptionalUint64INSTANCE.Write(writer, value.WriteBufferSize)
-	FfiConverterKeepaliveServerParametersINSTANCE.Write(writer, value.Keepalive)
-	FfiConverterServerAuthenticationConfigINSTANCE.Write(writer, value.Auth)
+	FfiConverterOptionalKeepaliveServerParametersINSTANCE.Write(writer, value.Keepalive)
+	FfiConverterOptionalServerAuthenticationConfigINSTANCE.Write(writer, value.Auth)
 	FfiConverterOptionalStringINSTANCE.Write(writer, value.Metadata)
 }
 
@@ -8579,20 +8682,20 @@ type TlsServerConfig struct {
 	// CA certificate source for verifying client certificates
 	ClientCa CaSource
 	// Include system CA certificates pool (default: true)
-	IncludeSystemCaCertsPool bool
+	IncludeSystemCaCertsPool *bool
 	// TLS version to use: "tls1.2" or "tls1.3" (default: "tls1.3")
-	TlsVersion string
+	TlsVersion *string
 	// Reload client CA file when modified
-	ReloadClientCaFile bool
+	ReloadClientCaFile *bool
 }
 
 func (r *TlsServerConfig) Destroy() {
 	FfiDestroyerBool{}.Destroy(r.Insecure)
 	FfiDestroyerTlsSource{}.Destroy(r.Source)
 	FfiDestroyerCaSource{}.Destroy(r.ClientCa)
-	FfiDestroyerBool{}.Destroy(r.IncludeSystemCaCertsPool)
-	FfiDestroyerString{}.Destroy(r.TlsVersion)
-	FfiDestroyerBool{}.Destroy(r.ReloadClientCaFile)
+	FfiDestroyerOptionalBool{}.Destroy(r.IncludeSystemCaCertsPool)
+	FfiDestroyerOptionalString{}.Destroy(r.TlsVersion)
+	FfiDestroyerOptionalBool{}.Destroy(r.ReloadClientCaFile)
 }
 
 type FfiConverterTlsServerConfig struct{}
@@ -8608,9 +8711,9 @@ func (c FfiConverterTlsServerConfig) Read(reader io.Reader) TlsServerConfig {
 		FfiConverterBoolINSTANCE.Read(reader),
 		FfiConverterTlsSourceINSTANCE.Read(reader),
 		FfiConverterCaSourceINSTANCE.Read(reader),
-		FfiConverterBoolINSTANCE.Read(reader),
-		FfiConverterStringINSTANCE.Read(reader),
-		FfiConverterBoolINSTANCE.Read(reader),
+		FfiConverterOptionalBoolINSTANCE.Read(reader),
+		FfiConverterOptionalStringINSTANCE.Read(reader),
+		FfiConverterOptionalBoolINSTANCE.Read(reader),
 	}
 }
 
@@ -8622,9 +8725,9 @@ func (c FfiConverterTlsServerConfig) Write(writer io.Writer, value TlsServerConf
 	FfiConverterBoolINSTANCE.Write(writer, value.Insecure)
 	FfiConverterTlsSourceINSTANCE.Write(writer, value.Source)
 	FfiConverterCaSourceINSTANCE.Write(writer, value.ClientCa)
-	FfiConverterBoolINSTANCE.Write(writer, value.IncludeSystemCaCertsPool)
-	FfiConverterStringINSTANCE.Write(writer, value.TlsVersion)
-	FfiConverterBoolINSTANCE.Write(writer, value.ReloadClientCaFile)
+	FfiConverterOptionalBoolINSTANCE.Write(writer, value.IncludeSystemCaCertsPool)
+	FfiConverterOptionalStringINSTANCE.Write(writer, value.TlsVersion)
+	FfiConverterOptionalBoolINSTANCE.Write(writer, value.ReloadClientCaFile)
 }
 
 type FfiDestroyerTlsServerConfig struct{}
@@ -10455,6 +10558,43 @@ func (_ FfiDestroyerOptionalUint64) Destroy(value *uint64) {
 	}
 }
 
+type FfiConverterOptionalBool struct{}
+
+var FfiConverterOptionalBoolINSTANCE = FfiConverterOptionalBool{}
+
+func (c FfiConverterOptionalBool) Lift(rb RustBufferI) *bool {
+	return LiftFromRustBuffer[*bool](c, rb)
+}
+
+func (_ FfiConverterOptionalBool) Read(reader io.Reader) *bool {
+	if readInt8(reader) == 0 {
+		return nil
+	}
+	temp := FfiConverterBoolINSTANCE.Read(reader)
+	return &temp
+}
+
+func (c FfiConverterOptionalBool) Lower(value *bool) C.RustBuffer {
+	return LowerIntoRustBuffer[*bool](c, value)
+}
+
+func (_ FfiConverterOptionalBool) Write(writer io.Writer, value *bool) {
+	if value == nil {
+		writeInt8(writer, 0)
+	} else {
+		writeInt8(writer, 1)
+		FfiConverterBoolINSTANCE.Write(writer, *value)
+	}
+}
+
+type FfiDestroyerOptionalBool struct{}
+
+func (_ FfiDestroyerOptionalBool) Destroy(value *bool) {
+	if value != nil {
+		FfiDestroyerBool{}.Destroy(*value)
+	}
+}
+
 type FfiConverterOptionalString struct{}
 
 var FfiConverterOptionalStringINSTANCE = FfiConverterOptionalString{}
@@ -10640,6 +10780,154 @@ func (_ FfiDestroyerOptionalKeepaliveConfig) Destroy(value *KeepaliveConfig) {
 	}
 }
 
+type FfiConverterOptionalKeepaliveServerParameters struct{}
+
+var FfiConverterOptionalKeepaliveServerParametersINSTANCE = FfiConverterOptionalKeepaliveServerParameters{}
+
+func (c FfiConverterOptionalKeepaliveServerParameters) Lift(rb RustBufferI) *KeepaliveServerParameters {
+	return LiftFromRustBuffer[*KeepaliveServerParameters](c, rb)
+}
+
+func (_ FfiConverterOptionalKeepaliveServerParameters) Read(reader io.Reader) *KeepaliveServerParameters {
+	if readInt8(reader) == 0 {
+		return nil
+	}
+	temp := FfiConverterKeepaliveServerParametersINSTANCE.Read(reader)
+	return &temp
+}
+
+func (c FfiConverterOptionalKeepaliveServerParameters) Lower(value *KeepaliveServerParameters) C.RustBuffer {
+	return LowerIntoRustBuffer[*KeepaliveServerParameters](c, value)
+}
+
+func (_ FfiConverterOptionalKeepaliveServerParameters) Write(writer io.Writer, value *KeepaliveServerParameters) {
+	if value == nil {
+		writeInt8(writer, 0)
+	} else {
+		writeInt8(writer, 1)
+		FfiConverterKeepaliveServerParametersINSTANCE.Write(writer, *value)
+	}
+}
+
+type FfiDestroyerOptionalKeepaliveServerParameters struct{}
+
+func (_ FfiDestroyerOptionalKeepaliveServerParameters) Destroy(value *KeepaliveServerParameters) {
+	if value != nil {
+		FfiDestroyerKeepaliveServerParameters{}.Destroy(*value)
+	}
+}
+
+type FfiConverterOptionalProxyConfig struct{}
+
+var FfiConverterOptionalProxyConfigINSTANCE = FfiConverterOptionalProxyConfig{}
+
+func (c FfiConverterOptionalProxyConfig) Lift(rb RustBufferI) *ProxyConfig {
+	return LiftFromRustBuffer[*ProxyConfig](c, rb)
+}
+
+func (_ FfiConverterOptionalProxyConfig) Read(reader io.Reader) *ProxyConfig {
+	if readInt8(reader) == 0 {
+		return nil
+	}
+	temp := FfiConverterProxyConfigINSTANCE.Read(reader)
+	return &temp
+}
+
+func (c FfiConverterOptionalProxyConfig) Lower(value *ProxyConfig) C.RustBuffer {
+	return LowerIntoRustBuffer[*ProxyConfig](c, value)
+}
+
+func (_ FfiConverterOptionalProxyConfig) Write(writer io.Writer, value *ProxyConfig) {
+	if value == nil {
+		writeInt8(writer, 0)
+	} else {
+		writeInt8(writer, 1)
+		FfiConverterProxyConfigINSTANCE.Write(writer, *value)
+	}
+}
+
+type FfiDestroyerOptionalProxyConfig struct{}
+
+func (_ FfiDestroyerOptionalProxyConfig) Destroy(value *ProxyConfig) {
+	if value != nil {
+		FfiDestroyerProxyConfig{}.Destroy(*value)
+	}
+}
+
+type FfiConverterOptionalBackoffConfig struct{}
+
+var FfiConverterOptionalBackoffConfigINSTANCE = FfiConverterOptionalBackoffConfig{}
+
+func (c FfiConverterOptionalBackoffConfig) Lift(rb RustBufferI) *BackoffConfig {
+	return LiftFromRustBuffer[*BackoffConfig](c, rb)
+}
+
+func (_ FfiConverterOptionalBackoffConfig) Read(reader io.Reader) *BackoffConfig {
+	if readInt8(reader) == 0 {
+		return nil
+	}
+	temp := FfiConverterBackoffConfigINSTANCE.Read(reader)
+	return &temp
+}
+
+func (c FfiConverterOptionalBackoffConfig) Lower(value *BackoffConfig) C.RustBuffer {
+	return LowerIntoRustBuffer[*BackoffConfig](c, value)
+}
+
+func (_ FfiConverterOptionalBackoffConfig) Write(writer io.Writer, value *BackoffConfig) {
+	if value == nil {
+		writeInt8(writer, 0)
+	} else {
+		writeInt8(writer, 1)
+		FfiConverterBackoffConfigINSTANCE.Write(writer, *value)
+	}
+}
+
+type FfiDestroyerOptionalBackoffConfig struct{}
+
+func (_ FfiDestroyerOptionalBackoffConfig) Destroy(value *BackoffConfig) {
+	if value != nil {
+		FfiDestroyerBackoffConfig{}.Destroy(*value)
+	}
+}
+
+type FfiConverterOptionalClientAuthenticationConfig struct{}
+
+var FfiConverterOptionalClientAuthenticationConfigINSTANCE = FfiConverterOptionalClientAuthenticationConfig{}
+
+func (c FfiConverterOptionalClientAuthenticationConfig) Lift(rb RustBufferI) *ClientAuthenticationConfig {
+	return LiftFromRustBuffer[*ClientAuthenticationConfig](c, rb)
+}
+
+func (_ FfiConverterOptionalClientAuthenticationConfig) Read(reader io.Reader) *ClientAuthenticationConfig {
+	if readInt8(reader) == 0 {
+		return nil
+	}
+	temp := FfiConverterClientAuthenticationConfigINSTANCE.Read(reader)
+	return &temp
+}
+
+func (c FfiConverterOptionalClientAuthenticationConfig) Lower(value *ClientAuthenticationConfig) C.RustBuffer {
+	return LowerIntoRustBuffer[*ClientAuthenticationConfig](c, value)
+}
+
+func (_ FfiConverterOptionalClientAuthenticationConfig) Write(writer io.Writer, value *ClientAuthenticationConfig) {
+	if value == nil {
+		writeInt8(writer, 0)
+	} else {
+		writeInt8(writer, 1)
+		FfiConverterClientAuthenticationConfigINSTANCE.Write(writer, *value)
+	}
+}
+
+type FfiDestroyerOptionalClientAuthenticationConfig struct{}
+
+func (_ FfiDestroyerOptionalClientAuthenticationConfig) Destroy(value *ClientAuthenticationConfig) {
+	if value != nil {
+		FfiDestroyerClientAuthenticationConfig{}.Destroy(*value)
+	}
+}
+
 type FfiConverterOptionalCompressionType struct{}
 
 var FfiConverterOptionalCompressionTypeINSTANCE = FfiConverterOptionalCompressionType{}
@@ -10674,6 +10962,43 @@ type FfiDestroyerOptionalCompressionType struct{}
 func (_ FfiDestroyerOptionalCompressionType) Destroy(value *CompressionType) {
 	if value != nil {
 		FfiDestroyerCompressionType{}.Destroy(*value)
+	}
+}
+
+type FfiConverterOptionalServerAuthenticationConfig struct{}
+
+var FfiConverterOptionalServerAuthenticationConfigINSTANCE = FfiConverterOptionalServerAuthenticationConfig{}
+
+func (c FfiConverterOptionalServerAuthenticationConfig) Lift(rb RustBufferI) *ServerAuthenticationConfig {
+	return LiftFromRustBuffer[*ServerAuthenticationConfig](c, rb)
+}
+
+func (_ FfiConverterOptionalServerAuthenticationConfig) Read(reader io.Reader) *ServerAuthenticationConfig {
+	if readInt8(reader) == 0 {
+		return nil
+	}
+	temp := FfiConverterServerAuthenticationConfigINSTANCE.Read(reader)
+	return &temp
+}
+
+func (c FfiConverterOptionalServerAuthenticationConfig) Lower(value *ServerAuthenticationConfig) C.RustBuffer {
+	return LowerIntoRustBuffer[*ServerAuthenticationConfig](c, value)
+}
+
+func (_ FfiConverterOptionalServerAuthenticationConfig) Write(writer io.Writer, value *ServerAuthenticationConfig) {
+	if value == nil {
+		writeInt8(writer, 0)
+	} else {
+		writeInt8(writer, 1)
+		FfiConverterServerAuthenticationConfigINSTANCE.Write(writer, *value)
+	}
+}
+
+type FfiDestroyerOptionalServerAuthenticationConfig struct{}
+
+func (_ FfiDestroyerOptionalServerAuthenticationConfig) Destroy(value *ServerAuthenticationConfig) {
+	if value != nil {
+		FfiDestroyerServerAuthenticationConfig{}.Destroy(*value)
 	}
 }
 
@@ -11210,6 +11535,16 @@ func InitializeFromConfig(configPath string) {
 	})
 }
 
+// Initialize SLIM bindings from a configuration file and return errors
+// instead of panicking.
+func InitializeFromConfigWithError(configPath string) error {
+	_, _uniffiErr := rustCallWithError[SlimError](FfiConverterSlimError{}, func(_uniffiStatus *C.RustCallStatus) bool {
+		C.uniffi_slim_bindings_fn_func_initialize_from_config_with_error(FfiConverterStringINSTANCE.Lower(configPath), _uniffiStatus)
+		return false
+	})
+	return _uniffiErr.AsError()
+}
+
 // Initialize SLIM bindings with custom configuration structs
 //
 // This function allows you to programmatically configure SLIM bindings by passing
@@ -11306,6 +11641,24 @@ func NewRuntimeConfigWith(nCores uint64, threadName string, drainTimeout time.Du
 	return FfiConverterRuntimeConfigINSTANCE.Lift(rustCall(func(_uniffiStatus *C.RustCallStatus) RustBufferI {
 		return GoRustBuffer{
 			inner: C.uniffi_slim_bindings_fn_func_new_runtime_config_with(FfiConverterUint64INSTANCE.Lower(nCores), FfiConverterStringINSTANCE.Lower(threadName), FfiConverterDurationINSTANCE.Lower(drainTimeout), _uniffiStatus),
+		}
+	}))
+}
+
+// Create a new secure client config (TLS enabled with default settings)
+func NewSecureClientConfig(endpoint string) ClientConfig {
+	return FfiConverterClientConfigINSTANCE.Lift(rustCall(func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+		return GoRustBuffer{
+			inner: C.uniffi_slim_bindings_fn_func_new_secure_client_config(FfiConverterStringINSTANCE.Lower(endpoint), _uniffiStatus),
+		}
+	}))
+}
+
+// Create a new secure server config (TLS enabled with the given certificate source)
+func NewSecureServerConfig(endpoint string, tlsSource TlsSource) ServerConfig {
+	return FfiConverterServerConfigINSTANCE.Lift(rustCall(func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+		return GoRustBuffer{
+			inner: C.uniffi_slim_bindings_fn_func_new_secure_server_config(FfiConverterStringINSTANCE.Lower(endpoint), FfiConverterTlsSourceINSTANCE.Lower(tlsSource), _uniffiStatus),
 		}
 	}))
 }
