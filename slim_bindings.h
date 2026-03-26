@@ -1397,6 +1397,11 @@ int8_t uniffi_slim_bindings_fn_func_is_initialized(RustCallStatus *out_status
     
 );
 #endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_FUNC_NEW_CONFIG_FROM_JSON
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_FUNC_NEW_CONFIG_FROM_JSON
+RustBuffer uniffi_slim_bindings_fn_func_new_config_from_json(RustBuffer json, RustCallStatus *out_status
+);
+#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_FUNC_NEW_DATAPLANE_CONFIG
 #define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_FUNC_NEW_DATAPLANE_CONFIG
 RustBuffer uniffi_slim_bindings_fn_func_new_dataplane_config(RustCallStatus *out_status
@@ -1816,6 +1821,12 @@ uint16_t uniffi_slim_bindings_checksum_func_initialize_with_defaults(void
 #ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_FUNC_IS_INITIALIZED
 #define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_FUNC_IS_INITIALIZED
 uint16_t uniffi_slim_bindings_checksum_func_is_initialized(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_FUNC_NEW_CONFIG_FROM_JSON
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_FUNC_NEW_CONFIG_FROM_JSON
+uint16_t uniffi_slim_bindings_checksum_func_new_config_from_json(void
     
 );
 #endif

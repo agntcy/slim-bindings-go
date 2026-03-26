@@ -2,11 +2,11 @@ package slim_bindings
 
 /*
 #cgo CFLAGS: -I${SRCDIR}
-#cgo linux,amd64 LDFLAGS: -L${SRCDIR} -L${SRCDIR}/../../../../../.cgo-cache/slim-bindings -lslim_bindings_x86_64_linux_gnu -lm
-#cgo linux,arm64 LDFLAGS: -L${SRCDIR} -L${SRCDIR}/../../../../../.cgo-cache/slim-bindings -lslim_bindings_aarch64_linux_gnu -lm
-#cgo darwin,amd64 LDFLAGS: -L${SRCDIR} -L${SRCDIR}/../../../../../.cgo-cache/slim-bindings -lslim_bindings_x86_64_darwin -Wl,-undefined,dynamic_lookup
-#cgo darwin,arm64 LDFLAGS: -L${SRCDIR} -L${SRCDIR}/../../../../../.cgo-cache/slim-bindings -lslim_bindings_aarch64_darwin -Wl,-undefined,dynamic_lookup
-#cgo windows,amd64 LDFLAGS: -L${SRCDIR} -L${SRCDIR}/../../../../../.cgo-cache/slim-bindings -lslim_bindings_x86_64_windows_gnu -lws2_32 -lbcrypt -ladvapi32 -luserenv -lntdll -lgcc_eh -lgcc -lkernel32 -lole32
+#cgo linux,amd64 LDFLAGS: -L${SRCDIR} -L${SRCDIR}/../../../../../.cgo-cache/slim-bindings/devel -lslim_bindings_x86_64_linux_gnu -lm
+#cgo linux,arm64 LDFLAGS: -L${SRCDIR} -L${SRCDIR}/../../../../../.cgo-cache/slim-bindings/devel -lslim_bindings_aarch64_linux_gnu -lm
+#cgo darwin,amd64 LDFLAGS: -L${SRCDIR} -L${SRCDIR}/../../../../../.cgo-cache/slim-bindings/devel -lslim_bindings_x86_64_darwin -Wl,-undefined,dynamic_lookup
+#cgo darwin,arm64 LDFLAGS: -L${SRCDIR} -L${SRCDIR}/../../../../../.cgo-cache/slim-bindings/devel -lslim_bindings_aarch64_darwin -Wl,-undefined,dynamic_lookup
+#cgo windows,amd64 LDFLAGS: -L${SRCDIR} -L${SRCDIR}/../../../../../.cgo-cache/slim-bindings/devel -lslim_bindings_x86_64_windows_gnu -lws2_32 -lbcrypt -ladvapi32 -luserenv -lntdll -lgcc_eh -lgcc -lkernel32 -lole32
 #include <slim_bindings.h>
 */
 import "C"
@@ -42,7 +42,29 @@ type RustBufferI interface {
 	Capacity() uint64
 }
 
-func RustBufferFromExternal(b RustBufferI) GoRustBuffer {
+// C.RustBuffer fields exposed as an interface so they can be accessed in different Go packages.
+// See https://github.com/golang/go/issues/13467
+type ExternalCRustBuffer interface {
+	Data() unsafe.Pointer
+	Len() uint64
+	Capacity() uint64
+}
+
+func RustBufferFromC(b C.RustBuffer) ExternalCRustBuffer {
+	return GoRustBuffer{
+		inner: b,
+	}
+}
+
+func CFromRustBuffer(b ExternalCRustBuffer) C.RustBuffer {
+	return C.RustBuffer{
+		capacity: C.uint64_t(b.Capacity()),
+		len:      C.uint64_t(b.Len()),
+		data:     (*C.uchar)(b.Data()),
+	}
+}
+
+func RustBufferFromExternal(b ExternalCRustBuffer) GoRustBuffer {
 	return GoRustBuffer{
 		inner: C.RustBuffer{
 			capacity: C.uint64_t(b.Capacity()),
@@ -353,7 +375,7 @@ func init() {
 
 func uniffiCheckChecksums() {
 	// Get the bindings contract version from our ComponentInterface
-	bindingsContractVersion := 26
+	bindingsContractVersion := 29
 	// Get the scaffolding contract version by calling the into the dylib
 	scaffoldingContractVersion := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint32_t {
 		return C.ffi_slim_bindings_uniffi_contract_version()
@@ -459,6 +481,15 @@ func uniffiCheckChecksums() {
 		if checksum != 4144 {
 			// If this happens try cleaning and rebuilding your project
 			panic("slim_bindings: uniffi_slim_bindings_checksum_func_is_initialized: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_func_new_config_from_json()
+		})
+		if checksum != 32960 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_func_new_config_from_json: UniFFI API checksum mismatch")
 		}
 	}
 	{
@@ -825,7 +856,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_slim_bindings_checksum_method_channel_call_stream_stream()
 		})
-		if checksum != 2107 {
+		if checksum != 19632 {
 			// If this happens try cleaning and rebuilding your project
 			panic("slim_bindings: uniffi_slim_bindings_checksum_method_channel_call_stream_stream: UniFFI API checksum mismatch")
 		}
@@ -834,7 +865,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_slim_bindings_checksum_method_channel_call_stream_unary()
 		})
-		if checksum != 40967 {
+		if checksum != 14122 {
 			// If this happens try cleaning and rebuilding your project
 			panic("slim_bindings: uniffi_slim_bindings_checksum_method_channel_call_stream_unary: UniFFI API checksum mismatch")
 		}
@@ -843,7 +874,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_slim_bindings_checksum_method_channel_call_unary()
 		})
-		if checksum != 65159 {
+		if checksum != 5222 {
 			// If this happens try cleaning and rebuilding your project
 			panic("slim_bindings: uniffi_slim_bindings_checksum_method_channel_call_unary: UniFFI API checksum mismatch")
 		}
@@ -852,7 +883,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_slim_bindings_checksum_method_channel_call_unary_async()
 		})
-		if checksum != 43673 {
+		if checksum != 13950 {
 			// If this happens try cleaning and rebuilding your project
 			panic("slim_bindings: uniffi_slim_bindings_checksum_method_channel_call_unary_async: UniFFI API checksum mismatch")
 		}
@@ -861,7 +892,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_slim_bindings_checksum_method_channel_call_unary_stream()
 		})
-		if checksum != 13465 {
+		if checksum != 8894 {
 			// If this happens try cleaning and rebuilding your project
 			panic("slim_bindings: uniffi_slim_bindings_checksum_method_channel_call_unary_stream: UniFFI API checksum mismatch")
 		}
@@ -870,7 +901,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_slim_bindings_checksum_method_channel_call_unary_stream_async()
 		})
-		if checksum != 61723 {
+		if checksum != 35564 {
 			// If this happens try cleaning and rebuilding your project
 			panic("slim_bindings: uniffi_slim_bindings_checksum_method_channel_call_unary_stream_async: UniFFI API checksum mismatch")
 		}
@@ -1698,7 +1729,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_slim_bindings_checksum_constructor_channel_new()
 		})
-		if checksum != 43717 {
+		if checksum != 3485 {
 			// If this happens try cleaning and rebuilding your project
 			panic("slim_bindings: uniffi_slim_bindings_checksum_constructor_channel_new: UniFFI API checksum mismatch")
 		}
@@ -1707,7 +1738,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_slim_bindings_checksum_constructor_channel_new_with_connection()
 		})
-		if checksum != 2629 {
+		if checksum != 12105 {
 			// If this happens try cleaning and rebuilding your project
 			panic("slim_bindings: uniffi_slim_bindings_checksum_constructor_channel_new_with_connection: UniFFI API checksum mismatch")
 		}
@@ -1887,6 +1918,10 @@ func (FfiConverterString) Lower(value string) C.RustBuffer {
 	return stringToRustBuffer(value)
 }
 
+func (c FfiConverterString) LowerExternal(value string) ExternalCRustBuffer {
+	return RustBufferFromC(stringToRustBuffer(value))
+}
+
 func (FfiConverterString) Write(writer io.Writer, value string) {
 	if len(value) > math.MaxInt32 {
 		panic("String is too large to fit into Int32")
@@ -1912,6 +1947,10 @@ var FfiConverterBytesINSTANCE = FfiConverterBytes{}
 
 func (c FfiConverterBytes) Lower(value []byte) C.RustBuffer {
 	return LowerIntoRustBuffer[[]byte](c, value)
+}
+
+func (c FfiConverterBytes) LowerExternal(value []byte) ExternalCRustBuffer {
+	return RustBufferFromC(c.Lower(value))
 }
 
 func (c FfiConverterBytes) Write(writer io.Writer, value []byte) {
@@ -1974,6 +2013,10 @@ func (c FfiConverterTimestamp) Lower(value time.Time) C.RustBuffer {
 	return LowerIntoRustBuffer[time.Time](c, value)
 }
 
+func (c FfiConverterTimestamp) LowerExternal(value time.Time) ExternalCRustBuffer {
+	return RustBufferFromC(c.Lower(value))
+}
+
 func (c FfiConverterTimestamp) Write(writer io.Writer, value time.Time) {
 	sec := value.Unix()
 	nsec := uint32(value.Nanosecond())
@@ -2007,6 +2050,10 @@ func (c FfiConverterDuration) Read(reader io.Reader) time.Duration {
 
 func (c FfiConverterDuration) Lower(value time.Duration) C.RustBuffer {
 	return LowerIntoRustBuffer[time.Duration](c, value)
+}
+
+func (c FfiConverterDuration) LowerExternal(value time.Duration) ExternalCRustBuffer {
+	return RustBufferFromC(c.Lower(value))
 }
 
 func (c FfiConverterDuration) Write(writer io.Writer, value time.Duration) {
@@ -2974,87 +3021,20 @@ func (_ FfiDestroyerBidiStreamHandler) Destroy(value *BidiStreamHandler) {
 // A Channel manages the connection to a remote service and provides methods
 // for making RPC calls with different streaming patterns.
 //
-// Each RPC call creates a new session which is closed after the RPC completes.
+// A single SLIM session is maintained per remote and reused across concurrent
+// RPC calls (see module-level documentation for the demultiplexing design).
 type ChannelInterface interface {
 	// Make a stream-to-stream RPC call (blocking version)
-	//
-	// # Arguments
-	// * `service_name` - The service name
-	// * `method_name` - The method name
-	// * `timeout` - Optional timeout duration
-	//
-	// # Returns
-	// A BidiStreamHandler for sending and receiving messages
-	//
-	// # Note
-	// This returns a BidiStreamHandler that can be used to send request messages
-	// and read response messages concurrently.
 	CallStreamStream(serviceName string, methodName string, timeout *time.Duration, metadata *map[string]string) *BidiStreamHandler
 	// Make a stream-to-unary RPC call (blocking version)
-	//
-	// # Arguments
-	// * `service_name` - The service name
-	// * `method_name` - The method name
-	// * `timeout` - Optional timeout duration
-	//
-	// # Returns
-	// A RequestStreamWriter for sending request messages and getting the final response
-	//
-	// # Note
-	// This returns a RequestStreamWriter that can be used to send multiple request
-	// messages and then finalize to get the single response.
 	CallStreamUnary(serviceName string, methodName string, timeout *time.Duration, metadata *map[string]string) *RequestStreamWriter
 	// Make a unary-to-unary RPC call (blocking version)
-	//
-	// # Arguments
-	// * `service_name` - The service name (e.g., "MyService")
-	// * `method_name` - The method name (e.g., "GetUser")
-	// * `request` - The request message bytes
-	// * `timeout` - Optional timeout duration
-	//
-	// # Returns
-	// The response message bytes or an error
 	CallUnary(serviceName string, methodName string, request []byte, timeout *time.Duration, metadata *map[string]string) ([]byte, error)
 	// Make a unary-to-unary RPC call (async version)
-	//
-	// # Arguments
-	// * `service_name` - The service name (e.g., "MyService")
-	// * `method_name` - The method name (e.g., "GetUser")
-	// * `request` - The request message bytes
-	// * `timeout` - Optional timeout duration
-	//
-	// # Returns
-	// The response message bytes or an error
 	CallUnaryAsync(serviceName string, methodName string, request []byte, timeout *time.Duration, metadata *map[string]string) ([]byte, error)
 	// Make a unary-to-stream RPC call (blocking version)
-	//
-	// # Arguments
-	// * `service_name` - The service name
-	// * `method_name` - The method name
-	// * `request` - The request message bytes
-	// * `timeout` - Optional timeout duration
-	//
-	// # Returns
-	// A stream reader for pulling response messages
-	//
-	// # Note
-	// This returns a ResponseStreamReader that can be used to pull messages
-	// one at a time from the response stream.
 	CallUnaryStream(serviceName string, methodName string, request []byte, timeout *time.Duration, metadata *map[string]string) (*ResponseStreamReader, error)
 	// Make a unary-to-stream RPC call (async version)
-	//
-	// # Arguments
-	// * `service_name` - The service name
-	// * `method_name` - The method name
-	// * `request` - The request message bytes
-	// * `timeout` - Optional timeout duration
-	//
-	// # Returns
-	// A stream reader for pulling response messages
-	//
-	// # Note
-	// This returns a ResponseStreamReader that can be used to pull messages
-	// one at a time from the response stream.
 	CallUnaryStreamAsync(serviceName string, methodName string, request []byte, timeout *time.Duration, metadata *map[string]string) (*ResponseStreamReader, error)
 }
 
@@ -3063,19 +3043,13 @@ type ChannelInterface interface {
 // A Channel manages the connection to a remote service and provides methods
 // for making RPC calls with different streaming patterns.
 //
-// Each RPC call creates a new session which is closed after the RPC completes.
+// A single SLIM session is maintained per remote and reused across concurrent
+// RPC calls (see module-level documentation for the demultiplexing design).
 type Channel struct {
 	ffiObject FfiObject
 }
 
 // Create a new RPC channel
-//
-// # Arguments
-// * `app` - The SLIM application instance
-// * `remote` - The remote service name to connect to
-//
-// # Returns
-// A new channel instance
 func NewChannel(app *App, remote *Name) *Channel {
 	return FfiConverterChannelINSTANCE.Lift(rustCall(func(_uniffiStatus *C.RustCallStatus) unsafe.Pointer {
 		return C.uniffi_slim_bindings_fn_constructor_channel_new(FfiConverterAppINSTANCE.Lower(app), FfiConverterNameINSTANCE.Lower(remote), _uniffiStatus)
@@ -3083,17 +3057,6 @@ func NewChannel(app *App, remote *Name) *Channel {
 }
 
 // Create a new RPC channel with optional connection ID
-//
-// The connection ID is used to set up routing before making RPC calls,
-// enabling multi-hop RPC calls through specific connections.
-//
-// # Arguments
-// * `app` - The SLIM application instance
-// * `remote` - The remote service name to connect to
-// * `connection_id` - Optional connection ID for routing setup
-//
-// # Returns
-// A new channel instance
 func ChannelNewWithConnection(app *App, remote *Name, connectionId *uint64) *Channel {
 	return FfiConverterChannelINSTANCE.Lift(rustCall(func(_uniffiStatus *C.RustCallStatus) unsafe.Pointer {
 		return C.uniffi_slim_bindings_fn_constructor_channel_new_with_connection(FfiConverterAppINSTANCE.Lower(app), FfiConverterNameINSTANCE.Lower(remote), FfiConverterOptionalUint64INSTANCE.Lower(connectionId), _uniffiStatus)
@@ -3101,18 +3064,6 @@ func ChannelNewWithConnection(app *App, remote *Name, connectionId *uint64) *Cha
 }
 
 // Make a stream-to-stream RPC call (blocking version)
-//
-// # Arguments
-// * `service_name` - The service name
-// * `method_name` - The method name
-// * `timeout` - Optional timeout duration
-//
-// # Returns
-// A BidiStreamHandler for sending and receiving messages
-//
-// # Note
-// This returns a BidiStreamHandler that can be used to send request messages
-// and read response messages concurrently.
 func (_self *Channel) CallStreamStream(serviceName string, methodName string, timeout *time.Duration, metadata *map[string]string) *BidiStreamHandler {
 	_pointer := _self.ffiObject.incrementPointer("*Channel")
 	defer _self.ffiObject.decrementPointer()
@@ -3123,18 +3074,6 @@ func (_self *Channel) CallStreamStream(serviceName string, methodName string, ti
 }
 
 // Make a stream-to-unary RPC call (blocking version)
-//
-// # Arguments
-// * `service_name` - The service name
-// * `method_name` - The method name
-// * `timeout` - Optional timeout duration
-//
-// # Returns
-// A RequestStreamWriter for sending request messages and getting the final response
-//
-// # Note
-// This returns a RequestStreamWriter that can be used to send multiple request
-// messages and then finalize to get the single response.
 func (_self *Channel) CallStreamUnary(serviceName string, methodName string, timeout *time.Duration, metadata *map[string]string) *RequestStreamWriter {
 	_pointer := _self.ffiObject.incrementPointer("*Channel")
 	defer _self.ffiObject.decrementPointer()
@@ -3145,15 +3084,6 @@ func (_self *Channel) CallStreamUnary(serviceName string, methodName string, tim
 }
 
 // Make a unary-to-unary RPC call (blocking version)
-//
-// # Arguments
-// * `service_name` - The service name (e.g., "MyService")
-// * `method_name` - The method name (e.g., "GetUser")
-// * `request` - The request message bytes
-// * `timeout` - Optional timeout duration
-//
-// # Returns
-// The response message bytes or an error
 func (_self *Channel) CallUnary(serviceName string, methodName string, request []byte, timeout *time.Duration, metadata *map[string]string) ([]byte, error) {
 	_pointer := _self.ffiObject.incrementPointer("*Channel")
 	defer _self.ffiObject.decrementPointer()
@@ -3172,15 +3102,6 @@ func (_self *Channel) CallUnary(serviceName string, methodName string, request [
 }
 
 // Make a unary-to-unary RPC call (async version)
-//
-// # Arguments
-// * `service_name` - The service name (e.g., "MyService")
-// * `method_name` - The method name (e.g., "GetUser")
-// * `request` - The request message bytes
-// * `timeout` - Optional timeout duration
-//
-// # Returns
-// The response message bytes or an error
 func (_self *Channel) CallUnaryAsync(serviceName string, methodName string, request []byte, timeout *time.Duration, metadata *map[string]string) ([]byte, error) {
 	_pointer := _self.ffiObject.incrementPointer("*Channel")
 	defer _self.ffiObject.decrementPointer()
@@ -3217,19 +3138,6 @@ func (_self *Channel) CallUnaryAsync(serviceName string, methodName string, requ
 }
 
 // Make a unary-to-stream RPC call (blocking version)
-//
-// # Arguments
-// * `service_name` - The service name
-// * `method_name` - The method name
-// * `request` - The request message bytes
-// * `timeout` - Optional timeout duration
-//
-// # Returns
-// A stream reader for pulling response messages
-//
-// # Note
-// This returns a ResponseStreamReader that can be used to pull messages
-// one at a time from the response stream.
 func (_self *Channel) CallUnaryStream(serviceName string, methodName string, request []byte, timeout *time.Duration, metadata *map[string]string) (*ResponseStreamReader, error) {
 	_pointer := _self.ffiObject.incrementPointer("*Channel")
 	defer _self.ffiObject.decrementPointer()
@@ -3246,19 +3154,6 @@ func (_self *Channel) CallUnaryStream(serviceName string, methodName string, req
 }
 
 // Make a unary-to-stream RPC call (async version)
-//
-// # Arguments
-// * `service_name` - The service name
-// * `method_name` - The method name
-// * `request` - The request message bytes
-// * `timeout` - Optional timeout duration
-//
-// # Returns
-// A stream reader for pulling response messages
-//
-// # Note
-// This returns a ResponseStreamReader that can be used to pull messages
-// one at a time from the response stream.
 func (_self *Channel) CallUnaryStreamAsync(serviceName string, methodName string, request []byte, timeout *time.Duration, metadata *map[string]string) (*ResponseStreamReader, error) {
 	_pointer := _self.ffiObject.incrementPointer("*Channel")
 	defer _self.ffiObject.decrementPointer()
@@ -7466,6 +7361,10 @@ func (c FfiConverterBasicAuth) Lower(value BasicAuth) C.RustBuffer {
 	return LowerIntoRustBuffer[BasicAuth](c, value)
 }
 
+func (c FfiConverterBasicAuth) LowerExternal(value BasicAuth) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[BasicAuth](c, value))
+}
+
 func (c FfiConverterBasicAuth) Write(writer io.Writer, value BasicAuth) {
 	FfiConverterStringINSTANCE.Write(writer, value.Username)
 	FfiConverterStringINSTANCE.Write(writer, value.Password)
@@ -7517,6 +7416,10 @@ func (c FfiConverterBuildInfo) Lower(value BuildInfo) C.RustBuffer {
 	return LowerIntoRustBuffer[BuildInfo](c, value)
 }
 
+func (c FfiConverterBuildInfo) LowerExternal(value BuildInfo) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[BuildInfo](c, value))
+}
+
 func (c FfiConverterBuildInfo) Write(writer io.Writer, value BuildInfo) {
 	FfiConverterStringINSTANCE.Write(writer, value.Version)
 	FfiConverterStringINSTANCE.Write(writer, value.GitSha)
@@ -7534,6 +7437,10 @@ func (_ FfiDestroyerBuildInfo) Destroy(value BuildInfo) {
 type ClientConfig struct {
 	// The target endpoint the client will connect to
 	Endpoint string
+	// Transport protocol to use (defaults to gRPC in core config when omitted)
+	Transport *TransportProtocol
+	// Optional websocket authentication query parameter key
+	WebsocketAuthQueryParam *string
 	// TLS client configuration
 	Tls TlsClientConfig
 	// Origin (HTTP Host authority override) for the client
@@ -7566,6 +7473,8 @@ type ClientConfig struct {
 
 func (r *ClientConfig) Destroy() {
 	FfiDestroyerString{}.Destroy(r.Endpoint)
+	FfiDestroyerOptionalTransportProtocol{}.Destroy(r.Transport)
+	FfiDestroyerOptionalString{}.Destroy(r.WebsocketAuthQueryParam)
 	FfiDestroyerTlsClientConfig{}.Destroy(r.Tls)
 	FfiDestroyerOptionalString{}.Destroy(r.Origin)
 	FfiDestroyerOptionalString{}.Destroy(r.ServerName)
@@ -7593,6 +7502,8 @@ func (c FfiConverterClientConfig) Lift(rb RustBufferI) ClientConfig {
 func (c FfiConverterClientConfig) Read(reader io.Reader) ClientConfig {
 	return ClientConfig{
 		FfiConverterStringINSTANCE.Read(reader),
+		FfiConverterOptionalTransportProtocolINSTANCE.Read(reader),
+		FfiConverterOptionalStringINSTANCE.Read(reader),
 		FfiConverterTlsClientConfigINSTANCE.Read(reader),
 		FfiConverterOptionalStringINSTANCE.Read(reader),
 		FfiConverterOptionalStringINSTANCE.Read(reader),
@@ -7614,8 +7525,14 @@ func (c FfiConverterClientConfig) Lower(value ClientConfig) C.RustBuffer {
 	return LowerIntoRustBuffer[ClientConfig](c, value)
 }
 
+func (c FfiConverterClientConfig) LowerExternal(value ClientConfig) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[ClientConfig](c, value))
+}
+
 func (c FfiConverterClientConfig) Write(writer io.Writer, value ClientConfig) {
 	FfiConverterStringINSTANCE.Write(writer, value.Endpoint)
+	FfiConverterOptionalTransportProtocolINSTANCE.Write(writer, value.Transport)
+	FfiConverterOptionalStringINSTANCE.Write(writer, value.WebsocketAuthQueryParam)
 	FfiConverterTlsClientConfigINSTANCE.Write(writer, value.Tls)
 	FfiConverterOptionalStringINSTANCE.Write(writer, value.Origin)
 	FfiConverterOptionalStringINSTANCE.Write(writer, value.ServerName)
@@ -7682,6 +7599,10 @@ func (c FfiConverterClientJwtAuth) Lower(value ClientJwtAuth) C.RustBuffer {
 	return LowerIntoRustBuffer[ClientJwtAuth](c, value)
 }
 
+func (c FfiConverterClientJwtAuth) LowerExternal(value ClientJwtAuth) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[ClientJwtAuth](c, value))
+}
+
 func (c FfiConverterClientJwtAuth) Write(writer io.Writer, value ClientJwtAuth) {
 	FfiConverterJwtKeyTypeINSTANCE.Write(writer, value.Key)
 	FfiConverterOptionalSequenceStringINSTANCE.Write(writer, value.Audience)
@@ -7726,6 +7647,10 @@ func (c FfiConverterDataplaneConfig) Read(reader io.Reader) DataplaneConfig {
 
 func (c FfiConverterDataplaneConfig) Lower(value DataplaneConfig) C.RustBuffer {
 	return LowerIntoRustBuffer[DataplaneConfig](c, value)
+}
+
+func (c FfiConverterDataplaneConfig) LowerExternal(value DataplaneConfig) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[DataplaneConfig](c, value))
 }
 
 func (c FfiConverterDataplaneConfig) Write(writer io.Writer, value DataplaneConfig) {
@@ -7783,6 +7708,10 @@ func (c FfiConverterExponentialBackoff) Lower(value ExponentialBackoff) C.RustBu
 	return LowerIntoRustBuffer[ExponentialBackoff](c, value)
 }
 
+func (c FfiConverterExponentialBackoff) LowerExternal(value ExponentialBackoff) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[ExponentialBackoff](c, value))
+}
+
 func (c FfiConverterExponentialBackoff) Write(writer io.Writer, value ExponentialBackoff) {
 	FfiConverterDurationINSTANCE.Write(writer, value.Base)
 	FfiConverterUint64INSTANCE.Write(writer, value.Factor)
@@ -7827,6 +7756,10 @@ func (c FfiConverterFixedIntervalBackoff) Read(reader io.Reader) FixedIntervalBa
 
 func (c FfiConverterFixedIntervalBackoff) Lower(value FixedIntervalBackoff) C.RustBuffer {
 	return LowerIntoRustBuffer[FixedIntervalBackoff](c, value)
+}
+
+func (c FfiConverterFixedIntervalBackoff) LowerExternal(value FixedIntervalBackoff) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[FixedIntervalBackoff](c, value))
 }
 
 func (c FfiConverterFixedIntervalBackoff) Write(writer io.Writer, value FixedIntervalBackoff) {
@@ -7884,6 +7817,10 @@ func (c FfiConverterJwtAuth) Lower(value JwtAuth) C.RustBuffer {
 	return LowerIntoRustBuffer[JwtAuth](c, value)
 }
 
+func (c FfiConverterJwtAuth) LowerExternal(value JwtAuth) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[JwtAuth](c, value))
+}
+
 func (c FfiConverterJwtAuth) Write(writer io.Writer, value JwtAuth) {
 	FfiConverterJwtKeyTypeINSTANCE.Write(writer, value.Key)
 	FfiConverterOptionalSequenceStringINSTANCE.Write(writer, value.Audience)
@@ -7932,6 +7869,10 @@ func (c FfiConverterJwtKeyConfig) Read(reader io.Reader) JwtKeyConfig {
 
 func (c FfiConverterJwtKeyConfig) Lower(value JwtKeyConfig) C.RustBuffer {
 	return LowerIntoRustBuffer[JwtKeyConfig](c, value)
+}
+
+func (c FfiConverterJwtKeyConfig) LowerExternal(value JwtKeyConfig) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[JwtKeyConfig](c, value))
 }
 
 func (c FfiConverterJwtKeyConfig) Write(writer io.Writer, value JwtKeyConfig) {
@@ -7984,6 +7925,10 @@ func (c FfiConverterKeepaliveConfig) Read(reader io.Reader) KeepaliveConfig {
 
 func (c FfiConverterKeepaliveConfig) Lower(value KeepaliveConfig) C.RustBuffer {
 	return LowerIntoRustBuffer[KeepaliveConfig](c, value)
+}
+
+func (c FfiConverterKeepaliveConfig) LowerExternal(value KeepaliveConfig) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[KeepaliveConfig](c, value))
 }
 
 func (c FfiConverterKeepaliveConfig) Write(writer io.Writer, value KeepaliveConfig) {
@@ -8041,6 +7986,10 @@ func (c FfiConverterKeepaliveServerParameters) Read(reader io.Reader) KeepaliveS
 
 func (c FfiConverterKeepaliveServerParameters) Lower(value KeepaliveServerParameters) C.RustBuffer {
 	return LowerIntoRustBuffer[KeepaliveServerParameters](c, value)
+}
+
+func (c FfiConverterKeepaliveServerParameters) LowerExternal(value KeepaliveServerParameters) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[KeepaliveServerParameters](c, value))
 }
 
 func (c FfiConverterKeepaliveServerParameters) Write(writer io.Writer, value KeepaliveServerParameters) {
@@ -8109,6 +8058,10 @@ func (c FfiConverterMessageContext) Lower(value MessageContext) C.RustBuffer {
 	return LowerIntoRustBuffer[MessageContext](c, value)
 }
 
+func (c FfiConverterMessageContext) LowerExternal(value MessageContext) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[MessageContext](c, value))
+}
+
 func (c FfiConverterMessageContext) Write(writer io.Writer, value MessageContext) {
 	FfiConverterNameINSTANCE.Write(writer, value.SourceName)
 	FfiConverterOptionalNameINSTANCE.Write(writer, value.DestinationName)
@@ -8168,6 +8121,10 @@ func (c FfiConverterProxyConfig) Lower(value ProxyConfig) C.RustBuffer {
 	return LowerIntoRustBuffer[ProxyConfig](c, value)
 }
 
+func (c FfiConverterProxyConfig) LowerExternal(value ProxyConfig) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[ProxyConfig](c, value))
+}
+
 func (c FfiConverterProxyConfig) Write(writer io.Writer, value ProxyConfig) {
 	FfiConverterOptionalStringINSTANCE.Write(writer, value.Url)
 	FfiConverterTlsClientConfigINSTANCE.Write(writer, value.Tls)
@@ -8210,6 +8167,10 @@ func (c FfiConverterReceivedMessage) Read(reader io.Reader) ReceivedMessage {
 
 func (c FfiConverterReceivedMessage) Lower(value ReceivedMessage) C.RustBuffer {
 	return LowerIntoRustBuffer[ReceivedMessage](c, value)
+}
+
+func (c FfiConverterReceivedMessage) LowerExternal(value ReceivedMessage) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[ReceivedMessage](c, value))
 }
 
 func (c FfiConverterReceivedMessage) Write(writer io.Writer, value ReceivedMessage) {
@@ -8261,6 +8222,10 @@ func (c FfiConverterRuntimeConfig) Lower(value RuntimeConfig) C.RustBuffer {
 	return LowerIntoRustBuffer[RuntimeConfig](c, value)
 }
 
+func (c FfiConverterRuntimeConfig) LowerExternal(value RuntimeConfig) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[RuntimeConfig](c, value))
+}
+
 func (c FfiConverterRuntimeConfig) Write(writer io.Writer, value RuntimeConfig) {
 	FfiConverterUint64INSTANCE.Write(writer, value.NCores)
 	FfiConverterStringINSTANCE.Write(writer, value.ThreadName)
@@ -8277,6 +8242,8 @@ func (_ FfiDestroyerRuntimeConfig) Destroy(value RuntimeConfig) {
 type ServerConfig struct {
 	// Endpoint address to listen on (e.g., "0.0.0.0:50051" or "[::]:50051")
 	Endpoint string
+	// Transport protocol to use (defaults to gRPC in core config when omitted)
+	Transport *TransportProtocol
 	// TLS server configuration
 	Tls TlsServerConfig
 	// Use HTTP/2 only (default: true)
@@ -8301,6 +8268,7 @@ type ServerConfig struct {
 
 func (r *ServerConfig) Destroy() {
 	FfiDestroyerString{}.Destroy(r.Endpoint)
+	FfiDestroyerOptionalTransportProtocol{}.Destroy(r.Transport)
 	FfiDestroyerTlsServerConfig{}.Destroy(r.Tls)
 	FfiDestroyerOptionalBool{}.Destroy(r.Http2Only)
 	FfiDestroyerOptionalUint32{}.Destroy(r.MaxFrameSize)
@@ -8324,6 +8292,7 @@ func (c FfiConverterServerConfig) Lift(rb RustBufferI) ServerConfig {
 func (c FfiConverterServerConfig) Read(reader io.Reader) ServerConfig {
 	return ServerConfig{
 		FfiConverterStringINSTANCE.Read(reader),
+		FfiConverterOptionalTransportProtocolINSTANCE.Read(reader),
 		FfiConverterTlsServerConfigINSTANCE.Read(reader),
 		FfiConverterOptionalBoolINSTANCE.Read(reader),
 		FfiConverterOptionalUint32INSTANCE.Read(reader),
@@ -8341,8 +8310,13 @@ func (c FfiConverterServerConfig) Lower(value ServerConfig) C.RustBuffer {
 	return LowerIntoRustBuffer[ServerConfig](c, value)
 }
 
+func (c FfiConverterServerConfig) LowerExternal(value ServerConfig) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[ServerConfig](c, value))
+}
+
 func (c FfiConverterServerConfig) Write(writer io.Writer, value ServerConfig) {
 	FfiConverterStringINSTANCE.Write(writer, value.Endpoint)
+	FfiConverterOptionalTransportProtocolINSTANCE.Write(writer, value.Transport)
 	FfiConverterTlsServerConfigINSTANCE.Write(writer, value.Tls)
 	FfiConverterOptionalBoolINSTANCE.Write(writer, value.Http2Only)
 	FfiConverterOptionalUint32INSTANCE.Write(writer, value.MaxFrameSize)
@@ -8395,6 +8369,10 @@ func (c FfiConverterServiceConfig) Read(reader io.Reader) ServiceConfig {
 
 func (c FfiConverterServiceConfig) Lower(value ServiceConfig) C.RustBuffer {
 	return LowerIntoRustBuffer[ServiceConfig](c, value)
+}
+
+func (c FfiConverterServiceConfig) LowerExternal(value ServiceConfig) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[ServiceConfig](c, value))
 }
 
 func (c FfiConverterServiceConfig) Write(writer io.Writer, value ServiceConfig) {
@@ -8453,6 +8431,10 @@ func (c FfiConverterSessionConfig) Lower(value SessionConfig) C.RustBuffer {
 	return LowerIntoRustBuffer[SessionConfig](c, value)
 }
 
+func (c FfiConverterSessionConfig) LowerExternal(value SessionConfig) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[SessionConfig](c, value))
+}
+
 func (c FfiConverterSessionConfig) Write(writer io.Writer, value SessionConfig) {
 	FfiConverterSessionTypeINSTANCE.Write(writer, value.SessionType)
 	FfiConverterBoolINSTANCE.Write(writer, value.EnableMls)
@@ -8499,6 +8481,10 @@ func (c FfiConverterSessionWithCompletion) Read(reader io.Reader) SessionWithCom
 
 func (c FfiConverterSessionWithCompletion) Lower(value SessionWithCompletion) C.RustBuffer {
 	return LowerIntoRustBuffer[SessionWithCompletion](c, value)
+}
+
+func (c FfiConverterSessionWithCompletion) LowerExternal(value SessionWithCompletion) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[SessionWithCompletion](c, value))
 }
 
 func (c FfiConverterSessionWithCompletion) Write(writer io.Writer, value SessionWithCompletion) {
@@ -8552,6 +8538,10 @@ func (c FfiConverterSpireConfig) Lower(value SpireConfig) C.RustBuffer {
 	return LowerIntoRustBuffer[SpireConfig](c, value)
 }
 
+func (c FfiConverterSpireConfig) LowerExternal(value SpireConfig) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[SpireConfig](c, value))
+}
+
 func (c FfiConverterSpireConfig) Write(writer io.Writer, value SpireConfig) {
 	FfiConverterOptionalStringINSTANCE.Write(writer, value.SocketPath)
 	FfiConverterOptionalStringINSTANCE.Write(writer, value.TargetSpiffeId)
@@ -8596,6 +8586,10 @@ func (c FfiConverterStaticJwtAuth) Read(reader io.Reader) StaticJwtAuth {
 
 func (c FfiConverterStaticJwtAuth) Lower(value StaticJwtAuth) C.RustBuffer {
 	return LowerIntoRustBuffer[StaticJwtAuth](c, value)
+}
+
+func (c FfiConverterStaticJwtAuth) LowerExternal(value StaticJwtAuth) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[StaticJwtAuth](c, value))
 }
 
 func (c FfiConverterStaticJwtAuth) Write(writer io.Writer, value StaticJwtAuth) {
@@ -8656,6 +8650,10 @@ func (c FfiConverterTlsClientConfig) Read(reader io.Reader) TlsClientConfig {
 
 func (c FfiConverterTlsClientConfig) Lower(value TlsClientConfig) C.RustBuffer {
 	return LowerIntoRustBuffer[TlsClientConfig](c, value)
+}
+
+func (c FfiConverterTlsClientConfig) LowerExternal(value TlsClientConfig) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[TlsClientConfig](c, value))
 }
 
 func (c FfiConverterTlsClientConfig) Write(writer io.Writer, value TlsClientConfig) {
@@ -8721,6 +8719,10 @@ func (c FfiConverterTlsServerConfig) Lower(value TlsServerConfig) C.RustBuffer {
 	return LowerIntoRustBuffer[TlsServerConfig](c, value)
 }
 
+func (c FfiConverterTlsServerConfig) LowerExternal(value TlsServerConfig) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[TlsServerConfig](c, value))
+}
+
 func (c FfiConverterTlsServerConfig) Write(writer io.Writer, value TlsServerConfig) {
 	FfiConverterBoolINSTANCE.Write(writer, value.Insecure)
 	FfiConverterTlsSourceINSTANCE.Write(writer, value.Source)
@@ -8778,6 +8780,10 @@ func (c FfiConverterTracingConfig) Lower(value TracingConfig) C.RustBuffer {
 	return LowerIntoRustBuffer[TracingConfig](c, value)
 }
 
+func (c FfiConverterTracingConfig) LowerExternal(value TracingConfig) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[TracingConfig](c, value))
+}
+
 func (c FfiConverterTracingConfig) Write(writer io.Writer, value TracingConfig) {
 	FfiConverterStringINSTANCE.Write(writer, value.LogLevel)
 	FfiConverterBoolINSTANCE.Write(writer, value.DisplayThreadNames)
@@ -8821,6 +8827,10 @@ func (c FfiConverterBackoffConfig) Lift(rb RustBufferI) BackoffConfig {
 
 func (c FfiConverterBackoffConfig) Lower(value BackoffConfig) C.RustBuffer {
 	return LowerIntoRustBuffer[BackoffConfig](c, value)
+}
+
+func (c FfiConverterBackoffConfig) LowerExternal(value BackoffConfig) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[BackoffConfig](c, value))
 }
 func (FfiConverterBackoffConfig) Read(reader io.Reader) BackoffConfig {
 	id := readInt32(reader)
@@ -8907,6 +8917,10 @@ func (c FfiConverterCaSource) Lift(rb RustBufferI) CaSource {
 
 func (c FfiConverterCaSource) Lower(value CaSource) C.RustBuffer {
 	return LowerIntoRustBuffer[CaSource](c, value)
+}
+
+func (c FfiConverterCaSource) LowerExternal(value CaSource) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[CaSource](c, value))
 }
 func (FfiConverterCaSource) Read(reader io.Reader) CaSource {
 	id := readInt32(reader)
@@ -9000,6 +9014,10 @@ func (c FfiConverterClientAuthenticationConfig) Lift(rb RustBufferI) ClientAuthe
 func (c FfiConverterClientAuthenticationConfig) Lower(value ClientAuthenticationConfig) C.RustBuffer {
 	return LowerIntoRustBuffer[ClientAuthenticationConfig](c, value)
 }
+
+func (c FfiConverterClientAuthenticationConfig) LowerExternal(value ClientAuthenticationConfig) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[ClientAuthenticationConfig](c, value))
+}
 func (FfiConverterClientAuthenticationConfig) Read(reader io.Reader) ClientAuthenticationConfig {
 	id := readInt32(reader)
 	switch id {
@@ -9072,6 +9090,10 @@ func (c FfiConverterCompressionType) Lift(rb RustBufferI) CompressionType {
 func (c FfiConverterCompressionType) Lower(value CompressionType) C.RustBuffer {
 	return LowerIntoRustBuffer[CompressionType](c, value)
 }
+
+func (c FfiConverterCompressionType) LowerExternal(value CompressionType) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[CompressionType](c, value))
+}
 func (FfiConverterCompressionType) Read(reader io.Reader) CompressionType {
 	id := readInt32(reader)
 	return CompressionType(id)
@@ -9107,6 +9129,10 @@ func (c FfiConverterDirection) Lift(rb RustBufferI) Direction {
 
 func (c FfiConverterDirection) Lower(value Direction) C.RustBuffer {
 	return LowerIntoRustBuffer[Direction](c, value)
+}
+
+func (c FfiConverterDirection) LowerExternal(value Direction) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[Direction](c, value))
 }
 func (FfiConverterDirection) Read(reader io.Reader) Direction {
 	id := readInt32(reader)
@@ -9182,6 +9208,10 @@ func (c FfiConverterIdentityProviderConfig) Lift(rb RustBufferI) IdentityProvide
 
 func (c FfiConverterIdentityProviderConfig) Lower(value IdentityProviderConfig) C.RustBuffer {
 	return LowerIntoRustBuffer[IdentityProviderConfig](c, value)
+}
+
+func (c FfiConverterIdentityProviderConfig) LowerExternal(value IdentityProviderConfig) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[IdentityProviderConfig](c, value))
 }
 func (FfiConverterIdentityProviderConfig) Read(reader io.Reader) IdentityProviderConfig {
 	id := readInt32(reader)
@@ -9291,6 +9321,10 @@ func (c FfiConverterIdentityVerifierConfig) Lift(rb RustBufferI) IdentityVerifie
 func (c FfiConverterIdentityVerifierConfig) Lower(value IdentityVerifierConfig) C.RustBuffer {
 	return LowerIntoRustBuffer[IdentityVerifierConfig](c, value)
 }
+
+func (c FfiConverterIdentityVerifierConfig) LowerExternal(value IdentityVerifierConfig) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[IdentityVerifierConfig](c, value))
+}
 func (FfiConverterIdentityVerifierConfig) Read(reader io.Reader) IdentityVerifierConfig {
 	id := readInt32(reader)
 	switch id {
@@ -9369,6 +9403,10 @@ func (c FfiConverterJwtAlgorithm) Lift(rb RustBufferI) JwtAlgorithm {
 func (c FfiConverterJwtAlgorithm) Lower(value JwtAlgorithm) C.RustBuffer {
 	return LowerIntoRustBuffer[JwtAlgorithm](c, value)
 }
+
+func (c FfiConverterJwtAlgorithm) LowerExternal(value JwtAlgorithm) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[JwtAlgorithm](c, value))
+}
 func (FfiConverterJwtAlgorithm) Read(reader io.Reader) JwtAlgorithm {
 	id := readInt32(reader)
 	return JwtAlgorithm(id)
@@ -9416,6 +9454,10 @@ func (c FfiConverterJwtKeyData) Lift(rb RustBufferI) JwtKeyData {
 
 func (c FfiConverterJwtKeyData) Lower(value JwtKeyData) C.RustBuffer {
 	return LowerIntoRustBuffer[JwtKeyData](c, value)
+}
+
+func (c FfiConverterJwtKeyData) LowerExternal(value JwtKeyData) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[JwtKeyData](c, value))
 }
 func (FfiConverterJwtKeyData) Read(reader io.Reader) JwtKeyData {
 	id := readInt32(reader)
@@ -9473,6 +9515,10 @@ func (c FfiConverterJwtKeyFormat) Lift(rb RustBufferI) JwtKeyFormat {
 func (c FfiConverterJwtKeyFormat) Lower(value JwtKeyFormat) C.RustBuffer {
 	return LowerIntoRustBuffer[JwtKeyFormat](c, value)
 }
+
+func (c FfiConverterJwtKeyFormat) LowerExternal(value JwtKeyFormat) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[JwtKeyFormat](c, value))
+}
 func (FfiConverterJwtKeyFormat) Read(reader io.Reader) JwtKeyFormat {
 	id := readInt32(reader)
 	return JwtKeyFormat(id)
@@ -9527,6 +9573,10 @@ func (c FfiConverterJwtKeyType) Lift(rb RustBufferI) JwtKeyType {
 
 func (c FfiConverterJwtKeyType) Lower(value JwtKeyType) C.RustBuffer {
 	return LowerIntoRustBuffer[JwtKeyType](c, value)
+}
+
+func (c FfiConverterJwtKeyType) LowerExternal(value JwtKeyType) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[JwtKeyType](c, value))
 }
 func (FfiConverterJwtKeyType) Read(reader io.Reader) JwtKeyType {
 	id := readInt32(reader)
@@ -9618,6 +9668,10 @@ func (c FfiConverterRpcCode) Lift(rb RustBufferI) RpcCode {
 
 func (c FfiConverterRpcCode) Lower(value RpcCode) C.RustBuffer {
 	return LowerIntoRustBuffer[RpcCode](c, value)
+}
+
+func (c FfiConverterRpcCode) LowerExternal(value RpcCode) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[RpcCode](c, value))
 }
 func (FfiConverterRpcCode) Read(reader io.Reader) RpcCode {
 	id := readInt32(reader)
@@ -9716,6 +9770,10 @@ func (c FfiConverterRpcError) Lower(value *RpcError) C.RustBuffer {
 	return LowerIntoRustBuffer[*RpcError](c, value)
 }
 
+func (c FfiConverterRpcError) LowerExternal(value *RpcError) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[*RpcError](c, value))
+}
+
 func (c FfiConverterRpcError) Read(reader io.Reader) *RpcError {
 	errorID := readUint32(reader)
 
@@ -9793,6 +9851,10 @@ func (c FfiConverterServerAuthenticationConfig) Lift(rb RustBufferI) ServerAuthe
 func (c FfiConverterServerAuthenticationConfig) Lower(value ServerAuthenticationConfig) C.RustBuffer {
 	return LowerIntoRustBuffer[ServerAuthenticationConfig](c, value)
 }
+
+func (c FfiConverterServerAuthenticationConfig) LowerExternal(value ServerAuthenticationConfig) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[ServerAuthenticationConfig](c, value))
+}
 func (FfiConverterServerAuthenticationConfig) Read(reader io.Reader) ServerAuthenticationConfig {
 	id := readInt32(reader)
 	switch id {
@@ -9851,6 +9913,10 @@ func (c FfiConverterSessionType) Lift(rb RustBufferI) SessionType {
 
 func (c FfiConverterSessionType) Lower(value SessionType) C.RustBuffer {
 	return LowerIntoRustBuffer[SessionType](c, value)
+}
+
+func (c FfiConverterSessionType) LowerExternal(value SessionType) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[SessionType](c, value))
 }
 func (FfiConverterSessionType) Read(reader io.Reader) SessionType {
 	id := readInt32(reader)
@@ -10184,6 +10250,10 @@ func (c FfiConverterSlimError) Lower(value *SlimError) C.RustBuffer {
 	return LowerIntoRustBuffer[*SlimError](c, value)
 }
 
+func (c FfiConverterSlimError) LowerExternal(value *SlimError) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[*SlimError](c, value))
+}
+
 func (c FfiConverterSlimError) Read(reader io.Reader) *SlimError {
 	errorID := readUint32(reader)
 
@@ -10339,6 +10409,10 @@ func (c FfiConverterStreamMessage) Lift(rb RustBufferI) StreamMessage {
 func (c FfiConverterStreamMessage) Lower(value StreamMessage) C.RustBuffer {
 	return LowerIntoRustBuffer[StreamMessage](c, value)
 }
+
+func (c FfiConverterStreamMessage) LowerExternal(value StreamMessage) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[StreamMessage](c, value))
+}
 func (FfiConverterStreamMessage) Read(reader io.Reader) StreamMessage {
 	id := readInt32(reader)
 	switch id {
@@ -10433,6 +10507,10 @@ func (c FfiConverterTlsSource) Lift(rb RustBufferI) TlsSource {
 func (c FfiConverterTlsSource) Lower(value TlsSource) C.RustBuffer {
 	return LowerIntoRustBuffer[TlsSource](c, value)
 }
+
+func (c FfiConverterTlsSource) LowerExternal(value TlsSource) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[TlsSource](c, value))
+}
 func (FfiConverterTlsSource) Read(reader io.Reader) TlsSource {
 	id := readInt32(reader)
 	switch id {
@@ -10484,6 +10562,43 @@ func (_ FfiDestroyerTlsSource) Destroy(value TlsSource) {
 	value.Destroy()
 }
 
+// Transport protocol for dataplane communication.
+type TransportProtocol uint
+
+const (
+	TransportProtocolGrpc      TransportProtocol = 1
+	TransportProtocolWebsocket TransportProtocol = 2
+)
+
+type FfiConverterTransportProtocol struct{}
+
+var FfiConverterTransportProtocolINSTANCE = FfiConverterTransportProtocol{}
+
+func (c FfiConverterTransportProtocol) Lift(rb RustBufferI) TransportProtocol {
+	return LiftFromRustBuffer[TransportProtocol](c, rb)
+}
+
+func (c FfiConverterTransportProtocol) Lower(value TransportProtocol) C.RustBuffer {
+	return LowerIntoRustBuffer[TransportProtocol](c, value)
+}
+
+func (c FfiConverterTransportProtocol) LowerExternal(value TransportProtocol) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[TransportProtocol](c, value))
+}
+func (FfiConverterTransportProtocol) Read(reader io.Reader) TransportProtocol {
+	id := readInt32(reader)
+	return TransportProtocol(id)
+}
+
+func (FfiConverterTransportProtocol) Write(writer io.Writer, value TransportProtocol) {
+	writeInt32(writer, int32(value))
+}
+
+type FfiDestroyerTransportProtocol struct{}
+
+func (_ FfiDestroyerTransportProtocol) Destroy(value TransportProtocol) {
+}
+
 type FfiConverterOptionalUint32 struct{}
 
 var FfiConverterOptionalUint32INSTANCE = FfiConverterOptionalUint32{}
@@ -10502,6 +10617,10 @@ func (_ FfiConverterOptionalUint32) Read(reader io.Reader) *uint32 {
 
 func (c FfiConverterOptionalUint32) Lower(value *uint32) C.RustBuffer {
 	return LowerIntoRustBuffer[*uint32](c, value)
+}
+
+func (c FfiConverterOptionalUint32) LowerExternal(value *uint32) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[*uint32](c, value))
 }
 
 func (_ FfiConverterOptionalUint32) Write(writer io.Writer, value *uint32) {
@@ -10541,6 +10660,10 @@ func (c FfiConverterOptionalUint64) Lower(value *uint64) C.RustBuffer {
 	return LowerIntoRustBuffer[*uint64](c, value)
 }
 
+func (c FfiConverterOptionalUint64) LowerExternal(value *uint64) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[*uint64](c, value))
+}
+
 func (_ FfiConverterOptionalUint64) Write(writer io.Writer, value *uint64) {
 	if value == nil {
 		writeInt8(writer, 0)
@@ -10576,6 +10699,10 @@ func (_ FfiConverterOptionalBool) Read(reader io.Reader) *bool {
 
 func (c FfiConverterOptionalBool) Lower(value *bool) C.RustBuffer {
 	return LowerIntoRustBuffer[*bool](c, value)
+}
+
+func (c FfiConverterOptionalBool) LowerExternal(value *bool) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[*bool](c, value))
 }
 
 func (_ FfiConverterOptionalBool) Write(writer io.Writer, value *bool) {
@@ -10615,6 +10742,10 @@ func (c FfiConverterOptionalString) Lower(value *string) C.RustBuffer {
 	return LowerIntoRustBuffer[*string](c, value)
 }
 
+func (c FfiConverterOptionalString) LowerExternal(value *string) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[*string](c, value))
+}
+
 func (_ FfiConverterOptionalString) Write(writer io.Writer, value *string) {
 	if value == nil {
 		writeInt8(writer, 0)
@@ -10650,6 +10781,10 @@ func (_ FfiConverterOptionalBytes) Read(reader io.Reader) *[]byte {
 
 func (c FfiConverterOptionalBytes) Lower(value *[]byte) C.RustBuffer {
 	return LowerIntoRustBuffer[*[]byte](c, value)
+}
+
+func (c FfiConverterOptionalBytes) LowerExternal(value *[]byte) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[*[]byte](c, value))
 }
 
 func (_ FfiConverterOptionalBytes) Write(writer io.Writer, value *[]byte) {
@@ -10689,6 +10824,10 @@ func (c FfiConverterOptionalDuration) Lower(value *time.Duration) C.RustBuffer {
 	return LowerIntoRustBuffer[*time.Duration](c, value)
 }
 
+func (c FfiConverterOptionalDuration) LowerExternal(value *time.Duration) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[*time.Duration](c, value))
+}
+
 func (_ FfiConverterOptionalDuration) Write(writer io.Writer, value *time.Duration) {
 	if value == nil {
 		writeInt8(writer, 0)
@@ -10724,6 +10863,10 @@ func (_ FfiConverterOptionalName) Read(reader io.Reader) **Name {
 
 func (c FfiConverterOptionalName) Lower(value **Name) C.RustBuffer {
 	return LowerIntoRustBuffer[**Name](c, value)
+}
+
+func (c FfiConverterOptionalName) LowerExternal(value **Name) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[**Name](c, value))
 }
 
 func (_ FfiConverterOptionalName) Write(writer io.Writer, value **Name) {
@@ -10763,6 +10906,10 @@ func (c FfiConverterOptionalKeepaliveConfig) Lower(value *KeepaliveConfig) C.Rus
 	return LowerIntoRustBuffer[*KeepaliveConfig](c, value)
 }
 
+func (c FfiConverterOptionalKeepaliveConfig) LowerExternal(value *KeepaliveConfig) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[*KeepaliveConfig](c, value))
+}
+
 func (_ FfiConverterOptionalKeepaliveConfig) Write(writer io.Writer, value *KeepaliveConfig) {
 	if value == nil {
 		writeInt8(writer, 0)
@@ -10798,6 +10945,10 @@ func (_ FfiConverterOptionalKeepaliveServerParameters) Read(reader io.Reader) *K
 
 func (c FfiConverterOptionalKeepaliveServerParameters) Lower(value *KeepaliveServerParameters) C.RustBuffer {
 	return LowerIntoRustBuffer[*KeepaliveServerParameters](c, value)
+}
+
+func (c FfiConverterOptionalKeepaliveServerParameters) LowerExternal(value *KeepaliveServerParameters) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[*KeepaliveServerParameters](c, value))
 }
 
 func (_ FfiConverterOptionalKeepaliveServerParameters) Write(writer io.Writer, value *KeepaliveServerParameters) {
@@ -10837,6 +10988,10 @@ func (c FfiConverterOptionalProxyConfig) Lower(value *ProxyConfig) C.RustBuffer 
 	return LowerIntoRustBuffer[*ProxyConfig](c, value)
 }
 
+func (c FfiConverterOptionalProxyConfig) LowerExternal(value *ProxyConfig) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[*ProxyConfig](c, value))
+}
+
 func (_ FfiConverterOptionalProxyConfig) Write(writer io.Writer, value *ProxyConfig) {
 	if value == nil {
 		writeInt8(writer, 0)
@@ -10872,6 +11027,10 @@ func (_ FfiConverterOptionalBackoffConfig) Read(reader io.Reader) *BackoffConfig
 
 func (c FfiConverterOptionalBackoffConfig) Lower(value *BackoffConfig) C.RustBuffer {
 	return LowerIntoRustBuffer[*BackoffConfig](c, value)
+}
+
+func (c FfiConverterOptionalBackoffConfig) LowerExternal(value *BackoffConfig) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[*BackoffConfig](c, value))
 }
 
 func (_ FfiConverterOptionalBackoffConfig) Write(writer io.Writer, value *BackoffConfig) {
@@ -10911,6 +11070,10 @@ func (c FfiConverterOptionalClientAuthenticationConfig) Lower(value *ClientAuthe
 	return LowerIntoRustBuffer[*ClientAuthenticationConfig](c, value)
 }
 
+func (c FfiConverterOptionalClientAuthenticationConfig) LowerExternal(value *ClientAuthenticationConfig) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[*ClientAuthenticationConfig](c, value))
+}
+
 func (_ FfiConverterOptionalClientAuthenticationConfig) Write(writer io.Writer, value *ClientAuthenticationConfig) {
 	if value == nil {
 		writeInt8(writer, 0)
@@ -10946,6 +11109,10 @@ func (_ FfiConverterOptionalCompressionType) Read(reader io.Reader) *Compression
 
 func (c FfiConverterOptionalCompressionType) Lower(value *CompressionType) C.RustBuffer {
 	return LowerIntoRustBuffer[*CompressionType](c, value)
+}
+
+func (c FfiConverterOptionalCompressionType) LowerExternal(value *CompressionType) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[*CompressionType](c, value))
 }
 
 func (_ FfiConverterOptionalCompressionType) Write(writer io.Writer, value *CompressionType) {
@@ -10985,6 +11152,10 @@ func (c FfiConverterOptionalServerAuthenticationConfig) Lower(value *ServerAuthe
 	return LowerIntoRustBuffer[*ServerAuthenticationConfig](c, value)
 }
 
+func (c FfiConverterOptionalServerAuthenticationConfig) LowerExternal(value *ServerAuthenticationConfig) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[*ServerAuthenticationConfig](c, value))
+}
+
 func (_ FfiConverterOptionalServerAuthenticationConfig) Write(writer io.Writer, value *ServerAuthenticationConfig) {
 	if value == nil {
 		writeInt8(writer, 0)
@@ -10999,6 +11170,47 @@ type FfiDestroyerOptionalServerAuthenticationConfig struct{}
 func (_ FfiDestroyerOptionalServerAuthenticationConfig) Destroy(value *ServerAuthenticationConfig) {
 	if value != nil {
 		FfiDestroyerServerAuthenticationConfig{}.Destroy(*value)
+	}
+}
+
+type FfiConverterOptionalTransportProtocol struct{}
+
+var FfiConverterOptionalTransportProtocolINSTANCE = FfiConverterOptionalTransportProtocol{}
+
+func (c FfiConverterOptionalTransportProtocol) Lift(rb RustBufferI) *TransportProtocol {
+	return LiftFromRustBuffer[*TransportProtocol](c, rb)
+}
+
+func (_ FfiConverterOptionalTransportProtocol) Read(reader io.Reader) *TransportProtocol {
+	if readInt8(reader) == 0 {
+		return nil
+	}
+	temp := FfiConverterTransportProtocolINSTANCE.Read(reader)
+	return &temp
+}
+
+func (c FfiConverterOptionalTransportProtocol) Lower(value *TransportProtocol) C.RustBuffer {
+	return LowerIntoRustBuffer[*TransportProtocol](c, value)
+}
+
+func (c FfiConverterOptionalTransportProtocol) LowerExternal(value *TransportProtocol) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[*TransportProtocol](c, value))
+}
+
+func (_ FfiConverterOptionalTransportProtocol) Write(writer io.Writer, value *TransportProtocol) {
+	if value == nil {
+		writeInt8(writer, 0)
+	} else {
+		writeInt8(writer, 1)
+		FfiConverterTransportProtocolINSTANCE.Write(writer, *value)
+	}
+}
+
+type FfiDestroyerOptionalTransportProtocol struct{}
+
+func (_ FfiDestroyerOptionalTransportProtocol) Destroy(value *TransportProtocol) {
+	if value != nil {
+		FfiDestroyerTransportProtocol{}.Destroy(*value)
 	}
 }
 
@@ -11020,6 +11232,10 @@ func (_ FfiConverterOptionalSequenceString) Read(reader io.Reader) *[]string {
 
 func (c FfiConverterOptionalSequenceString) Lower(value *[]string) C.RustBuffer {
 	return LowerIntoRustBuffer[*[]string](c, value)
+}
+
+func (c FfiConverterOptionalSequenceString) LowerExternal(value *[]string) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[*[]string](c, value))
 }
 
 func (_ FfiConverterOptionalSequenceString) Write(writer io.Writer, value *[]string) {
@@ -11057,6 +11273,10 @@ func (_ FfiConverterOptionalMapStringString) Read(reader io.Reader) *map[string]
 
 func (c FfiConverterOptionalMapStringString) Lower(value *map[string]string) C.RustBuffer {
 	return LowerIntoRustBuffer[*map[string]string](c, value)
+}
+
+func (c FfiConverterOptionalMapStringString) LowerExternal(value *map[string]string) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[*map[string]string](c, value))
 }
 
 func (_ FfiConverterOptionalMapStringString) Write(writer io.Writer, value *map[string]string) {
@@ -11098,6 +11318,10 @@ func (c FfiConverterSequenceString) Read(reader io.Reader) []string {
 
 func (c FfiConverterSequenceString) Lower(value []string) C.RustBuffer {
 	return LowerIntoRustBuffer[[]string](c, value)
+}
+
+func (c FfiConverterSequenceString) LowerExternal(value []string) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[[]string](c, value))
 }
 
 func (c FfiConverterSequenceString) Write(writer io.Writer, value []string) {
@@ -11143,6 +11367,10 @@ func (c FfiConverterSequenceName) Lower(value []*Name) C.RustBuffer {
 	return LowerIntoRustBuffer[[]*Name](c, value)
 }
 
+func (c FfiConverterSequenceName) LowerExternal(value []*Name) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[[]*Name](c, value))
+}
+
 func (c FfiConverterSequenceName) Write(writer io.Writer, value []*Name) {
 	if len(value) > math.MaxInt32 {
 		panic("[]*Name is too large to fit into Int32")
@@ -11184,6 +11412,10 @@ func (c FfiConverterSequenceService) Read(reader io.Reader) []*Service {
 
 func (c FfiConverterSequenceService) Lower(value []*Service) C.RustBuffer {
 	return LowerIntoRustBuffer[[]*Service](c, value)
+}
+
+func (c FfiConverterSequenceService) LowerExternal(value []*Service) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[[]*Service](c, value))
 }
 
 func (c FfiConverterSequenceService) Write(writer io.Writer, value []*Service) {
@@ -11229,6 +11461,10 @@ func (c FfiConverterSequenceClientConfig) Lower(value []ClientConfig) C.RustBuff
 	return LowerIntoRustBuffer[[]ClientConfig](c, value)
 }
 
+func (c FfiConverterSequenceClientConfig) LowerExternal(value []ClientConfig) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[[]ClientConfig](c, value))
+}
+
 func (c FfiConverterSequenceClientConfig) Write(writer io.Writer, value []ClientConfig) {
 	if len(value) > math.MaxInt32 {
 		panic("[]ClientConfig is too large to fit into Int32")
@@ -11270,6 +11506,10 @@ func (c FfiConverterSequenceServerConfig) Read(reader io.Reader) []ServerConfig 
 
 func (c FfiConverterSequenceServerConfig) Lower(value []ServerConfig) C.RustBuffer {
 	return LowerIntoRustBuffer[[]ServerConfig](c, value)
+}
+
+func (c FfiConverterSequenceServerConfig) LowerExternal(value []ServerConfig) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[[]ServerConfig](c, value))
 }
 
 func (c FfiConverterSequenceServerConfig) Write(writer io.Writer, value []ServerConfig) {
@@ -11315,6 +11555,10 @@ func (c FfiConverterSequenceServiceConfig) Lower(value []ServiceConfig) C.RustBu
 	return LowerIntoRustBuffer[[]ServiceConfig](c, value)
 }
 
+func (c FfiConverterSequenceServiceConfig) LowerExternal(value []ServiceConfig) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[[]ServiceConfig](c, value))
+}
+
 func (c FfiConverterSequenceServiceConfig) Write(writer io.Writer, value []ServiceConfig) {
 	if len(value) > math.MaxInt32 {
 		panic("[]ServiceConfig is too large to fit into Int32")
@@ -11355,6 +11599,10 @@ func (_ FfiConverterMapStringString) Read(reader io.Reader) map[string]string {
 
 func (c FfiConverterMapStringString) Lower(value map[string]string) C.RustBuffer {
 	return LowerIntoRustBuffer[map[string]string](c, value)
+}
+
+func (c FfiConverterMapStringString) LowerExternal(value map[string]string) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[map[string]string](c, value))
 }
 
 func (_ FfiConverterMapStringString) Write(writer io.Writer, mapValue map[string]string) {
@@ -11598,6 +11846,24 @@ func IsInitialized() bool {
 	return FfiConverterBoolINSTANCE.Lift(rustCall(func(_uniffiStatus *C.RustCallStatus) C.int8_t {
 		return C.uniffi_slim_bindings_fn_func_is_initialized(_uniffiStatus)
 	}))
+}
+
+// Parse and validate a SLIM gRPC client configuration from JSON.
+//
+// The JSON must match [`CoreClientConfig`] (same as
+// `data-plane/core/config/src/grpc/schema/client-config.schema.json`).
+func NewConfigFromJson(json string) (ClientConfig, error) {
+	_uniffiRV, _uniffiErr := rustCallWithError[SlimError](FfiConverterSlimError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+		return GoRustBuffer{
+			inner: C.uniffi_slim_bindings_fn_func_new_config_from_json(FfiConverterStringINSTANCE.Lower(json), _uniffiStatus),
+		}
+	})
+	if _uniffiErr != nil {
+		var _uniffiDefaultValue ClientConfig
+		return _uniffiDefaultValue, _uniffiErr
+	} else {
+		return FfiConverterClientConfigINSTANCE.Lift(_uniffiRV), nil
+	}
 }
 
 // Create a new DataplaneConfig
