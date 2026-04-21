@@ -2,11 +2,11 @@ package slim_bindings
 
 /*
 #cgo CFLAGS: -I${SRCDIR}
-#cgo linux,amd64 LDFLAGS: -L${SRCDIR} -L${SRCDIR}/../../../../../.cgo-cache/slim-bindings/v1.3.0 -lslim_bindings_x86_64_linux_gnu -lm
-#cgo linux,arm64 LDFLAGS: -L${SRCDIR} -L${SRCDIR}/../../../../../.cgo-cache/slim-bindings/v1.3.0 -lslim_bindings_aarch64_linux_gnu -lm
-#cgo darwin,amd64 LDFLAGS: -L${SRCDIR} -L${SRCDIR}/../../../../../.cgo-cache/slim-bindings/v1.3.0 -lslim_bindings_x86_64_darwin -Wl,-undefined,dynamic_lookup
-#cgo darwin,arm64 LDFLAGS: -L${SRCDIR} -L${SRCDIR}/../../../../../.cgo-cache/slim-bindings/v1.3.0 -lslim_bindings_aarch64_darwin -Wl,-undefined,dynamic_lookup
-#cgo windows,amd64 LDFLAGS: -L${SRCDIR} -L${SRCDIR}/../../../../../.cgo-cache/slim-bindings/v1.3.0 -lslim_bindings_x86_64_windows_gnu -lws2_32 -lbcrypt -ladvapi32 -luserenv -lntdll -lgcc_eh -lgcc -lkernel32 -lole32
+#cgo linux,amd64 LDFLAGS: -L${SRCDIR} -L${SRCDIR}/../../../../../.cgo-cache/slim-bindings/v1.4.0-rc.0 -lslim_bindings_x86_64_linux_gnu -lm
+#cgo linux,arm64 LDFLAGS: -L${SRCDIR} -L${SRCDIR}/../../../../../.cgo-cache/slim-bindings/v1.4.0-rc.0 -lslim_bindings_aarch64_linux_gnu -lm
+#cgo darwin,amd64 LDFLAGS: -L${SRCDIR} -L${SRCDIR}/../../../../../.cgo-cache/slim-bindings/v1.4.0-rc.0 -lslim_bindings_x86_64_darwin -Wl,-undefined,dynamic_lookup
+#cgo darwin,arm64 LDFLAGS: -L${SRCDIR} -L${SRCDIR}/../../../../../.cgo-cache/slim-bindings/v1.4.0-rc.0 -lslim_bindings_aarch64_darwin -Wl,-undefined,dynamic_lookup
+#cgo windows,amd64 LDFLAGS: -L${SRCDIR} -L${SRCDIR}/../../../../../.cgo-cache/slim-bindings/v1.4.0-rc.0 -lslim_bindings_x86_64_windows_gnu -lws2_32 -lbcrypt -ladvapi32 -luserenv -lntdll -lgcc_eh -lgcc -lkernel32 -lole32
 #include <slim_bindings.h>
 */
 import "C"
@@ -9834,6 +9834,15 @@ func (e ClientAuthenticationConfigJwt) Destroy() {
 	FfiDestroyerClientJwtAuth{}.Destroy(e.Config)
 }
 
+// SPIRE/SPIFFE authentication (non-Windows only)
+type ClientAuthenticationConfigSpire struct {
+	Config SpireConfig
+}
+
+func (e ClientAuthenticationConfigSpire) Destroy() {
+	FfiDestroyerSpireConfig{}.Destroy(e.Config)
+}
+
 type ClientAuthenticationConfigNone struct {
 }
 
@@ -9871,6 +9880,10 @@ func (FfiConverterClientAuthenticationConfig) Read(reader io.Reader) ClientAuthe
 			FfiConverterClientJwtAuthINSTANCE.Read(reader),
 		}
 	case 4:
+		return ClientAuthenticationConfigSpire{
+			FfiConverterSpireConfigINSTANCE.Read(reader),
+		}
+	case 5:
 		return ClientAuthenticationConfigNone{}
 	default:
 		panic(fmt.Sprintf("invalid enum value %v in FfiConverterClientAuthenticationConfig.Read()", id))
@@ -9888,8 +9901,11 @@ func (FfiConverterClientAuthenticationConfig) Write(writer io.Writer, value Clie
 	case ClientAuthenticationConfigJwt:
 		writeInt32(writer, 3)
 		FfiConverterClientJwtAuthINSTANCE.Write(writer, variant_value.Config)
-	case ClientAuthenticationConfigNone:
+	case ClientAuthenticationConfigSpire:
 		writeInt32(writer, 4)
+		FfiConverterSpireConfigINSTANCE.Write(writer, variant_value.Config)
+	case ClientAuthenticationConfigNone:
+		writeInt32(writer, 5)
 	default:
 		_ = variant_value
 		panic(fmt.Sprintf("invalid enum value `%v` in FfiConverterClientAuthenticationConfig.Write", value))
@@ -10886,6 +10902,15 @@ func (e ServerAuthenticationConfigJwt) Destroy() {
 	FfiDestroyerJwtAuth{}.Destroy(e.Config)
 }
 
+// SPIRE/SPIFFE authentication (non-Windows only)
+type ServerAuthenticationConfigSpire struct {
+	Config SpireConfig
+}
+
+func (e ServerAuthenticationConfigSpire) Destroy() {
+	FfiDestroyerSpireConfig{}.Destroy(e.Config)
+}
+
 type ServerAuthenticationConfigNone struct {
 }
 
@@ -10919,6 +10944,10 @@ func (FfiConverterServerAuthenticationConfig) Read(reader io.Reader) ServerAuthe
 			FfiConverterJwtAuthINSTANCE.Read(reader),
 		}
 	case 3:
+		return ServerAuthenticationConfigSpire{
+			FfiConverterSpireConfigINSTANCE.Read(reader),
+		}
+	case 4:
 		return ServerAuthenticationConfigNone{}
 	default:
 		panic(fmt.Sprintf("invalid enum value %v in FfiConverterServerAuthenticationConfig.Read()", id))
@@ -10933,8 +10962,11 @@ func (FfiConverterServerAuthenticationConfig) Write(writer io.Writer, value Serv
 	case ServerAuthenticationConfigJwt:
 		writeInt32(writer, 2)
 		FfiConverterJwtAuthINSTANCE.Write(writer, variant_value.Config)
-	case ServerAuthenticationConfigNone:
+	case ServerAuthenticationConfigSpire:
 		writeInt32(writer, 3)
+		FfiConverterSpireConfigINSTANCE.Write(writer, variant_value.Config)
+	case ServerAuthenticationConfigNone:
+		writeInt32(writer, 4)
 	default:
 		_ = variant_value
 		panic(fmt.Sprintf("invalid enum value `%v` in FfiConverterServerAuthenticationConfig.Write", value))
