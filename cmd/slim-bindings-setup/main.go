@@ -5,7 +5,7 @@
 //
 // Usage:
 //
-//	go install github.com/agntcy/slim-bindings-go/cmd/slim-bindings-setup@latest
+//	go install github.com/agntcy/slim-bindings-go/v2/cmd/slim-bindings-setup@latest
 //	slim-bindings-setup
 package main
 
@@ -24,8 +24,8 @@ import (
 )
 
 const (
-	// GitHub release URL pattern - downloads from agntcy/slim releases
-	releaseURLTemplate = "https://github.com/agntcy/slim/releases/download/slim-bindings-%s/slim-bindings-%s.zip"
+	// GitHub release URL pattern - downloads from agntcy/slim-bindings releases
+	releaseURLTemplate = "https://github.com/agntcy/slim-bindings/releases/download/slim-bindings-%s/slim-bindings-%s.zip"
 	// Cache directory name
 	cacheDirName = "slim-bindings"
 )

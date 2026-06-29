@@ -529,7 +529,7 @@ uint64_t uniffi_slim_bindings_fn_method_app_delete_session_async(uint64_t ptr, u
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_APP_ID
 #define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_APP_ID
-uint64_t uniffi_slim_bindings_fn_method_app_id(uint64_t ptr, RustCallStatus *out_status
+RustBuffer uniffi_slim_bindings_fn_method_app_id(uint64_t ptr, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_APP_LISTEN_FOR_SESSION
@@ -639,7 +639,7 @@ uint64_t uniffi_slim_bindings_fn_constructor_name_new(RustBuffer component0, Rus
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_CONSTRUCTOR_NAME_NEW_WITH_ID
 #define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_CONSTRUCTOR_NAME_NEW_WITH_ID
-uint64_t uniffi_slim_bindings_fn_constructor_name_new_with_id(RustBuffer component0, RustBuffer component1, RustBuffer component2, uint64_t id, RustCallStatus *out_status
+uint64_t uniffi_slim_bindings_fn_constructor_name_new_with_id(RustBuffer component0, RustBuffer component1, RustBuffer component2, RustBuffer id, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_NAME_COMPONENTS
@@ -649,7 +649,7 @@ RustBuffer uniffi_slim_bindings_fn_method_name_components(uint64_t ptr, RustCall
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_NAME_ID
 #define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_NAME_ID
-uint64_t uniffi_slim_bindings_fn_method_name_id(uint64_t ptr, RustCallStatus *out_status
+RustBuffer uniffi_slim_bindings_fn_method_name_id(uint64_t ptr, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_NAME_UNIFFI_TRAIT_DEBUG

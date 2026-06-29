@@ -2,11 +2,11 @@ package slim_bindings
 
 /*
 #cgo CFLAGS: -I${SRCDIR}
-#cgo linux,amd64 LDFLAGS: -L${SRCDIR} -L${SRCDIR}/../../../../../.cgo-cache/slim-bindings/v1.4.1 -lslim_bindings_x86_64_linux_gnu -lm
-#cgo linux,arm64 LDFLAGS: -L${SRCDIR} -L${SRCDIR}/../../../../../.cgo-cache/slim-bindings/v1.4.1 -lslim_bindings_aarch64_linux_gnu -lm
-#cgo darwin,amd64 LDFLAGS: -L${SRCDIR} -L${SRCDIR}/../../../../../.cgo-cache/slim-bindings/v1.4.1 -lslim_bindings_x86_64_darwin -Wl,-undefined,dynamic_lookup
-#cgo darwin,arm64 LDFLAGS: -L${SRCDIR} -L${SRCDIR}/../../../../../.cgo-cache/slim-bindings/v1.4.1 -lslim_bindings_aarch64_darwin -Wl,-undefined,dynamic_lookup
-#cgo windows,amd64 LDFLAGS: -L${SRCDIR} -L${SRCDIR}/../../../../../.cgo-cache/slim-bindings/v1.4.1 -lslim_bindings_x86_64_windows_gnu -lws2_32 -lbcrypt -ladvapi32 -luserenv -lntdll -lgcc_eh -lgcc -lkernel32 -lole32
+#cgo linux,amd64 LDFLAGS: -L${SRCDIR} -L${SRCDIR}/../../../../../../.cgo-cache/slim-bindings/v2.0.0-alpha.2 -lslim_bindings_x86_64_linux_gnu -lm
+#cgo linux,arm64 LDFLAGS: -L${SRCDIR} -L${SRCDIR}/../../../../../../.cgo-cache/slim-bindings/v2.0.0-alpha.2 -lslim_bindings_aarch64_linux_gnu -lm
+#cgo darwin,amd64 LDFLAGS: -L${SRCDIR} -L${SRCDIR}/../../../../../../.cgo-cache/slim-bindings/v2.0.0-alpha.2 -lslim_bindings_x86_64_darwin -Wl,-undefined,dynamic_lookup
+#cgo darwin,arm64 LDFLAGS: -L${SRCDIR} -L${SRCDIR}/../../../../../../.cgo-cache/slim-bindings/v2.0.0-alpha.2 -lslim_bindings_aarch64_darwin -Wl,-undefined,dynamic_lookup
+#cgo windows,amd64 LDFLAGS: -L${SRCDIR} -L${SRCDIR}/../../../../../../.cgo-cache/slim-bindings/v2.0.0-alpha.2 -lslim_bindings_x86_64_windows_gnu -lws2_32 -lbcrypt -ladvapi32 -luserenv -lntdll -lgcc_eh -lgcc -lkernel32 -lole32
 #include <slim_bindings.h>
 */
 import "C"
@@ -696,7 +696,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_slim_bindings_checksum_method_app_id()
 		})
-		if checksum != 64775 {
+		if checksum != 46308 {
 			// If this happens try cleaning and rebuilding your project
 			panic("slim_bindings: uniffi_slim_bindings_checksum_method_app_id: UniFFI API checksum mismatch")
 		}
@@ -849,7 +849,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_slim_bindings_checksum_method_name_id()
 		})
-		if checksum != 38132 {
+		if checksum != 54694 {
 			// If this happens try cleaning and rebuilding your project
 			panic("slim_bindings: uniffi_slim_bindings_checksum_method_name_id: UniFFI API checksum mismatch")
 		}
@@ -1893,7 +1893,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_slim_bindings_checksum_constructor_name_new_with_id()
 		})
-		if checksum != 6368 {
+		if checksum != 18600 {
 			// If this happens try cleaning and rebuilding your project
 			panic("slim_bindings: uniffi_slim_bindings_checksum_constructor_name_new_with_id: UniFFI API checksum mismatch")
 		}
@@ -2350,8 +2350,8 @@ type AppInterface interface {
 	//
 	// Returns a completion handle that can be awaited to ensure the deletion completes.
 	DeleteSessionAsync(session *Session) (*CompletionHandle, error)
-	// Get the app ID (derived from name)
-	Id() uint64
+	// Get the app ID in UUID format
+	Id() string
 	// Listen for incoming sessions (blocking version for FFI)
 	ListenForSession(timeout *time.Duration) (*Session, error)
 	// Listen for incoming sessions (async version)
@@ -2684,13 +2684,15 @@ func (_self *App) DeleteSessionAsync(session *Session) (*CompletionHandle, error
 	return res, err
 }
 
-// Get the app ID (derived from name)
-func (_self *App) Id() uint64 {
+// Get the app ID in UUID format
+func (_self *App) Id() string {
 	_pointer := _self.ffiObject.incrementPointer("*App")
 	defer _self.ffiObject.decrementPointer()
-	return FfiConverterUint64INSTANCE.Lift(rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint64_t {
-		return C.uniffi_slim_bindings_fn_method_app_id(
-			_pointer, _uniffiStatus)
+	return FfiConverterStringINSTANCE.Lift(rustCall(func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+		return GoRustBuffer{
+			inner: C.uniffi_slim_bindings_fn_method_app_id(
+				_pointer, _uniffiStatus),
+		}
 	}))
 }
 
@@ -4455,8 +4457,8 @@ func (_ FfiDestroyerMulticastResponseReader) Destroy(value *MulticastResponseRea
 type NameInterface interface {
 	// Get the name components as a vector of strings
 	Components() []string
-	// Get the name ID
-	Id() uint64
+	// Get the name ID formatted as UUID string
+	Id() string
 }
 
 // Name type for SLIM (Secure Low-Latency Interactive Messaging)
@@ -4487,10 +4489,10 @@ func NameFromString(s string) (*Name, error) {
 	}
 }
 
-// Create a new Name from components with an ID
-func NameNewWithId(component0 string, component1 string, component2 string, id uint64) *Name {
+// Create a new Name from components with an ID expressed in UUID format
+func NameNewWithId(component0 string, component1 string, component2 string, id string) *Name {
 	return FfiConverterNameINSTANCE.Lift(rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint64_t {
-		return C.uniffi_slim_bindings_fn_constructor_name_new_with_id(FfiConverterStringINSTANCE.Lower(component0), FfiConverterStringINSTANCE.Lower(component1), FfiConverterStringINSTANCE.Lower(component2), FfiConverterUint64INSTANCE.Lower(id), _uniffiStatus)
+		return C.uniffi_slim_bindings_fn_constructor_name_new_with_id(FfiConverterStringINSTANCE.Lower(component0), FfiConverterStringINSTANCE.Lower(component1), FfiConverterStringINSTANCE.Lower(component2), FfiConverterStringINSTANCE.Lower(id), _uniffiStatus)
 	}))
 }
 
@@ -4506,13 +4508,15 @@ func (_self *Name) Components() []string {
 	}))
 }
 
-// Get the name ID
-func (_self *Name) Id() uint64 {
+// Get the name ID formatted as UUID string
+func (_self *Name) Id() string {
 	_pointer := _self.ffiObject.incrementPointer("*Name")
 	defer _self.ffiObject.decrementPointer()
-	return FfiConverterUint64INSTANCE.Lift(rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint64_t {
-		return C.uniffi_slim_bindings_fn_method_name_id(
-			_pointer, _uniffiStatus)
+	return FfiConverterStringINSTANCE.Lift(rustCall(func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+		return GoRustBuffer{
+			inner: C.uniffi_slim_bindings_fn_method_name_id(
+				_pointer, _uniffiStatus),
+		}
 	}))
 }
 
@@ -8421,12 +8425,11 @@ func (_ FfiDestroyerBuildInfo) Destroy(value BuildInfo) {
 
 // Client configuration for connecting to a SLIM server
 type ClientConfig struct {
-	// The target endpoint the client will connect to
+	// The target endpoint the client will connect to.
+	//
+	// The transport protocol is inferred from the endpoint scheme:
+	// `ws://`/`wss://` → WebSocket, otherwise gRPC.
 	Endpoint string
-	// Transport protocol to use (defaults to gRPC in core config when omitted)
-	Transport *TransportProtocol
-	// Optional websocket authentication query parameter key
-	WebsocketAuthQueryParam *string
 	// TLS client configuration
 	Tls TlsClientConfig
 	// Origin (HTTP Host authority override) for the client
@@ -8455,12 +8458,12 @@ type ClientConfig struct {
 	Backoff *BackoffConfig
 	// Arbitrary user-provided metadata as JSON string
 	Metadata *string
+	// When true, reject inter-node messages without a valid header MAC (strict mode).
+	RequireHeaderMac *bool
 }
 
 func (r *ClientConfig) Destroy() {
 	FfiDestroyerString{}.Destroy(r.Endpoint)
-	FfiDestroyerOptionalTransportProtocol{}.Destroy(r.Transport)
-	FfiDestroyerOptionalString{}.Destroy(r.WebsocketAuthQueryParam)
 	FfiDestroyerTlsClientConfig{}.Destroy(r.Tls)
 	FfiDestroyerOptionalString{}.Destroy(r.Origin)
 	FfiDestroyerOptionalString{}.Destroy(r.ServerName)
@@ -8475,6 +8478,7 @@ func (r *ClientConfig) Destroy() {
 	FfiDestroyerOptionalClientAuthenticationConfig{}.Destroy(r.Auth)
 	FfiDestroyerOptionalBackoffConfig{}.Destroy(r.Backoff)
 	FfiDestroyerOptionalString{}.Destroy(r.Metadata)
+	FfiDestroyerOptionalBool{}.Destroy(r.RequireHeaderMac)
 }
 
 type FfiConverterClientConfig struct{}
@@ -8488,8 +8492,6 @@ func (c FfiConverterClientConfig) Lift(rb RustBufferI) ClientConfig {
 func (c FfiConverterClientConfig) Read(reader io.Reader) ClientConfig {
 	return ClientConfig{
 		FfiConverterStringINSTANCE.Read(reader),
-		FfiConverterOptionalTransportProtocolINSTANCE.Read(reader),
-		FfiConverterOptionalStringINSTANCE.Read(reader),
 		FfiConverterTlsClientConfigINSTANCE.Read(reader),
 		FfiConverterOptionalStringINSTANCE.Read(reader),
 		FfiConverterOptionalStringINSTANCE.Read(reader),
@@ -8504,6 +8506,7 @@ func (c FfiConverterClientConfig) Read(reader io.Reader) ClientConfig {
 		FfiConverterOptionalClientAuthenticationConfigINSTANCE.Read(reader),
 		FfiConverterOptionalBackoffConfigINSTANCE.Read(reader),
 		FfiConverterOptionalStringINSTANCE.Read(reader),
+		FfiConverterOptionalBoolINSTANCE.Read(reader),
 	}
 }
 
@@ -8517,8 +8520,6 @@ func (c FfiConverterClientConfig) LowerExternal(value ClientConfig) ExternalCRus
 
 func (c FfiConverterClientConfig) Write(writer io.Writer, value ClientConfig) {
 	FfiConverterStringINSTANCE.Write(writer, value.Endpoint)
-	FfiConverterOptionalTransportProtocolINSTANCE.Write(writer, value.Transport)
-	FfiConverterOptionalStringINSTANCE.Write(writer, value.WebsocketAuthQueryParam)
 	FfiConverterTlsClientConfigINSTANCE.Write(writer, value.Tls)
 	FfiConverterOptionalStringINSTANCE.Write(writer, value.Origin)
 	FfiConverterOptionalStringINSTANCE.Write(writer, value.ServerName)
@@ -8533,6 +8534,7 @@ func (c FfiConverterClientConfig) Write(writer io.Writer, value ClientConfig) {
 	FfiConverterOptionalClientAuthenticationConfigINSTANCE.Write(writer, value.Auth)
 	FfiConverterOptionalBackoffConfigINSTANCE.Write(writer, value.Backoff)
 	FfiConverterOptionalStringINSTANCE.Write(writer, value.Metadata)
+	FfiConverterOptionalBoolINSTANCE.Write(writer, value.RequireHeaderMac)
 }
 
 type FfiDestroyerClientConfig struct{}
@@ -9063,6 +9065,47 @@ func (_ FfiDestroyerMessageContext) Destroy(value MessageContext) {
 	value.Destroy()
 }
 
+type MlsSettings struct {
+	// 0 = disable header-integrity checks; 1–100 = percent of messages to verify after decrypt.
+	HeaderIntegrityValidationPercent uint32
+}
+
+func (r *MlsSettings) Destroy() {
+	FfiDestroyerUint32{}.Destroy(r.HeaderIntegrityValidationPercent)
+}
+
+type FfiConverterMlsSettings struct{}
+
+var FfiConverterMlsSettingsINSTANCE = FfiConverterMlsSettings{}
+
+func (c FfiConverterMlsSettings) Lift(rb RustBufferI) MlsSettings {
+	return LiftFromRustBuffer[MlsSettings](c, rb)
+}
+
+func (c FfiConverterMlsSettings) Read(reader io.Reader) MlsSettings {
+	return MlsSettings{
+		FfiConverterUint32INSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterMlsSettings) Lower(value MlsSettings) C.RustBuffer {
+	return LowerIntoRustBuffer[MlsSettings](c, value)
+}
+
+func (c FfiConverterMlsSettings) LowerExternal(value MlsSettings) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[MlsSettings](c, value))
+}
+
+func (c FfiConverterMlsSettings) Write(writer io.Writer, value MlsSettings) {
+	FfiConverterUint32INSTANCE.Write(writer, value.HeaderIntegrityValidationPercent)
+}
+
+type FfiDestroyerMlsSettings struct{}
+
+func (_ FfiDestroyerMlsSettings) Destroy(value MlsSettings) {
+	value.Destroy()
+}
+
 // HTTP Proxy configuration
 type ProxyConfig struct {
 	// The HTTP proxy URL (e.g., "http://proxy.example.com:8080")
@@ -9317,10 +9360,11 @@ func (_ FfiDestroyerRuntimeConfig) Destroy(value RuntimeConfig) {
 
 // Server configuration for running a SLIM server
 type ServerConfig struct {
-	// Endpoint address to listen on (e.g., "0.0.0.0:50051" or "[::]:50051")
+	// Endpoint address to listen on (e.g., "0.0.0.0:50051" or "[::]:50051").
+	//
+	// The transport protocol is inferred from the endpoint scheme:
+	// `ws://`/`wss://` → WebSocket, otherwise gRPC.
 	Endpoint string
-	// Transport protocol to use (defaults to gRPC in core config when omitted)
-	Transport *TransportProtocol
 	// TLS server configuration
 	Tls TlsServerConfig
 	// Use HTTP/2 only (default: true)
@@ -9341,11 +9385,16 @@ type ServerConfig struct {
 	Auth *ServerAuthenticationConfig
 	// Arbitrary user-provided metadata as JSON string
 	Metadata *string
+	// When true, reject inter-node messages without a valid header MAC (strict mode).
+	RequireHeaderMac *bool
+	// Timeout (in seconds) for link negotiation to complete.
+	NegotiationTimeoutSecs *uint64
+	// Polling interval (in milliseconds) to wait between HMAC existence checks.
+	LinkHmacPollIntervalMs *uint64
 }
 
 func (r *ServerConfig) Destroy() {
 	FfiDestroyerString{}.Destroy(r.Endpoint)
-	FfiDestroyerOptionalTransportProtocol{}.Destroy(r.Transport)
 	FfiDestroyerTlsServerConfig{}.Destroy(r.Tls)
 	FfiDestroyerOptionalBool{}.Destroy(r.Http2Only)
 	FfiDestroyerOptionalUint32{}.Destroy(r.MaxFrameSize)
@@ -9356,6 +9405,9 @@ func (r *ServerConfig) Destroy() {
 	FfiDestroyerOptionalKeepaliveServerParameters{}.Destroy(r.Keepalive)
 	FfiDestroyerOptionalServerAuthenticationConfig{}.Destroy(r.Auth)
 	FfiDestroyerOptionalString{}.Destroy(r.Metadata)
+	FfiDestroyerOptionalBool{}.Destroy(r.RequireHeaderMac)
+	FfiDestroyerOptionalUint64{}.Destroy(r.NegotiationTimeoutSecs)
+	FfiDestroyerOptionalUint64{}.Destroy(r.LinkHmacPollIntervalMs)
 }
 
 type FfiConverterServerConfig struct{}
@@ -9369,7 +9421,6 @@ func (c FfiConverterServerConfig) Lift(rb RustBufferI) ServerConfig {
 func (c FfiConverterServerConfig) Read(reader io.Reader) ServerConfig {
 	return ServerConfig{
 		FfiConverterStringINSTANCE.Read(reader),
-		FfiConverterOptionalTransportProtocolINSTANCE.Read(reader),
 		FfiConverterTlsServerConfigINSTANCE.Read(reader),
 		FfiConverterOptionalBoolINSTANCE.Read(reader),
 		FfiConverterOptionalUint32INSTANCE.Read(reader),
@@ -9380,6 +9431,9 @@ func (c FfiConverterServerConfig) Read(reader io.Reader) ServerConfig {
 		FfiConverterOptionalKeepaliveServerParametersINSTANCE.Read(reader),
 		FfiConverterOptionalServerAuthenticationConfigINSTANCE.Read(reader),
 		FfiConverterOptionalStringINSTANCE.Read(reader),
+		FfiConverterOptionalBoolINSTANCE.Read(reader),
+		FfiConverterOptionalUint64INSTANCE.Read(reader),
+		FfiConverterOptionalUint64INSTANCE.Read(reader),
 	}
 }
 
@@ -9393,7 +9447,6 @@ func (c FfiConverterServerConfig) LowerExternal(value ServerConfig) ExternalCRus
 
 func (c FfiConverterServerConfig) Write(writer io.Writer, value ServerConfig) {
 	FfiConverterStringINSTANCE.Write(writer, value.Endpoint)
-	FfiConverterOptionalTransportProtocolINSTANCE.Write(writer, value.Transport)
 	FfiConverterTlsServerConfigINSTANCE.Write(writer, value.Tls)
 	FfiConverterOptionalBoolINSTANCE.Write(writer, value.Http2Only)
 	FfiConverterOptionalUint32INSTANCE.Write(writer, value.MaxFrameSize)
@@ -9404,6 +9457,9 @@ func (c FfiConverterServerConfig) Write(writer io.Writer, value ServerConfig) {
 	FfiConverterOptionalKeepaliveServerParametersINSTANCE.Write(writer, value.Keepalive)
 	FfiConverterOptionalServerAuthenticationConfigINSTANCE.Write(writer, value.Auth)
 	FfiConverterOptionalStringINSTANCE.Write(writer, value.Metadata)
+	FfiConverterOptionalBoolINSTANCE.Write(writer, value.RequireHeaderMac)
+	FfiConverterOptionalUint64INSTANCE.Write(writer, value.NegotiationTimeoutSecs)
+	FfiConverterOptionalUint64INSTANCE.Write(writer, value.LinkHmacPollIntervalMs)
 }
 
 type FfiDestroyerServerConfig struct{}
@@ -9468,22 +9524,22 @@ func (_ FfiDestroyerServiceConfig) Destroy(value ServiceConfig) {
 type SessionConfig struct {
 	// Session type (PointToPoint or Group)
 	SessionType SessionType
-	// Enable MLS encryption for this session
-	EnableMls bool
 	// Maximum number of retries for message transmission (None = use default)
 	MaxRetries *uint32
 	// Interval between retries in milliseconds (None = use default)
 	Interval *time.Duration
 	// Custom metadata key-value pairs for the session
 	Metadata map[string]string
+	// MLS options (None disables MLS).
+	MlsSettings *MlsSettings
 }
 
 func (r *SessionConfig) Destroy() {
 	FfiDestroyerSessionType{}.Destroy(r.SessionType)
-	FfiDestroyerBool{}.Destroy(r.EnableMls)
 	FfiDestroyerOptionalUint32{}.Destroy(r.MaxRetries)
 	FfiDestroyerOptionalDuration{}.Destroy(r.Interval)
 	FfiDestroyerMapStringString{}.Destroy(r.Metadata)
+	FfiDestroyerOptionalMlsSettings{}.Destroy(r.MlsSettings)
 }
 
 type FfiConverterSessionConfig struct{}
@@ -9497,10 +9553,10 @@ func (c FfiConverterSessionConfig) Lift(rb RustBufferI) SessionConfig {
 func (c FfiConverterSessionConfig) Read(reader io.Reader) SessionConfig {
 	return SessionConfig{
 		FfiConverterSessionTypeINSTANCE.Read(reader),
-		FfiConverterBoolINSTANCE.Read(reader),
 		FfiConverterOptionalUint32INSTANCE.Read(reader),
 		FfiConverterOptionalDurationINSTANCE.Read(reader),
 		FfiConverterMapStringStringINSTANCE.Read(reader),
+		FfiConverterOptionalMlsSettingsINSTANCE.Read(reader),
 	}
 }
 
@@ -9514,10 +9570,10 @@ func (c FfiConverterSessionConfig) LowerExternal(value SessionConfig) ExternalCR
 
 func (c FfiConverterSessionConfig) Write(writer io.Writer, value SessionConfig) {
 	FfiConverterSessionTypeINSTANCE.Write(writer, value.SessionType)
-	FfiConverterBoolINSTANCE.Write(writer, value.EnableMls)
 	FfiConverterOptionalUint32INSTANCE.Write(writer, value.MaxRetries)
 	FfiConverterOptionalDurationINSTANCE.Write(writer, value.Interval)
 	FfiConverterMapStringStringINSTANCE.Write(writer, value.Metadata)
+	FfiConverterOptionalMlsSettingsINSTANCE.Write(writer, value.MlsSettings)
 }
 
 type FfiDestroyerSessionConfig struct{}
@@ -12292,6 +12348,47 @@ func (_ FfiDestroyerOptionalKeepaliveServerParameters) Destroy(value *KeepaliveS
 	}
 }
 
+type FfiConverterOptionalMlsSettings struct{}
+
+var FfiConverterOptionalMlsSettingsINSTANCE = FfiConverterOptionalMlsSettings{}
+
+func (c FfiConverterOptionalMlsSettings) Lift(rb RustBufferI) *MlsSettings {
+	return LiftFromRustBuffer[*MlsSettings](c, rb)
+}
+
+func (_ FfiConverterOptionalMlsSettings) Read(reader io.Reader) *MlsSettings {
+	if readInt8(reader) == 0 {
+		return nil
+	}
+	temp := FfiConverterMlsSettingsINSTANCE.Read(reader)
+	return &temp
+}
+
+func (c FfiConverterOptionalMlsSettings) Lower(value *MlsSettings) C.RustBuffer {
+	return LowerIntoRustBuffer[*MlsSettings](c, value)
+}
+
+func (c FfiConverterOptionalMlsSettings) LowerExternal(value *MlsSettings) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[*MlsSettings](c, value))
+}
+
+func (_ FfiConverterOptionalMlsSettings) Write(writer io.Writer, value *MlsSettings) {
+	if value == nil {
+		writeInt8(writer, 0)
+	} else {
+		writeInt8(writer, 1)
+		FfiConverterMlsSettingsINSTANCE.Write(writer, *value)
+	}
+}
+
+type FfiDestroyerOptionalMlsSettings struct{}
+
+func (_ FfiDestroyerOptionalMlsSettings) Destroy(value *MlsSettings) {
+	if value != nil {
+		FfiDestroyerMlsSettings{}.Destroy(*value)
+	}
+}
+
 type FfiConverterOptionalProxyConfig struct{}
 
 var FfiConverterOptionalProxyConfigINSTANCE = FfiConverterOptionalProxyConfig{}
@@ -12494,47 +12591,6 @@ type FfiDestroyerOptionalServerAuthenticationConfig struct{}
 func (_ FfiDestroyerOptionalServerAuthenticationConfig) Destroy(value *ServerAuthenticationConfig) {
 	if value != nil {
 		FfiDestroyerServerAuthenticationConfig{}.Destroy(*value)
-	}
-}
-
-type FfiConverterOptionalTransportProtocol struct{}
-
-var FfiConverterOptionalTransportProtocolINSTANCE = FfiConverterOptionalTransportProtocol{}
-
-func (c FfiConverterOptionalTransportProtocol) Lift(rb RustBufferI) *TransportProtocol {
-	return LiftFromRustBuffer[*TransportProtocol](c, rb)
-}
-
-func (_ FfiConverterOptionalTransportProtocol) Read(reader io.Reader) *TransportProtocol {
-	if readInt8(reader) == 0 {
-		return nil
-	}
-	temp := FfiConverterTransportProtocolINSTANCE.Read(reader)
-	return &temp
-}
-
-func (c FfiConverterOptionalTransportProtocol) Lower(value *TransportProtocol) C.RustBuffer {
-	return LowerIntoRustBuffer[*TransportProtocol](c, value)
-}
-
-func (c FfiConverterOptionalTransportProtocol) LowerExternal(value *TransportProtocol) ExternalCRustBuffer {
-	return RustBufferFromC(LowerIntoRustBuffer[*TransportProtocol](c, value))
-}
-
-func (_ FfiConverterOptionalTransportProtocol) Write(writer io.Writer, value *TransportProtocol) {
-	if value == nil {
-		writeInt8(writer, 0)
-	} else {
-		writeInt8(writer, 1)
-		FfiConverterTransportProtocolINSTANCE.Write(writer, *value)
-	}
-}
-
-type FfiDestroyerOptionalTransportProtocol struct{}
-
-func (_ FfiDestroyerOptionalTransportProtocol) Destroy(value *TransportProtocol) {
-	if value != nil {
-		FfiDestroyerTransportProtocol{}.Destroy(*value)
 	}
 }
 

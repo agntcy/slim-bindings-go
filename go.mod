@@ -1,4 +1,4 @@
-module github.com/agntcy/slim-bindings-go
+module github.com/agntcy/slim-bindings-go/v2
 
 go 1.23
 

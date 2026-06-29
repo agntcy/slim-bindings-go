@@ -22,7 +22,7 @@ dedicated [README file of the slimrpc compiler](https://github.com/agntcy/slim/b
 
 In slimrpc, each service and its individual RPC handlers are assigned a SLIM name,
 facilitating efficient message routing and processing. Consider the [example
-protobuf](https://github.com/agntcy/slim/tree/main/data-plane/bindings/go/examples/slimrpc/simple/example.proto) definition, which defines four
+protobuf](https://github.com/agntcy/slim-bindings/tree/main/go/examples/slimrpc/simple/example.proto) definition, which defines four
 distinct services:
 
 ```protobuf
@@ -64,7 +64,7 @@ when a message arrives for a defined RPC method.
 
 This section provides a detailed walkthrough of a basic slimrpc client-server
 interaction, leveraging the simple example provided in the
-[examples/slimrpc/simple](https://github.com/agntcy/slim/tree/main/data-plane/bindings/go/examples/slimrpc/simple) folder.
+[examples/slimrpc/simple](https://github.com/agntcy/slim-bindings/tree/main/go/examples/slimrpc/simple) folder.
 
 ### Generated Code
 

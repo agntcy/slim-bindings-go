@@ -3,7 +3,7 @@ package slimrpc
 import (
 	"context"
 
-	slim_bindings "github.com/agntcy/slim-bindings-go"
+	slim_bindings "github.com/agntcy/slim-bindings-go/v2"
 )
 
 type contextKey int

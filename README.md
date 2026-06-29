@@ -20,7 +20,7 @@ go mod init go-app
 ### 2. Install SLIM Go Bindings
 
 ```bash
-go get github.com/agntcy/slim-bindings-go
+go get github.com/agntcy/slim-bindings-go/v2
 ```
 
 ### 3. Run the Setup Tool
@@ -28,7 +28,7 @@ go get github.com/agntcy/slim-bindings-go
 The SLIM bindings require some additional setup to install the bindings libs. Run the setup command:
 
 ```bash
-go run github.com/agntcy/slim-bindings-go/cmd/slim-bindings-setup
+go run github.com/agntcy/slim-bindings-go/v2/cmd/slim-bindings-setup
 ```
 
 ### 4. Create Your First SLIM Application
@@ -41,7 +41,7 @@ package main
 import (
 	"fmt"
 
-	slim "github.com/agntcy/slim-bindings-go"
+	slim "github.com/agntcy/slim-bindings-go/v2"
 )
 
 func main() {
