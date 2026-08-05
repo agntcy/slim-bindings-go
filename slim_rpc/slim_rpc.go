@@ -2,11 +2,11 @@ package slim_rpc
 
 /*
 #cgo CFLAGS: -I${SRCDIR}
-#cgo linux,amd64 LDFLAGS: -L${SRCDIR}/.. -L${SRCDIR}/../../../../../../../.cgo-cache/slim-bindings/v2.0.0-alpha.7 -lslim_bindings_x86_64_linux_gnu -lm
-#cgo linux,arm64 LDFLAGS: -L${SRCDIR}/.. -L${SRCDIR}/../../../../../../../.cgo-cache/slim-bindings/v2.0.0-alpha.7 -lslim_bindings_aarch64_linux_gnu -lm
-#cgo darwin,amd64 LDFLAGS: -L${SRCDIR}/.. -L${SRCDIR}/../../../../../../../.cgo-cache/slim-bindings/v2.0.0-alpha.7 -lslim_bindings_x86_64_darwin -Wl,-undefined,dynamic_lookup
-#cgo darwin,arm64 LDFLAGS: -L${SRCDIR}/.. -L${SRCDIR}/../../../../../../../.cgo-cache/slim-bindings/v2.0.0-alpha.7 -lslim_bindings_aarch64_darwin -Wl,-undefined,dynamic_lookup
-#cgo windows,amd64 LDFLAGS: -L${SRCDIR}/.. -L${SRCDIR}/../../../../../../../.cgo-cache/slim-bindings/v2.0.0-alpha.7 -lslim_bindings_x86_64_windows_gnu -lws2_32 -lbcrypt -ladvapi32 -luserenv -lntdll -lgcc_eh -lgcc -lkernel32 -lole32
+#cgo linux,amd64 LDFLAGS: -L${SRCDIR}/.. -L${SRCDIR}/../../../../../../../.cgo-cache/slim-bindings/v2.0.0 -lslim_bindings_x86_64_linux_gnu -lm
+#cgo linux,arm64 LDFLAGS: -L${SRCDIR}/.. -L${SRCDIR}/../../../../../../../.cgo-cache/slim-bindings/v2.0.0 -lslim_bindings_aarch64_linux_gnu -lm
+#cgo darwin,amd64 LDFLAGS: -L${SRCDIR}/.. -L${SRCDIR}/../../../../../../../.cgo-cache/slim-bindings/v2.0.0 -lslim_bindings_x86_64_darwin -Wl,-undefined,dynamic_lookup
+#cgo darwin,arm64 LDFLAGS: -L${SRCDIR}/.. -L${SRCDIR}/../../../../../../../.cgo-cache/slim-bindings/v2.0.0 -lslim_bindings_aarch64_darwin -Wl,-undefined,dynamic_lookup
+#cgo windows,amd64 LDFLAGS: -L${SRCDIR}/.. -L${SRCDIR}/../../../../../../../.cgo-cache/slim-bindings/v2.0.0 -lslim_bindings_x86_64_windows_gnu -lws2_32 -lbcrypt -ladvapi32 -luserenv -lntdll -lgcc_eh -lgcc -lkernel32 -lole32
 #include <slim_rpc.h>
 */
 import "C"
