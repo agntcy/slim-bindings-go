@@ -2,11 +2,11 @@ package slim_bindings
 
 /*
 #cgo CFLAGS: -I${SRCDIR}
-#cgo linux,amd64 LDFLAGS: -L${SRCDIR} -L${SRCDIR}/../../../../../../.cgo-cache/slim-bindings/v2.0.0 -lslim_bindings_x86_64_linux_gnu -lm
-#cgo linux,arm64 LDFLAGS: -L${SRCDIR} -L${SRCDIR}/../../../../../../.cgo-cache/slim-bindings/v2.0.0 -lslim_bindings_aarch64_linux_gnu -lm
-#cgo darwin,amd64 LDFLAGS: -L${SRCDIR} -L${SRCDIR}/../../../../../../.cgo-cache/slim-bindings/v2.0.0 -lslim_bindings_x86_64_darwin -Wl,-undefined,dynamic_lookup
-#cgo darwin,arm64 LDFLAGS: -L${SRCDIR} -L${SRCDIR}/../../../../../../.cgo-cache/slim-bindings/v2.0.0 -lslim_bindings_aarch64_darwin -Wl,-undefined,dynamic_lookup
-#cgo windows,amd64 LDFLAGS: -L${SRCDIR} -L${SRCDIR}/../../../../../../.cgo-cache/slim-bindings/v2.0.0 -lslim_bindings_x86_64_windows_gnu -lws2_32 -lbcrypt -ladvapi32 -luserenv -lntdll -lgcc_eh -lgcc -lkernel32 -lole32
+#cgo linux,amd64 LDFLAGS: -L${SRCDIR} -L${SRCDIR}/../../../../../../.cgo-cache/slim-bindings/v2.1.0 -lslim_bindings_x86_64_linux_gnu -lm
+#cgo linux,arm64 LDFLAGS: -L${SRCDIR} -L${SRCDIR}/../../../../../../.cgo-cache/slim-bindings/v2.1.0 -lslim_bindings_aarch64_linux_gnu -lm
+#cgo darwin,amd64 LDFLAGS: -L${SRCDIR} -L${SRCDIR}/../../../../../../.cgo-cache/slim-bindings/v2.1.0 -lslim_bindings_x86_64_darwin -Wl,-undefined,dynamic_lookup
+#cgo darwin,arm64 LDFLAGS: -L${SRCDIR} -L${SRCDIR}/../../../../../../.cgo-cache/slim-bindings/v2.1.0 -lslim_bindings_aarch64_darwin -Wl,-undefined,dynamic_lookup
+#cgo windows,amd64 LDFLAGS: -L${SRCDIR} -L${SRCDIR}/../../../../../../.cgo-cache/slim-bindings/v2.1.0 -lslim_bindings_x86_64_windows_gnu -lws2_32 -lbcrypt -ladvapi32 -luserenv -lntdll -lgcc_eh -lgcc -lkernel32 -lole32
 #include <slim_bindings.h>
 */
 import "C"
@@ -5767,6 +5767,103 @@ func (_ FfiDestroyerMlsSettings) Destroy(value MlsSettings) {
 	value.Destroy()
 }
 
+// OIDC authentication configuration (client-credentials, refresh-token, or JWKS verification)
+type OidcConfig struct {
+	// OIDC issuer URL (e.g., https://auth.example.com)
+	IssuerUrl string
+	// OAuth2 client ID (required for client-credentials and refresh-token flows)
+	ClientId *string
+	// OAuth2 client secret (for client-credentials flow)
+	ClientSecret *string
+	// Expected audience for JWT tokens (required for server-side verification)
+	Audience *string
+	// Inline refresh token (for authorization-code flow)
+	RefreshToken *string
+	// Path to file holding the refresh token (rotated tokens are written back automatically)
+	RefreshTokenFile *string
+	// Path to a file caching the current access token (optional companion to refresh_token_file)
+	AccessTokenFile *string
+	// OAuth2 scope parameter (client-side only)
+	Scope *string
+	// HTTP timeout for token requests in seconds (default: 30, client-side only)
+	Timeout *time.Duration
+	// JWKS cache TTL in seconds (default: 3600, server-side only)
+	JwksTtl *time.Duration
+	// Cache TTL for merged JWT+userinfo claims in seconds (server-side only, absent = no cache)
+	ClaimCacheTtl *time.Duration
+	// Policy evaluated against JWT claims on every authenticated request (server-side only)
+	Policy *OidcPolicyConfig
+}
+
+func (r *OidcConfig) Destroy() {
+	FfiDestroyerString{}.Destroy(r.IssuerUrl)
+	FfiDestroyerOptionalString{}.Destroy(r.ClientId)
+	FfiDestroyerOptionalString{}.Destroy(r.ClientSecret)
+	FfiDestroyerOptionalString{}.Destroy(r.Audience)
+	FfiDestroyerOptionalString{}.Destroy(r.RefreshToken)
+	FfiDestroyerOptionalString{}.Destroy(r.RefreshTokenFile)
+	FfiDestroyerOptionalString{}.Destroy(r.AccessTokenFile)
+	FfiDestroyerOptionalString{}.Destroy(r.Scope)
+	FfiDestroyerOptionalDuration{}.Destroy(r.Timeout)
+	FfiDestroyerOptionalDuration{}.Destroy(r.JwksTtl)
+	FfiDestroyerOptionalDuration{}.Destroy(r.ClaimCacheTtl)
+	FfiDestroyerOptionalOidcPolicyConfig{}.Destroy(r.Policy)
+}
+
+type FfiConverterOidcConfig struct{}
+
+var FfiConverterOidcConfigINSTANCE = FfiConverterOidcConfig{}
+
+func (c FfiConverterOidcConfig) Lift(rb RustBufferI) OidcConfig {
+	return LiftFromRustBuffer[OidcConfig](c, rb)
+}
+
+func (c FfiConverterOidcConfig) Read(reader io.Reader) OidcConfig {
+	return OidcConfig{
+		FfiConverterStringINSTANCE.Read(reader),
+		FfiConverterOptionalStringINSTANCE.Read(reader),
+		FfiConverterOptionalStringINSTANCE.Read(reader),
+		FfiConverterOptionalStringINSTANCE.Read(reader),
+		FfiConverterOptionalStringINSTANCE.Read(reader),
+		FfiConverterOptionalStringINSTANCE.Read(reader),
+		FfiConverterOptionalStringINSTANCE.Read(reader),
+		FfiConverterOptionalStringINSTANCE.Read(reader),
+		FfiConverterOptionalDurationINSTANCE.Read(reader),
+		FfiConverterOptionalDurationINSTANCE.Read(reader),
+		FfiConverterOptionalDurationINSTANCE.Read(reader),
+		FfiConverterOptionalOidcPolicyConfigINSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterOidcConfig) Lower(value OidcConfig) C.RustBuffer {
+	return LowerIntoRustBuffer[OidcConfig](c, value)
+}
+
+func (c FfiConverterOidcConfig) LowerExternal(value OidcConfig) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[OidcConfig](c, value))
+}
+
+func (c FfiConverterOidcConfig) Write(writer io.Writer, value OidcConfig) {
+	FfiConverterStringINSTANCE.Write(writer, value.IssuerUrl)
+	FfiConverterOptionalStringINSTANCE.Write(writer, value.ClientId)
+	FfiConverterOptionalStringINSTANCE.Write(writer, value.ClientSecret)
+	FfiConverterOptionalStringINSTANCE.Write(writer, value.Audience)
+	FfiConverterOptionalStringINSTANCE.Write(writer, value.RefreshToken)
+	FfiConverterOptionalStringINSTANCE.Write(writer, value.RefreshTokenFile)
+	FfiConverterOptionalStringINSTANCE.Write(writer, value.AccessTokenFile)
+	FfiConverterOptionalStringINSTANCE.Write(writer, value.Scope)
+	FfiConverterOptionalDurationINSTANCE.Write(writer, value.Timeout)
+	FfiConverterOptionalDurationINSTANCE.Write(writer, value.JwksTtl)
+	FfiConverterOptionalDurationINSTANCE.Write(writer, value.ClaimCacheTtl)
+	FfiConverterOptionalOidcPolicyConfigINSTANCE.Write(writer, value.Policy)
+}
+
+type FfiDestroyerOidcConfig struct{}
+
+func (_ FfiDestroyerOidcConfig) Destroy(value OidcConfig) {
+	value.Destroy()
+}
+
 // A participant in a session together with their current status
 type ParticipantInfo struct {
 	Name   *Name
@@ -6811,6 +6908,15 @@ func (e ClientAuthenticationConfigSpire) Destroy() {
 	FfiDestroyerSpireConfig{}.Destroy(e.Config)
 }
 
+// OIDC authentication (client-credentials or refresh-token flow)
+type ClientAuthenticationConfigOidc struct {
+	Config OidcConfig
+}
+
+func (e ClientAuthenticationConfigOidc) Destroy() {
+	FfiDestroyerOidcConfig{}.Destroy(e.Config)
+}
+
 type ClientAuthenticationConfigNone struct {
 }
 
@@ -6852,6 +6958,10 @@ func (FfiConverterClientAuthenticationConfig) Read(reader io.Reader) ClientAuthe
 			FfiConverterSpireConfigINSTANCE.Read(reader),
 		}
 	case 5:
+		return ClientAuthenticationConfigOidc{
+			FfiConverterOidcConfigINSTANCE.Read(reader),
+		}
+	case 6:
 		return ClientAuthenticationConfigNone{}
 	default:
 		panic(fmt.Sprintf("invalid enum value %v in FfiConverterClientAuthenticationConfig.Read()", id))
@@ -6872,8 +6982,11 @@ func (FfiConverterClientAuthenticationConfig) Write(writer io.Writer, value Clie
 	case ClientAuthenticationConfigSpire:
 		writeInt32(writer, 4)
 		FfiConverterSpireConfigINSTANCE.Write(writer, variant_value.Config)
-	case ClientAuthenticationConfigNone:
+	case ClientAuthenticationConfigOidc:
 		writeInt32(writer, 5)
+		FfiConverterOidcConfigINSTANCE.Write(writer, variant_value.Config)
+	case ClientAuthenticationConfigNone:
+		writeInt32(writer, 6)
 	default:
 		_ = variant_value
 		panic(fmt.Sprintf("invalid enum value `%v` in FfiConverterClientAuthenticationConfig.Write", value))
@@ -7481,6 +7594,96 @@ func (_ FfiDestroyerJwtKeyType) Destroy(value JwtKeyType) {
 	value.Destroy()
 }
 
+// Policy evaluated against JWT claims on every authenticated request (server-side OIDC only)
+type OidcPolicyConfig interface {
+	Destroy()
+}
+
+// Inline Rego policy (must define `package slim.auth` with `default allow = false`)
+type OidcPolicyConfigRego struct {
+	Text string
+}
+
+func (e OidcPolicyConfigRego) Destroy() {
+	FfiDestroyerString{}.Destroy(e.Text)
+}
+
+// Path to a Rego policy file read at server startup
+type OidcPolicyConfigRegoFile struct {
+	Path string
+}
+
+func (e OidcPolicyConfigRegoFile) Destroy() {
+	FfiDestroyerString{}.Destroy(e.Path)
+}
+
+// CEL expression evaluated against JWT claims (e.g. `"admin" in claims.groups`)
+type OidcPolicyConfigCel struct {
+	Expression string
+}
+
+func (e OidcPolicyConfigCel) Destroy() {
+	FfiDestroyerString{}.Destroy(e.Expression)
+}
+
+type FfiConverterOidcPolicyConfig struct{}
+
+var FfiConverterOidcPolicyConfigINSTANCE = FfiConverterOidcPolicyConfig{}
+
+func (c FfiConverterOidcPolicyConfig) Lift(rb RustBufferI) OidcPolicyConfig {
+	return LiftFromRustBuffer[OidcPolicyConfig](c, rb)
+}
+
+func (c FfiConverterOidcPolicyConfig) Lower(value OidcPolicyConfig) C.RustBuffer {
+	return LowerIntoRustBuffer[OidcPolicyConfig](c, value)
+}
+
+func (c FfiConverterOidcPolicyConfig) LowerExternal(value OidcPolicyConfig) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[OidcPolicyConfig](c, value))
+}
+func (FfiConverterOidcPolicyConfig) Read(reader io.Reader) OidcPolicyConfig {
+	id := readInt32(reader)
+	switch id {
+	case 1:
+		return OidcPolicyConfigRego{
+			FfiConverterStringINSTANCE.Read(reader),
+		}
+	case 2:
+		return OidcPolicyConfigRegoFile{
+			FfiConverterStringINSTANCE.Read(reader),
+		}
+	case 3:
+		return OidcPolicyConfigCel{
+			FfiConverterStringINSTANCE.Read(reader),
+		}
+	default:
+		panic(fmt.Sprintf("invalid enum value %v in FfiConverterOidcPolicyConfig.Read()", id))
+	}
+}
+
+func (FfiConverterOidcPolicyConfig) Write(writer io.Writer, value OidcPolicyConfig) {
+	switch variant_value := value.(type) {
+	case OidcPolicyConfigRego:
+		writeInt32(writer, 1)
+		FfiConverterStringINSTANCE.Write(writer, variant_value.Text)
+	case OidcPolicyConfigRegoFile:
+		writeInt32(writer, 2)
+		FfiConverterStringINSTANCE.Write(writer, variant_value.Path)
+	case OidcPolicyConfigCel:
+		writeInt32(writer, 3)
+		FfiConverterStringINSTANCE.Write(writer, variant_value.Expression)
+	default:
+		_ = variant_value
+		panic(fmt.Sprintf("invalid enum value `%v` in FfiConverterOidcPolicyConfig.Write", value))
+	}
+}
+
+type FfiDestroyerOidcPolicyConfig struct{}
+
+func (_ FfiDestroyerOidcPolicyConfig) Destroy(value OidcPolicyConfig) {
+	value.Destroy()
+}
+
 // Online/offline status of a session participant
 type ParticipantStatus uint
 
@@ -7547,6 +7750,15 @@ func (e ServerAuthenticationConfigSpire) Destroy() {
 	FfiDestroyerSpireConfig{}.Destroy(e.Config)
 }
 
+// OIDC authentication (JWKS-based JWT verification with optional policy)
+type ServerAuthenticationConfigOidc struct {
+	Config OidcConfig
+}
+
+func (e ServerAuthenticationConfigOidc) Destroy() {
+	FfiDestroyerOidcConfig{}.Destroy(e.Config)
+}
+
 type ServerAuthenticationConfigNone struct {
 }
 
@@ -7584,6 +7796,10 @@ func (FfiConverterServerAuthenticationConfig) Read(reader io.Reader) ServerAuthe
 			FfiConverterSpireConfigINSTANCE.Read(reader),
 		}
 	case 4:
+		return ServerAuthenticationConfigOidc{
+			FfiConverterOidcConfigINSTANCE.Read(reader),
+		}
+	case 5:
 		return ServerAuthenticationConfigNone{}
 	default:
 		panic(fmt.Sprintf("invalid enum value %v in FfiConverterServerAuthenticationConfig.Read()", id))
@@ -7601,8 +7817,11 @@ func (FfiConverterServerAuthenticationConfig) Write(writer io.Writer, value Serv
 	case ServerAuthenticationConfigSpire:
 		writeInt32(writer, 3)
 		FfiConverterSpireConfigINSTANCE.Write(writer, variant_value.Config)
-	case ServerAuthenticationConfigNone:
+	case ServerAuthenticationConfigOidc:
 		writeInt32(writer, 4)
+		FfiConverterOidcConfigINSTANCE.Write(writer, variant_value.Config)
+	case ServerAuthenticationConfigNone:
+		writeInt32(writer, 5)
 	default:
 		_ = variant_value
 		panic(fmt.Sprintf("invalid enum value `%v` in FfiConverterServerAuthenticationConfig.Write", value))
@@ -8764,6 +8983,47 @@ type FfiDestroyerOptionalCompressionType struct{}
 func (_ FfiDestroyerOptionalCompressionType) Destroy(value *CompressionType) {
 	if value != nil {
 		FfiDestroyerCompressionType{}.Destroy(*value)
+	}
+}
+
+type FfiConverterOptionalOidcPolicyConfig struct{}
+
+var FfiConverterOptionalOidcPolicyConfigINSTANCE = FfiConverterOptionalOidcPolicyConfig{}
+
+func (c FfiConverterOptionalOidcPolicyConfig) Lift(rb RustBufferI) *OidcPolicyConfig {
+	return LiftFromRustBuffer[*OidcPolicyConfig](c, rb)
+}
+
+func (_ FfiConverterOptionalOidcPolicyConfig) Read(reader io.Reader) *OidcPolicyConfig {
+	if readInt8(reader) == 0 {
+		return nil
+	}
+	temp := FfiConverterOidcPolicyConfigINSTANCE.Read(reader)
+	return &temp
+}
+
+func (c FfiConverterOptionalOidcPolicyConfig) Lower(value *OidcPolicyConfig) C.RustBuffer {
+	return LowerIntoRustBuffer[*OidcPolicyConfig](c, value)
+}
+
+func (c FfiConverterOptionalOidcPolicyConfig) LowerExternal(value *OidcPolicyConfig) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[*OidcPolicyConfig](c, value))
+}
+
+func (_ FfiConverterOptionalOidcPolicyConfig) Write(writer io.Writer, value *OidcPolicyConfig) {
+	if value == nil {
+		writeInt8(writer, 0)
+	} else {
+		writeInt8(writer, 1)
+		FfiConverterOidcPolicyConfigINSTANCE.Write(writer, *value)
+	}
+}
+
+type FfiDestroyerOptionalOidcPolicyConfig struct{}
+
+func (_ FfiDestroyerOptionalOidcPolicyConfig) Destroy(value *OidcPolicyConfig) {
+	if value != nil {
+		FfiDestroyerOidcPolicyConfig{}.Destroy(*value)
 	}
 }
 
