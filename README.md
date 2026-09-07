@@ -1,5 +1,7 @@
 # SLIM Go Bindings
 
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/agntcy/slim-bindings-go/badge)](https://scorecard.dev/viewer/?uri=github.com/agntcy/slim-bindings-go)
+
 Get started with SLIM Go bindings in just a few minutes.
 
 ## Prerequisites
