@@ -2,11 +2,11 @@ package slim_bindings
 
 /*
 #cgo CFLAGS: -I${SRCDIR}
-#cgo linux,amd64 LDFLAGS: -L${SRCDIR} -L${SRCDIR}/../../../../../../.cgo-cache/slim-bindings/v2.1.2 -lslim_bindings_x86_64_linux_gnu -lm
-#cgo linux,arm64 LDFLAGS: -L${SRCDIR} -L${SRCDIR}/../../../../../../.cgo-cache/slim-bindings/v2.1.2 -lslim_bindings_aarch64_linux_gnu -lm
-#cgo darwin,amd64 LDFLAGS: -L${SRCDIR} -L${SRCDIR}/../../../../../../.cgo-cache/slim-bindings/v2.1.2 -lslim_bindings_x86_64_darwin -Wl,-undefined,dynamic_lookup
-#cgo darwin,arm64 LDFLAGS: -L${SRCDIR} -L${SRCDIR}/../../../../../../.cgo-cache/slim-bindings/v2.1.2 -lslim_bindings_aarch64_darwin -Wl,-undefined,dynamic_lookup
-#cgo windows,amd64 LDFLAGS: -L${SRCDIR} -L${SRCDIR}/../../../../../../.cgo-cache/slim-bindings/v2.1.2 -lslim_bindings_x86_64_windows_gnu -lws2_32 -lbcrypt -ladvapi32 -luserenv -lntdll -lgcc_eh -lgcc -lkernel32 -lole32
+#cgo linux,amd64 LDFLAGS: -L${SRCDIR} -L${SRCDIR}/../../../../../../.cgo-cache/slim-bindings/v2.2.0 -lslim_bindings_x86_64_linux_gnu -lm
+#cgo linux,arm64 LDFLAGS: -L${SRCDIR} -L${SRCDIR}/../../../../../../.cgo-cache/slim-bindings/v2.2.0 -lslim_bindings_aarch64_linux_gnu -lm
+#cgo darwin,amd64 LDFLAGS: -L${SRCDIR} -L${SRCDIR}/../../../../../../.cgo-cache/slim-bindings/v2.2.0 -lslim_bindings_x86_64_darwin -Wl,-undefined,dynamic_lookup
+#cgo darwin,arm64 LDFLAGS: -L${SRCDIR} -L${SRCDIR}/../../../../../../.cgo-cache/slim-bindings/v2.2.0 -lslim_bindings_aarch64_darwin -Wl,-undefined,dynamic_lookup
+#cgo windows,amd64 LDFLAGS: -L${SRCDIR} -L${SRCDIR}/../../../../../../.cgo-cache/slim-bindings/v2.2.0 -lslim_bindings_x86_64_windows_gnu -lws2_32 -lbcrypt -ladvapi32 -luserenv -lntdll -lgcc_eh -lgcc -lkernel32 -lole32
 #include <slim_bindings.h>
 */
 import "C"
@@ -616,6 +616,24 @@ func uniffiCheckChecksums() {
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_method_app_clear_default_gateway()
+		})
+		if checksum != 47277 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_method_app_clear_default_gateway: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_method_app_clear_default_gateway_async()
+		})
+		if checksum != 27827 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_method_app_clear_default_gateway_async: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_slim_bindings_checksum_method_app_create_session()
 		})
 		if checksum != 14334 {
@@ -756,6 +774,24 @@ func uniffiCheckChecksums() {
 		if checksum != 48735 {
 			// If this happens try cleaning and rebuilding your project
 			panic("slim_bindings: uniffi_slim_bindings_checksum_method_app_restore_sessions_async: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_method_app_set_default_gateway()
+		})
+		if checksum != 4756 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_method_app_set_default_gateway: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_method_app_set_default_gateway_async()
+		})
+		if checksum != 8540 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_method_app_set_default_gateway_async: UniFFI API checksum mismatch")
 		}
 	}
 	{
@@ -1798,6 +1834,10 @@ func (ffiObject *FfiObject) freeRustArcPtr() {
 // WebSocket [`slim_datapath::message_processing::MessageProcessor`] alive
 // together with the upstream connection id.
 type AppInterface interface {
+	// Remove the explicit default gateway pin.
+	ClearDefaultGateway() error
+	// Remove the explicit default gateway pin.
+	ClearDefaultGatewayAsync() error
 	// Create a new session (blocking version for FFI)
 	//
 	// Returns a SessionWithCompletion containing the session context and a completion handle.
@@ -1859,6 +1899,10 @@ type AppInterface interface {
 	// Each restored session rejoins its MLS group without repeating the
 	// invite/welcome handshake.
 	RestoreSessionsAsync(connId uint64) ([]*Session, error)
+	// Pin an Edge connection as the default gateway for unrouted publishes.
+	SetDefaultGateway(connectionId uint64) error
+	// Pin an Edge connection as the default gateway for unrouted publishes.
+	SetDefaultGatewayAsync(connectionId uint64) error
 	// Set a route to a name for a specific connection (blocking version for FFI)
 	SetRoute(name *Name, connectionId uint64) error
 	// Set a route to a name for a specific connection (async version)
@@ -1963,6 +2007,50 @@ func AppNewWithSecret(name *Name, secret string) (*App, error) {
 	} else {
 		return FfiConverterAppINSTANCE.Lift(_uniffiRV), nil
 	}
+}
+
+// Remove the explicit default gateway pin.
+func (_self *App) ClearDefaultGateway() error {
+	_pointer := _self.ffiObject.incrementPointer("*App")
+	defer _self.ffiObject.decrementPointer()
+	_, _uniffiErr := rustCallWithError[*SlimError](FfiConverterSlimError{}, func(_uniffiStatus *C.RustCallStatus) bool {
+		C.uniffi_slim_bindings_fn_method_app_clear_default_gateway(
+			_pointer, _uniffiStatus)
+		return false
+	})
+	return _uniffiErr.AsError()
+}
+
+// Remove the explicit default gateway pin.
+func (_self *App) ClearDefaultGatewayAsync() error {
+	_pointer := _self.ffiObject.incrementPointer("*App")
+	defer _self.ffiObject.decrementPointer()
+	_, err := uniffiRustCallAsync[*SlimError](
+		FfiConverterSlimErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) struct{} {
+			C.ffi_slim_bindings_rust_future_complete_void(handle, status)
+			return struct{}{}
+		},
+		// liftFn
+		func(_ struct{}) struct{} { return struct{}{} },
+		C.uniffi_slim_bindings_fn_method_app_clear_default_gateway_async(
+			_pointer),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_slim_bindings_rust_future_poll_void(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_slim_bindings_rust_future_free_void(handle)
+		},
+	)
+
+	if err == nil {
+		return nil
+	}
+
+	return err
 }
 
 // Create a new session (blocking version for FFI)
@@ -2360,6 +2448,50 @@ func (_self *App) RestoreSessionsAsync(connId uint64) ([]*Session, error) {
 	}
 
 	return res, err
+}
+
+// Pin an Edge connection as the default gateway for unrouted publishes.
+func (_self *App) SetDefaultGateway(connectionId uint64) error {
+	_pointer := _self.ffiObject.incrementPointer("*App")
+	defer _self.ffiObject.decrementPointer()
+	_, _uniffiErr := rustCallWithError[*SlimError](FfiConverterSlimError{}, func(_uniffiStatus *C.RustCallStatus) bool {
+		C.uniffi_slim_bindings_fn_method_app_set_default_gateway(
+			_pointer, FfiConverterUint64INSTANCE.Lower(connectionId), _uniffiStatus)
+		return false
+	})
+	return _uniffiErr.AsError()
+}
+
+// Pin an Edge connection as the default gateway for unrouted publishes.
+func (_self *App) SetDefaultGatewayAsync(connectionId uint64) error {
+	_pointer := _self.ffiObject.incrementPointer("*App")
+	defer _self.ffiObject.decrementPointer()
+	_, err := uniffiRustCallAsync[*SlimError](
+		FfiConverterSlimErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) struct{} {
+			C.ffi_slim_bindings_rust_future_complete_void(handle, status)
+			return struct{}{}
+		},
+		// liftFn
+		func(_ struct{}) struct{} { return struct{}{} },
+		C.uniffi_slim_bindings_fn_method_app_set_default_gateway_async(
+			_pointer, FfiConverterUint64INSTANCE.Lower(connectionId)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_slim_bindings_rust_future_poll_void(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_slim_bindings_rust_future_free_void(handle)
+		},
+	)
+
+	if err == nil {
+		return nil
+	}
+
+	return err
 }
 
 // Set a route to a name for a specific connection (blocking version for FFI)
