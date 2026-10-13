@@ -2,11 +2,11 @@ package slim_rpc
 
 /*
 #cgo CFLAGS: -I${SRCDIR}
-#cgo linux,amd64 LDFLAGS: -L${SRCDIR}/.. -L${SRCDIR}/../../../../../../../.cgo-cache/slim-bindings/v2.2.0 -lslim_bindings_x86_64_linux_gnu -lm
-#cgo linux,arm64 LDFLAGS: -L${SRCDIR}/.. -L${SRCDIR}/../../../../../../../.cgo-cache/slim-bindings/v2.2.0 -lslim_bindings_aarch64_linux_gnu -lm
-#cgo darwin,amd64 LDFLAGS: -L${SRCDIR}/.. -L${SRCDIR}/../../../../../../../.cgo-cache/slim-bindings/v2.2.0 -lslim_bindings_x86_64_darwin -Wl,-undefined,dynamic_lookup
-#cgo darwin,arm64 LDFLAGS: -L${SRCDIR}/.. -L${SRCDIR}/../../../../../../../.cgo-cache/slim-bindings/v2.2.0 -lslim_bindings_aarch64_darwin -Wl,-undefined,dynamic_lookup
-#cgo windows,amd64 LDFLAGS: -L${SRCDIR}/.. -L${SRCDIR}/../../../../../../../.cgo-cache/slim-bindings/v2.2.0 -lslim_bindings_x86_64_windows_gnu -lws2_32 -lbcrypt -ladvapi32 -luserenv -lntdll -lgcc_eh -lgcc -lkernel32 -lole32
+#cgo linux,amd64 LDFLAGS: -L${SRCDIR}/.. -L${SRCDIR}/../../../../../../../.cgo-cache/slim-bindings/v3.3.1 -lslim_bindings_x86_64_linux_gnu -lm
+#cgo linux,arm64 LDFLAGS: -L${SRCDIR}/.. -L${SRCDIR}/../../../../../../../.cgo-cache/slim-bindings/v3.3.1 -lslim_bindings_aarch64_linux_gnu -lm
+#cgo darwin,amd64 LDFLAGS: -L${SRCDIR}/.. -L${SRCDIR}/../../../../../../../.cgo-cache/slim-bindings/v3.3.1 -lslim_bindings_x86_64_darwin -Wl,-undefined,dynamic_lookup
+#cgo darwin,arm64 LDFLAGS: -L${SRCDIR}/.. -L${SRCDIR}/../../../../../../../.cgo-cache/slim-bindings/v3.3.1 -lslim_bindings_aarch64_darwin -Wl,-undefined,dynamic_lookup
+#cgo windows,amd64 LDFLAGS: -L${SRCDIR}/.. -L${SRCDIR}/../../../../../../../.cgo-cache/slim-bindings/v3.3.1 -lslim_bindings_x86_64_windows_gnu -lws2_32 -lbcrypt -ladvapi32 -luserenv -lntdll -lgcc_eh -lgcc -lkernel32 -lole32
 #include <slim_rpc.h>
 */
 import "C"
@@ -21,7 +21,7 @@ import (
 	"reflect"
 	"runtime"
 	"runtime/cgo"
-	slim_bindings "github.com/agntcy/slim-bindings-go/v2"
+	slim_bindings "github.com/agntcy/slim-bindings-go/v3"
 	"sync"
 	"sync/atomic"
 	"time"
@@ -538,6 +538,24 @@ func uniffiCheckChecksums() {
 		if checksum != 27768 {
 			// If this happens try cleaning and rebuilding your project
 			panic("slim_rpc: uniffi_slim_rpc_checksum_method_context_metadata: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_rpc_checksum_method_context_peer_issuer()
+		})
+		if checksum != 47492 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_rpc: uniffi_slim_rpc_checksum_method_context_peer_issuer: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_rpc_checksum_method_context_peer_subject()
+		})
+		if checksum != 55347 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_rpc: uniffi_slim_rpc_checksum_method_context_peer_subject: UniFFI API checksum mismatch")
 		}
 	}
 	{
@@ -2010,6 +2028,12 @@ type ContextInterface interface {
 	IsDeadlineExceeded() bool
 	// Get the rpc session metadata
 	Metadata() map[string]string
+	// The verified issuer (`iss`) of the peer that set up the session, when
+	// its token has one.
+	PeerIssuer() *string
+	// The verified subject (`sub`) of the peer that set up the session;
+	// see [`SessionContext::peer_identity`].
+	PeerSubject() *string
 	// Get the remaining time until deadline
 	//
 	// Returns Duration::ZERO if the deadline has already passed
@@ -2058,6 +2082,32 @@ func (_self *Context) Metadata() map[string]string {
 	return FfiConverterMapStringStringINSTANCE.Lift(rustCall(func(_uniffiStatus *C.RustCallStatus) RustBufferI {
 		return GoRustBuffer{
 			inner: C.uniffi_slim_rpc_fn_method_context_metadata(
+				_pointer, _uniffiStatus),
+		}
+	}))
+}
+
+// The verified issuer (`iss`) of the peer that set up the session, when
+// its token has one.
+func (_self *Context) PeerIssuer() *string {
+	_pointer := _self.ffiObject.incrementPointer("*Context")
+	defer _self.ffiObject.decrementPointer()
+	return FfiConverterOptionalStringINSTANCE.Lift(rustCall(func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+		return GoRustBuffer{
+			inner: C.uniffi_slim_rpc_fn_method_context_peer_issuer(
+				_pointer, _uniffiStatus),
+		}
+	}))
+}
+
+// The verified subject (`sub`) of the peer that set up the session;
+// see [`SessionContext::peer_identity`].
+func (_self *Context) PeerSubject() *string {
+	_pointer := _self.ffiObject.incrementPointer("*Context")
+	defer _self.ffiObject.decrementPointer()
+	return FfiConverterOptionalStringINSTANCE.Lift(rustCall(func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+		return GoRustBuffer{
+			inner: C.uniffi_slim_rpc_fn_method_context_peer_subject(
 				_pointer, _uniffiStatus),
 		}
 	}))
@@ -5158,6 +5208,47 @@ type FfiDestroyerOptionalUint64 struct{}
 func (_ FfiDestroyerOptionalUint64) Destroy(value *uint64) {
 	if value != nil {
 		FfiDestroyerUint64{}.Destroy(*value)
+	}
+}
+
+type FfiConverterOptionalString struct{}
+
+var FfiConverterOptionalStringINSTANCE = FfiConverterOptionalString{}
+
+func (c FfiConverterOptionalString) Lift(rb RustBufferI) *string {
+	return LiftFromRustBuffer[*string](c, rb)
+}
+
+func (_ FfiConverterOptionalString) Read(reader io.Reader) *string {
+	if readInt8(reader) == 0 {
+		return nil
+	}
+	temp := FfiConverterStringINSTANCE.Read(reader)
+	return &temp
+}
+
+func (c FfiConverterOptionalString) Lower(value *string) C.RustBuffer {
+	return LowerIntoRustBuffer[*string](c, value)
+}
+
+func (c FfiConverterOptionalString) LowerExternal(value *string) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[*string](c, value))
+}
+
+func (_ FfiConverterOptionalString) Write(writer io.Writer, value *string) {
+	if value == nil {
+		writeInt8(writer, 0)
+	} else {
+		writeInt8(writer, 1)
+		FfiConverterStringINSTANCE.Write(writer, *value)
+	}
+}
+
+type FfiDestroyerOptionalString struct{}
+
+func (_ FfiDestroyerOptionalString) Destroy(value *string) {
+	if value != nil {
+		FfiDestroyerString{}.Destroy(*value)
 	}
 }
 

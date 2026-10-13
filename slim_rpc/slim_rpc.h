@@ -587,6 +587,16 @@ int8_t uniffi_slim_rpc_fn_method_context_is_deadline_exceeded(uint64_t ptr, Rust
 RustBuffer uniffi_slim_rpc_fn_method_context_metadata(uint64_t ptr, RustCallStatus *out_status
 );
 #endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_RPC_FN_METHOD_CONTEXT_PEER_ISSUER
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_RPC_FN_METHOD_CONTEXT_PEER_ISSUER
+RustBuffer uniffi_slim_rpc_fn_method_context_peer_issuer(uint64_t ptr, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_RPC_FN_METHOD_CONTEXT_PEER_SUBJECT
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_RPC_FN_METHOD_CONTEXT_PEER_SUBJECT
+RustBuffer uniffi_slim_rpc_fn_method_context_peer_subject(uint64_t ptr, RustCallStatus *out_status
+);
+#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_RPC_FN_METHOD_CONTEXT_REMAINING_TIME
 #define UNIFFI_FFIDEF_UNIFFI_SLIM_RPC_FN_METHOD_CONTEXT_REMAINING_TIME
 RustBuffer uniffi_slim_rpc_fn_method_context_remaining_time(uint64_t ptr, RustCallStatus *out_status
@@ -1321,6 +1331,18 @@ uint16_t uniffi_slim_rpc_checksum_method_context_is_deadline_exceeded(void
 #ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_RPC_CHECKSUM_METHOD_CONTEXT_METADATA
 #define UNIFFI_FFIDEF_UNIFFI_SLIM_RPC_CHECKSUM_METHOD_CONTEXT_METADATA
 uint16_t uniffi_slim_rpc_checksum_method_context_metadata(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_RPC_CHECKSUM_METHOD_CONTEXT_PEER_ISSUER
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_RPC_CHECKSUM_METHOD_CONTEXT_PEER_ISSUER
+uint16_t uniffi_slim_rpc_checksum_method_context_peer_issuer(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_RPC_CHECKSUM_METHOD_CONTEXT_PEER_SUBJECT
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_RPC_CHECKSUM_METHOD_CONTEXT_PEER_SUBJECT
+uint16_t uniffi_slim_rpc_checksum_method_context_peer_subject(void
     
 );
 #endif

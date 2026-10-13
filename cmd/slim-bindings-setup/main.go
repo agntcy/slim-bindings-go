@@ -5,7 +5,7 @@
 //
 // Usage:
 //
-//	go install github.com/agntcy/slim-bindings-go/v2/cmd/slim-bindings-setup@latest
+//	go install github.com/agntcy/slim-bindings-go/v3/cmd/slim-bindings-setup@latest
 //	slim-bindings-setup
 package main
 
