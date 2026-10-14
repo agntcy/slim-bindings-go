@@ -2,11 +2,11 @@ package slim_rpc
 
 /*
 #cgo CFLAGS: -I${SRCDIR}
-#cgo linux,amd64 LDFLAGS: -L${SRCDIR}/.. -L${SRCDIR}/../../../../../../../.cgo-cache/slim-bindings/v3.3.1 -lslim_bindings_x86_64_linux_gnu -lm
-#cgo linux,arm64 LDFLAGS: -L${SRCDIR}/.. -L${SRCDIR}/../../../../../../../.cgo-cache/slim-bindings/v3.3.1 -lslim_bindings_aarch64_linux_gnu -lm
-#cgo darwin,amd64 LDFLAGS: -L${SRCDIR}/.. -L${SRCDIR}/../../../../../../../.cgo-cache/slim-bindings/v3.3.1 -lslim_bindings_x86_64_darwin -Wl,-undefined,dynamic_lookup
-#cgo darwin,arm64 LDFLAGS: -L${SRCDIR}/.. -L${SRCDIR}/../../../../../../../.cgo-cache/slim-bindings/v3.3.1 -lslim_bindings_aarch64_darwin -Wl,-undefined,dynamic_lookup
-#cgo windows,amd64 LDFLAGS: -L${SRCDIR}/.. -L${SRCDIR}/../../../../../../../.cgo-cache/slim-bindings/v3.3.1 -lslim_bindings_x86_64_windows_gnu -lws2_32 -lbcrypt -ladvapi32 -luserenv -lntdll -lgcc_eh -lgcc -lkernel32 -lole32
+#cgo linux,amd64 LDFLAGS: -L${SRCDIR}/.. -L${SRCDIR}/../../../../../../../.cgo-cache/slim-bindings/v3.3.2 -lslim_bindings_x86_64_linux_gnu -lm
+#cgo linux,arm64 LDFLAGS: -L${SRCDIR}/.. -L${SRCDIR}/../../../../../../../.cgo-cache/slim-bindings/v3.3.2 -lslim_bindings_aarch64_linux_gnu -lm
+#cgo darwin,amd64 LDFLAGS: -L${SRCDIR}/.. -L${SRCDIR}/../../../../../../../.cgo-cache/slim-bindings/v3.3.2 -lslim_bindings_x86_64_darwin -Wl,-undefined,dynamic_lookup
+#cgo darwin,arm64 LDFLAGS: -L${SRCDIR}/.. -L${SRCDIR}/../../../../../../../.cgo-cache/slim-bindings/v3.3.2 -lslim_bindings_aarch64_darwin -Wl,-undefined,dynamic_lookup
+#cgo windows,amd64 LDFLAGS: -L${SRCDIR}/.. -L${SRCDIR}/../../../../../../../.cgo-cache/slim-bindings/v3.3.2 -lslim_bindings_x86_64_windows_gnu -lws2_32 -lbcrypt -ladvapi32 -luserenv -lntdll -lgcc_eh -lgcc -lkernel32 -lole32
 #include <slim_rpc.h>
 */
 import "C"
@@ -544,7 +544,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_slim_rpc_checksum_method_context_peer_issuer()
 		})
-		if checksum != 47492 {
+		if checksum != 52509 {
 			// If this happens try cleaning and rebuilding your project
 			panic("slim_rpc: uniffi_slim_rpc_checksum_method_context_peer_issuer: UniFFI API checksum mismatch")
 		}
@@ -553,7 +553,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_slim_rpc_checksum_method_context_peer_subject()
 		})
-		if checksum != 55347 {
+		if checksum != 6182 {
 			// If this happens try cleaning and rebuilding your project
 			panic("slim_rpc: uniffi_slim_rpc_checksum_method_context_peer_subject: UniFFI API checksum mismatch")
 		}
@@ -2028,11 +2028,12 @@ type ContextInterface interface {
 	IsDeadlineExceeded() bool
 	// Get the rpc session metadata
 	Metadata() map[string]string
-	// The verified issuer (`iss`) of the peer that set up the session, when
-	// its token has one.
+	// The verified issuer (`iss`) of the peer that sent this request, when
+	// it is known.
 	PeerIssuer() *string
-	// The verified subject (`sub`) of the peer that set up the session;
-	// see [`SessionContext::peer_identity`].
+	// The verified subject (`sub`) of the peer that sent this request: its MLS
+	// sender with MLS, otherwise the peer that set up the session; see
+	// [`SessionContext::peer_identity`].
 	PeerSubject() *string
 	// Get the remaining time until deadline
 	//
@@ -2087,8 +2088,8 @@ func (_self *Context) Metadata() map[string]string {
 	}))
 }
 
-// The verified issuer (`iss`) of the peer that set up the session, when
-// its token has one.
+// The verified issuer (`iss`) of the peer that sent this request, when
+// it is known.
 func (_self *Context) PeerIssuer() *string {
 	_pointer := _self.ffiObject.incrementPointer("*Context")
 	defer _self.ffiObject.decrementPointer()
@@ -2100,8 +2101,9 @@ func (_self *Context) PeerIssuer() *string {
 	}))
 }
 
-// The verified subject (`sub`) of the peer that set up the session;
-// see [`SessionContext::peer_identity`].
+// The verified subject (`sub`) of the peer that sent this request: its MLS
+// sender with MLS, otherwise the peer that set up the session; see
+// [`SessionContext::peer_identity`].
 func (_self *Context) PeerSubject() *string {
 	_pointer := _self.ffiObject.incrementPointer("*Context")
 	defer _self.ffiObject.decrementPointer()
