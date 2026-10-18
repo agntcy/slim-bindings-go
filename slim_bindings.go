@@ -2,11 +2,11 @@ package slim_bindings
 
 /*
 #cgo CFLAGS: -I${SRCDIR}
-#cgo linux,amd64 LDFLAGS: -L${SRCDIR} -L${SRCDIR}/../../../../../../.cgo-cache/slim-bindings/v3.3.3 -lslim_bindings_x86_64_linux_gnu -lm
-#cgo linux,arm64 LDFLAGS: -L${SRCDIR} -L${SRCDIR}/../../../../../../.cgo-cache/slim-bindings/v3.3.3 -lslim_bindings_aarch64_linux_gnu -lm
-#cgo darwin,amd64 LDFLAGS: -L${SRCDIR} -L${SRCDIR}/../../../../../../.cgo-cache/slim-bindings/v3.3.3 -lslim_bindings_x86_64_darwin -Wl,-undefined,dynamic_lookup
-#cgo darwin,arm64 LDFLAGS: -L${SRCDIR} -L${SRCDIR}/../../../../../../.cgo-cache/slim-bindings/v3.3.3 -lslim_bindings_aarch64_darwin -Wl,-undefined,dynamic_lookup
-#cgo windows,amd64 LDFLAGS: -L${SRCDIR} -L${SRCDIR}/../../../../../../.cgo-cache/slim-bindings/v3.3.3 -lslim_bindings_x86_64_windows_gnu -lws2_32 -lbcrypt -ladvapi32 -luserenv -lntdll -lgcc_eh -lgcc -lkernel32 -lole32
+#cgo linux,amd64 LDFLAGS: -L${SRCDIR} -L${SRCDIR}/../../../../../../.cgo-cache/slim-bindings/v3.3.4 -lslim_bindings_x86_64_linux_gnu -lm
+#cgo linux,arm64 LDFLAGS: -L${SRCDIR} -L${SRCDIR}/../../../../../../.cgo-cache/slim-bindings/v3.3.4 -lslim_bindings_aarch64_linux_gnu -lm
+#cgo darwin,amd64 LDFLAGS: -L${SRCDIR} -L${SRCDIR}/../../../../../../.cgo-cache/slim-bindings/v3.3.4 -lslim_bindings_x86_64_darwin -Wl,-undefined,dynamic_lookup
+#cgo darwin,arm64 LDFLAGS: -L${SRCDIR} -L${SRCDIR}/../../../../../../.cgo-cache/slim-bindings/v3.3.4 -lslim_bindings_aarch64_darwin -Wl,-undefined,dynamic_lookup
+#cgo windows,amd64 LDFLAGS: -L${SRCDIR} -L${SRCDIR}/../../../../../../.cgo-cache/slim-bindings/v3.3.4 -lslim_bindings_x86_64_windows_gnu -lws2_32 -lbcrypt -ladvapi32 -luserenv -lntdll -lgcc_eh -lgcc -lkernel32 -lole32
 #include <slim_bindings.h>
 */
 import "C"
@@ -7031,7 +7031,8 @@ func (e ClientAuthenticationConfigJwt) Destroy() {
 	FfiDestroyerClientJwtAuth{}.Destroy(e.Config)
 }
 
-// SPIRE/SPIFFE authentication (non-Windows only)
+// SPIRE/SPIFFE authentication. Present on every platform to keep the uniffi
+// layout stable; rejected with an error on Windows (see `SPIRE_SUPPORTED`).
 type ClientAuthenticationConfigSpire struct {
 	Config SpireConfig
 }
@@ -7290,7 +7291,8 @@ func (e IdentityProviderConfigJwt) Destroy() {
 	FfiDestroyerClientJwtAuth{}.Destroy(e.Config)
 }
 
-// SPIRE-based identity provider (non-Windows only)
+// SPIRE-based identity provider. Present on every platform to keep the uniffi
+// layout stable; rejected with an error on Windows.
 type IdentityProviderConfigSpire struct {
 	Config SpireConfig
 }
@@ -7402,7 +7404,8 @@ func (e IdentityVerifierConfigJwt) Destroy() {
 	FfiDestroyerJwtAuth{}.Destroy(e.Config)
 }
 
-// SPIRE-based identity verifier (non-Windows only)
+// SPIRE-based identity verifier. Present on every platform to keep the uniffi
+// layout stable; rejected with an error on Windows.
 type IdentityVerifierConfigSpire struct {
 	Config SpireConfig
 }
@@ -7873,7 +7876,8 @@ func (e ServerAuthenticationConfigJwt) Destroy() {
 	FfiDestroyerJwtAuth{}.Destroy(e.Config)
 }
 
-// SPIRE/SPIFFE authentication (non-Windows only)
+// SPIRE/SPIFFE authentication. Present on every platform to keep the uniffi
+// layout stable; rejected with an error on Windows (see `SPIRE_SUPPORTED`).
 type ServerAuthenticationConfigSpire struct {
 	Config SpireConfig
 }
