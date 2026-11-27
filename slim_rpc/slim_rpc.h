@@ -757,6 +757,11 @@ uint64_t uniffi_slim_rpc_fn_clone_bidistreamhandler(uint64_t handle, RustCallSta
 void uniffi_slim_rpc_fn_free_bidistreamhandler(uint64_t handle, RustCallStatus *out_status
 );
 #endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_RPC_FN_METHOD_BIDISTREAMHANDLER_CANCEL
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_RPC_FN_METHOD_BIDISTREAMHANDLER_CANCEL
+void uniffi_slim_rpc_fn_method_bidistreamhandler_cancel(uint64_t ptr, RustCallStatus *out_status
+);
+#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_RPC_FN_METHOD_BIDISTREAMHANDLER_CLOSE_SEND
 #define UNIFFI_FFIDEF_UNIFFI_SLIM_RPC_FN_METHOD_BIDISTREAMHANDLER_CLOSE_SEND
 void uniffi_slim_rpc_fn_method_bidistreamhandler_close_send(uint64_t ptr, RustCallStatus *out_status
@@ -795,6 +800,11 @@ uint64_t uniffi_slim_rpc_fn_clone_multicastbidistreamhandler(uint64_t handle, Ru
 #ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_RPC_FN_FREE_MULTICASTBIDISTREAMHANDLER
 #define UNIFFI_FFIDEF_UNIFFI_SLIM_RPC_FN_FREE_MULTICASTBIDISTREAMHANDLER
 void uniffi_slim_rpc_fn_free_multicastbidistreamhandler(uint64_t handle, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_RPC_FN_METHOD_MULTICASTBIDISTREAMHANDLER_CANCEL
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_RPC_FN_METHOD_MULTICASTBIDISTREAMHANDLER_CANCEL
+void uniffi_slim_rpc_fn_method_multicastbidistreamhandler_cancel(uint64_t ptr, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_RPC_FN_METHOD_MULTICASTBIDISTREAMHANDLER_CLOSE_SEND
@@ -837,6 +847,11 @@ uint64_t uniffi_slim_rpc_fn_clone_multicastresponsereader(uint64_t handle, RustC
 void uniffi_slim_rpc_fn_free_multicastresponsereader(uint64_t handle, RustCallStatus *out_status
 );
 #endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_RPC_FN_METHOD_MULTICASTRESPONSEREADER_CANCEL
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_RPC_FN_METHOD_MULTICASTRESPONSEREADER_CANCEL
+void uniffi_slim_rpc_fn_method_multicastresponsereader_cancel(uint64_t ptr, RustCallStatus *out_status
+);
+#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_RPC_FN_METHOD_MULTICASTRESPONSEREADER_NEXT
 #define UNIFFI_FFIDEF_UNIFFI_SLIM_RPC_FN_METHOD_MULTICASTRESPONSEREADER_NEXT
 RustBuffer uniffi_slim_rpc_fn_method_multicastresponsereader_next(uint64_t ptr, RustCallStatus *out_status
@@ -875,6 +890,11 @@ uint64_t uniffi_slim_rpc_fn_clone_requeststreamwriter(uint64_t handle, RustCallS
 #ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_RPC_FN_FREE_REQUESTSTREAMWRITER
 #define UNIFFI_FFIDEF_UNIFFI_SLIM_RPC_FN_FREE_REQUESTSTREAMWRITER
 void uniffi_slim_rpc_fn_free_requeststreamwriter(uint64_t handle, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_RPC_FN_METHOD_REQUESTSTREAMWRITER_CANCEL
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_RPC_FN_METHOD_REQUESTSTREAMWRITER_CANCEL
+void uniffi_slim_rpc_fn_method_requeststreamwriter_cancel(uint64_t ptr, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_RPC_FN_METHOD_REQUESTSTREAMWRITER_FINALIZE_ASYNC
@@ -960,6 +980,11 @@ uint64_t uniffi_slim_rpc_fn_clone_responsestreamreader(uint64_t handle, RustCall
 #ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_RPC_FN_FREE_RESPONSESTREAMREADER
 #define UNIFFI_FFIDEF_UNIFFI_SLIM_RPC_FN_FREE_RESPONSESTREAMREADER
 void uniffi_slim_rpc_fn_free_responsestreamreader(uint64_t handle, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_RPC_FN_METHOD_RESPONSESTREAMREADER_CANCEL
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_RPC_FN_METHOD_RESPONSESTREAMREADER_CANCEL
+void uniffi_slim_rpc_fn_method_responsestreamreader_cancel(uint64_t ptr, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_RPC_FN_METHOD_RESPONSESTREAMREADER_NEXT
@@ -1430,6 +1455,12 @@ uint16_t uniffi_slim_rpc_checksum_method_server_shutdown_blocking(void
     
 );
 #endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_RPC_CHECKSUM_METHOD_BIDISTREAMHANDLER_CANCEL
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_RPC_CHECKSUM_METHOD_BIDISTREAMHANDLER_CANCEL
+uint16_t uniffi_slim_rpc_checksum_method_bidistreamhandler_cancel(void
+    
+);
+#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_RPC_CHECKSUM_METHOD_BIDISTREAMHANDLER_CLOSE_SEND
 #define UNIFFI_FFIDEF_UNIFFI_SLIM_RPC_CHECKSUM_METHOD_BIDISTREAMHANDLER_CLOSE_SEND
 uint16_t uniffi_slim_rpc_checksum_method_bidistreamhandler_close_send(void
@@ -1463,6 +1494,12 @@ uint16_t uniffi_slim_rpc_checksum_method_bidistreamhandler_send(void
 #ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_RPC_CHECKSUM_METHOD_BIDISTREAMHANDLER_SEND_ASYNC
 #define UNIFFI_FFIDEF_UNIFFI_SLIM_RPC_CHECKSUM_METHOD_BIDISTREAMHANDLER_SEND_ASYNC
 uint16_t uniffi_slim_rpc_checksum_method_bidistreamhandler_send_async(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_RPC_CHECKSUM_METHOD_MULTICASTBIDISTREAMHANDLER_CANCEL
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_RPC_CHECKSUM_METHOD_MULTICASTBIDISTREAMHANDLER_CANCEL
+uint16_t uniffi_slim_rpc_checksum_method_multicastbidistreamhandler_cancel(void
     
 );
 #endif
@@ -1502,6 +1539,12 @@ uint16_t uniffi_slim_rpc_checksum_method_multicastbidistreamhandler_send_async(v
     
 );
 #endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_RPC_CHECKSUM_METHOD_MULTICASTRESPONSEREADER_CANCEL
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_RPC_CHECKSUM_METHOD_MULTICASTRESPONSEREADER_CANCEL
+uint16_t uniffi_slim_rpc_checksum_method_multicastresponsereader_cancel(void
+    
+);
+#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_RPC_CHECKSUM_METHOD_MULTICASTRESPONSEREADER_NEXT
 #define UNIFFI_FFIDEF_UNIFFI_SLIM_RPC_CHECKSUM_METHOD_MULTICASTRESPONSEREADER_NEXT
 uint16_t uniffi_slim_rpc_checksum_method_multicastresponsereader_next(void
@@ -1523,6 +1566,12 @@ uint16_t uniffi_slim_rpc_checksum_method_requeststream_next(void
 #ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_RPC_CHECKSUM_METHOD_REQUESTSTREAM_NEXT_ASYNC
 #define UNIFFI_FFIDEF_UNIFFI_SLIM_RPC_CHECKSUM_METHOD_REQUESTSTREAM_NEXT_ASYNC
 uint16_t uniffi_slim_rpc_checksum_method_requeststream_next_async(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_RPC_CHECKSUM_METHOD_REQUESTSTREAMWRITER_CANCEL
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_RPC_CHECKSUM_METHOD_REQUESTSTREAMWRITER_CANCEL
+uint16_t uniffi_slim_rpc_checksum_method_requeststreamwriter_cancel(void
     
 );
 #endif
@@ -1601,6 +1650,12 @@ uint16_t uniffi_slim_rpc_checksum_method_responsesink_send_error(void
 #ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_RPC_CHECKSUM_METHOD_RESPONSESINK_SEND_ERROR_ASYNC
 #define UNIFFI_FFIDEF_UNIFFI_SLIM_RPC_CHECKSUM_METHOD_RESPONSESINK_SEND_ERROR_ASYNC
 uint16_t uniffi_slim_rpc_checksum_method_responsesink_send_error_async(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_RPC_CHECKSUM_METHOD_RESPONSESTREAMREADER_CANCEL
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_RPC_CHECKSUM_METHOD_RESPONSESTREAMREADER_CANCEL
+uint16_t uniffi_slim_rpc_checksum_method_responsestreamreader_cancel(void
     
 );
 #endif

@@ -370,6 +370,262 @@ static void call_UniffiForeignFutureCompleteVoid(
 
 
 #endif
+#ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_IDENTITY_PROVIDER_METHOD0
+#define UNIFFI_FFIDEF_CALLBACK_INTERFACE_IDENTITY_PROVIDER_METHOD0
+typedef void (*UniffiCallbackInterfaceIdentityProviderMethod0)(uint64_t uniffi_handle, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFutureDroppedCallbackStruct* uniffi_out_dropped_callback);
+
+// Making function static workaround:
+// https://github.com/golang/go/issues/11263
+static void call_UniffiCallbackInterfaceIdentityProviderMethod0(
+				UniffiCallbackInterfaceIdentityProviderMethod0 cb, uint64_t uniffi_handle, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFutureDroppedCallbackStruct* uniffi_out_dropped_callback)
+{
+	return cb(uniffi_handle, uniffi_future_callback, uniffi_callback_data, uniffi_out_dropped_callback);
+}
+
+
+#endif
+#ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_IDENTITY_PROVIDER_METHOD1
+#define UNIFFI_FFIDEF_CALLBACK_INTERFACE_IDENTITY_PROVIDER_METHOD1
+typedef void (*UniffiCallbackInterfaceIdentityProviderMethod1)(uint64_t uniffi_handle, RustBuffer* uniffi_out_return, RustCallStatus* callStatus );
+
+// Making function static workaround:
+// https://github.com/golang/go/issues/11263
+static void call_UniffiCallbackInterfaceIdentityProviderMethod1(
+				UniffiCallbackInterfaceIdentityProviderMethod1 cb, uint64_t uniffi_handle, RustBuffer* uniffi_out_return, RustCallStatus* callStatus )
+{
+	return cb(uniffi_handle, uniffi_out_return, callStatus );
+}
+
+
+#endif
+#ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_IDENTITY_PROVIDER_METHOD2
+#define UNIFFI_FFIDEF_CALLBACK_INTERFACE_IDENTITY_PROVIDER_METHOD2
+typedef void (*UniffiCallbackInterfaceIdentityProviderMethod2)(uint64_t uniffi_handle, RustBuffer* uniffi_out_return, RustCallStatus* callStatus );
+
+// Making function static workaround:
+// https://github.com/golang/go/issues/11263
+static void call_UniffiCallbackInterfaceIdentityProviderMethod2(
+				UniffiCallbackInterfaceIdentityProviderMethod2 cb, uint64_t uniffi_handle, RustBuffer* uniffi_out_return, RustCallStatus* callStatus )
+{
+	return cb(uniffi_handle, uniffi_out_return, callStatus );
+}
+
+
+#endif
+#ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_IDENTITY_PROVIDER_METHOD3
+#define UNIFFI_FFIDEF_CALLBACK_INTERFACE_IDENTITY_PROVIDER_METHOD3
+typedef void (*UniffiCallbackInterfaceIdentityProviderMethod3)(uint64_t uniffi_handle, RustBuffer* uniffi_out_return, RustCallStatus* callStatus );
+
+// Making function static workaround:
+// https://github.com/golang/go/issues/11263
+static void call_UniffiCallbackInterfaceIdentityProviderMethod3(
+				UniffiCallbackInterfaceIdentityProviderMethod3 cb, uint64_t uniffi_handle, RustBuffer* uniffi_out_return, RustCallStatus* callStatus )
+{
+	return cb(uniffi_handle, uniffi_out_return, callStatus );
+}
+
+
+#endif
+#ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_IDENTITY_PROVIDER_METHOD4
+#define UNIFFI_FFIDEF_CALLBACK_INTERFACE_IDENTITY_PROVIDER_METHOD4
+typedef void (*UniffiCallbackInterfaceIdentityProviderMethod4)(uint64_t uniffi_handle, int8_t* uniffi_out_return, RustCallStatus* callStatus );
+
+// Making function static workaround:
+// https://github.com/golang/go/issues/11263
+static void call_UniffiCallbackInterfaceIdentityProviderMethod4(
+				UniffiCallbackInterfaceIdentityProviderMethod4 cb, uint64_t uniffi_handle, int8_t* uniffi_out_return, RustCallStatus* callStatus )
+{
+	return cb(uniffi_handle, uniffi_out_return, callStatus );
+}
+
+
+#endif
+#ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_IDENTITY_PROVIDER_METHOD5
+#define UNIFFI_FFIDEF_CALLBACK_INTERFACE_IDENTITY_PROVIDER_METHOD5
+typedef void (*UniffiCallbackInterfaceIdentityProviderMethod5)(uint64_t uniffi_handle, RustBuffer private_key, RustBuffer public_key, void* uniffi_out_return, RustCallStatus* callStatus );
+
+// Making function static workaround:
+// https://github.com/golang/go/issues/11263
+static void call_UniffiCallbackInterfaceIdentityProviderMethod5(
+				UniffiCallbackInterfaceIdentityProviderMethod5 cb, uint64_t uniffi_handle, RustBuffer private_key, RustBuffer public_key, void* uniffi_out_return, RustCallStatus* callStatus )
+{
+	return cb(uniffi_handle, private_key, public_key, uniffi_out_return, callStatus );
+}
+
+
+#endif
+#ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_IDENTITY_PROVIDER_METHOD6
+#define UNIFFI_FFIDEF_CALLBACK_INTERFACE_IDENTITY_PROVIDER_METHOD6
+typedef void (*UniffiCallbackInterfaceIdentityProviderMethod6)(uint64_t uniffi_handle, RustBuffer* uniffi_out_return, RustCallStatus* callStatus );
+
+// Making function static workaround:
+// https://github.com/golang/go/issues/11263
+static void call_UniffiCallbackInterfaceIdentityProviderMethod6(
+				UniffiCallbackInterfaceIdentityProviderMethod6 cb, uint64_t uniffi_handle, RustBuffer* uniffi_out_return, RustCallStatus* callStatus )
+{
+	return cb(uniffi_handle, uniffi_out_return, callStatus );
+}
+
+
+#endif
+#ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_IDENTITY_PROVIDER_METHOD7
+#define UNIFFI_FFIDEF_CALLBACK_INTERFACE_IDENTITY_PROVIDER_METHOD7
+typedef void (*UniffiCallbackInterfaceIdentityProviderMethod7)(uint64_t uniffi_handle, int8_t* uniffi_out_return, RustCallStatus* callStatus );
+
+// Making function static workaround:
+// https://github.com/golang/go/issues/11263
+static void call_UniffiCallbackInterfaceIdentityProviderMethod7(
+				UniffiCallbackInterfaceIdentityProviderMethod7 cb, uint64_t uniffi_handle, int8_t* uniffi_out_return, RustCallStatus* callStatus )
+{
+	return cb(uniffi_handle, uniffi_out_return, callStatus );
+}
+
+
+#endif
+#ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_IDENTITY_PROVIDER_METHOD8
+#define UNIFFI_FFIDEF_CALLBACK_INTERFACE_IDENTITY_PROVIDER_METHOD8
+typedef void (*UniffiCallbackInterfaceIdentityProviderMethod8)(uint64_t uniffi_handle, RustBuffer identity, void* uniffi_out_return, RustCallStatus* callStatus );
+
+// Making function static workaround:
+// https://github.com/golang/go/issues/11263
+static void call_UniffiCallbackInterfaceIdentityProviderMethod8(
+				UniffiCallbackInterfaceIdentityProviderMethod8 cb, uint64_t uniffi_handle, RustBuffer identity, void* uniffi_out_return, RustCallStatus* callStatus )
+{
+	return cb(uniffi_handle, identity, uniffi_out_return, callStatus );
+}
+
+
+#endif
+#ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_IDENTITY_VERIFIER_METHOD0
+#define UNIFFI_FFIDEF_CALLBACK_INTERFACE_IDENTITY_VERIFIER_METHOD0
+typedef void (*UniffiCallbackInterfaceIdentityVerifierMethod0)(uint64_t uniffi_handle, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFutureDroppedCallbackStruct* uniffi_out_dropped_callback);
+
+// Making function static workaround:
+// https://github.com/golang/go/issues/11263
+static void call_UniffiCallbackInterfaceIdentityVerifierMethod0(
+				UniffiCallbackInterfaceIdentityVerifierMethod0 cb, uint64_t uniffi_handle, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFutureDroppedCallbackStruct* uniffi_out_dropped_callback)
+{
+	return cb(uniffi_handle, uniffi_future_callback, uniffi_callback_data, uniffi_out_dropped_callback);
+}
+
+
+#endif
+#ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_IDENTITY_VERIFIER_METHOD1
+#define UNIFFI_FFIDEF_CALLBACK_INTERFACE_IDENTITY_VERIFIER_METHOD1
+typedef void (*UniffiCallbackInterfaceIdentityVerifierMethod1)(uint64_t uniffi_handle, RustBuffer token, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFutureDroppedCallbackStruct* uniffi_out_dropped_callback);
+
+// Making function static workaround:
+// https://github.com/golang/go/issues/11263
+static void call_UniffiCallbackInterfaceIdentityVerifierMethod1(
+				UniffiCallbackInterfaceIdentityVerifierMethod1 cb, uint64_t uniffi_handle, RustBuffer token, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFutureDroppedCallbackStruct* uniffi_out_dropped_callback)
+{
+	return cb(uniffi_handle, token, uniffi_future_callback, uniffi_callback_data, uniffi_out_dropped_callback);
+}
+
+
+#endif
+#ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_IDENTITY_VERIFIER_METHOD2
+#define UNIFFI_FFIDEF_CALLBACK_INTERFACE_IDENTITY_VERIFIER_METHOD2
+typedef void (*UniffiCallbackInterfaceIdentityVerifierMethod2)(uint64_t uniffi_handle, RustBuffer token, void* uniffi_out_return, RustCallStatus* callStatus );
+
+// Making function static workaround:
+// https://github.com/golang/go/issues/11263
+static void call_UniffiCallbackInterfaceIdentityVerifierMethod2(
+				UniffiCallbackInterfaceIdentityVerifierMethod2 cb, uint64_t uniffi_handle, RustBuffer token, void* uniffi_out_return, RustCallStatus* callStatus )
+{
+	return cb(uniffi_handle, token, uniffi_out_return, callStatus );
+}
+
+
+#endif
+#ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_IDENTITY_VERIFIER_METHOD3
+#define UNIFFI_FFIDEF_CALLBACK_INTERFACE_IDENTITY_VERIFIER_METHOD3
+typedef void (*UniffiCallbackInterfaceIdentityVerifierMethod3)(uint64_t uniffi_handle, RustBuffer token, RustBuffer* uniffi_out_return, RustCallStatus* callStatus );
+
+// Making function static workaround:
+// https://github.com/golang/go/issues/11263
+static void call_UniffiCallbackInterfaceIdentityVerifierMethod3(
+				UniffiCallbackInterfaceIdentityVerifierMethod3 cb, uint64_t uniffi_handle, RustBuffer token, RustBuffer* uniffi_out_return, RustCallStatus* callStatus )
+{
+	return cb(uniffi_handle, token, uniffi_out_return, callStatus );
+}
+
+
+#endif
+#ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_IDENTITY_VERIFIER_METHOD4
+#define UNIFFI_FFIDEF_CALLBACK_INTERFACE_IDENTITY_VERIFIER_METHOD4
+typedef void (*UniffiCallbackInterfaceIdentityVerifierMethod4)(uint64_t uniffi_handle, RustBuffer token, RustBuffer* uniffi_out_return, RustCallStatus* callStatus );
+
+// Making function static workaround:
+// https://github.com/golang/go/issues/11263
+static void call_UniffiCallbackInterfaceIdentityVerifierMethod4(
+				UniffiCallbackInterfaceIdentityVerifierMethod4 cb, uint64_t uniffi_handle, RustBuffer token, RustBuffer* uniffi_out_return, RustCallStatus* callStatus )
+{
+	return cb(uniffi_handle, token, uniffi_out_return, callStatus );
+}
+
+
+#endif
+#ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_IDENTITY_VERIFIER_METHOD5
+#define UNIFFI_FFIDEF_CALLBACK_INTERFACE_IDENTITY_VERIFIER_METHOD5
+typedef void (*UniffiCallbackInterfaceIdentityVerifierMethod5)(uint64_t uniffi_handle, RustBuffer token, RustBuffer* uniffi_out_return, RustCallStatus* callStatus );
+
+// Making function static workaround:
+// https://github.com/golang/go/issues/11263
+static void call_UniffiCallbackInterfaceIdentityVerifierMethod5(
+				UniffiCallbackInterfaceIdentityVerifierMethod5 cb, uint64_t uniffi_handle, RustBuffer token, RustBuffer* uniffi_out_return, RustCallStatus* callStatus )
+{
+	return cb(uniffi_handle, token, uniffi_out_return, callStatus );
+}
+
+
+#endif
+#ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_IDENTITY_VERIFIER_METHOD6
+#define UNIFFI_FFIDEF_CALLBACK_INTERFACE_IDENTITY_VERIFIER_METHOD6
+typedef void (*UniffiCallbackInterfaceIdentityVerifierMethod6)(uint64_t uniffi_handle, RustBuffer token, RustBuffer public_key, void* uniffi_out_return, RustCallStatus* callStatus );
+
+// Making function static workaround:
+// https://github.com/golang/go/issues/11263
+static void call_UniffiCallbackInterfaceIdentityVerifierMethod6(
+				UniffiCallbackInterfaceIdentityVerifierMethod6 cb, uint64_t uniffi_handle, RustBuffer token, RustBuffer public_key, void* uniffi_out_return, RustCallStatus* callStatus )
+{
+	return cb(uniffi_handle, token, public_key, uniffi_out_return, callStatus );
+}
+
+
+#endif
+#ifndef UNIFFI_FFIDEF_V_TABLE_CALLBACK_INTERFACE_IDENTITY_PROVIDER
+#define UNIFFI_FFIDEF_V_TABLE_CALLBACK_INTERFACE_IDENTITY_PROVIDER
+typedef struct UniffiVTableCallbackInterfaceIdentityProvider {
+    UniffiCallbackInterfaceFree uniffiFree;
+    UniffiCallbackInterfaceClone uniffiClone;
+    UniffiCallbackInterfaceIdentityProviderMethod0 initialize;
+    UniffiCallbackInterfaceIdentityProviderMethod1 getToken;
+    UniffiCallbackInterfaceIdentityProviderMethod2 getId;
+    UniffiCallbackInterfaceIdentityProviderMethod3 getSignatureKeys;
+    UniffiCallbackInterfaceIdentityProviderMethod4 mlsSignatureKeysInstalled;
+    UniffiCallbackInterfaceIdentityProviderMethod5 setSignatureKeys;
+    UniffiCallbackInterfaceIdentityProviderMethod6 exportIdentity;
+    UniffiCallbackInterfaceIdentityProviderMethod7 holdsLongTermSigningKey;
+    UniffiCallbackInterfaceIdentityProviderMethod8 restoreIdentity;
+} UniffiVTableCallbackInterfaceIdentityProvider;
+
+#endif
+#ifndef UNIFFI_FFIDEF_V_TABLE_CALLBACK_INTERFACE_IDENTITY_VERIFIER
+#define UNIFFI_FFIDEF_V_TABLE_CALLBACK_INTERFACE_IDENTITY_VERIFIER
+typedef struct UniffiVTableCallbackInterfaceIdentityVerifier {
+    UniffiCallbackInterfaceFree uniffiFree;
+    UniffiCallbackInterfaceClone uniffiClone;
+    UniffiCallbackInterfaceIdentityVerifierMethod0 initialize;
+    UniffiCallbackInterfaceIdentityVerifierMethod1 verifyAsync;
+    UniffiCallbackInterfaceIdentityVerifierMethod2 verify;
+    UniffiCallbackInterfaceIdentityVerifierMethod3 getClaims;
+    UniffiCallbackInterfaceIdentityVerifierMethod4 getSubject;
+    UniffiCallbackInterfaceIdentityVerifierMethod5 getPublicKey;
+    UniffiCallbackInterfaceIdentityVerifierMethod6 verifyKeyBinding;
+} UniffiVTableCallbackInterfaceIdentityVerifier;
+
+#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_CLONE_APP
 #define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_CLONE_APP
 uint64_t uniffi_slim_bindings_fn_clone_app(uint64_t handle, RustCallStatus *out_status
@@ -383,6 +639,26 @@ void uniffi_slim_bindings_fn_free_app(uint64_t handle, RustCallStatus *out_statu
 #ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_CONSTRUCTOR_APP_NEW
 #define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_CONSTRUCTOR_APP_NEW
 uint64_t uniffi_slim_bindings_fn_constructor_app_new(uint64_t base_name, RustBuffer identity_provider_config, RustBuffer identity_verifier_config, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_CONSTRUCTOR_APP_NEW_WITH_CUSTOM_IDENTITY
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_CONSTRUCTOR_APP_NEW_WITH_CUSTOM_IDENTITY
+uint64_t uniffi_slim_bindings_fn_constructor_app_new_with_custom_identity(uint64_t base_name, uint64_t identity_provider, uint64_t identity_verifier, RustBuffer direction, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_CONSTRUCTOR_APP_NEW_WITH_CUSTOM_IDENTITY_ASYNC
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_CONSTRUCTOR_APP_NEW_WITH_CUSTOM_IDENTITY_ASYNC
+uint64_t uniffi_slim_bindings_fn_constructor_app_new_with_custom_identity_async(uint64_t base_name, uint64_t identity_provider, uint64_t identity_verifier, RustBuffer direction
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_CONSTRUCTOR_APP_NEW_WITH_DID_KEY
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_CONSTRUCTOR_APP_NEW_WITH_DID_KEY
+uint64_t uniffi_slim_bindings_fn_constructor_app_new_with_did_key(uint64_t name, RustBuffer private_key_pem, RustBuffer trusted_keys, RustBuffer direction, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_CONSTRUCTOR_APP_NEW_WITH_DID_KEY_ASYNC
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_CONSTRUCTOR_APP_NEW_WITH_DID_KEY_ASYNC
+uint64_t uniffi_slim_bindings_fn_constructor_app_new_with_did_key_async(uint64_t name, RustBuffer private_key_pem, RustBuffer trusted_keys, RustBuffer direction
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_CONSTRUCTOR_APP_NEW_WITH_DIRECTION
@@ -555,6 +831,116 @@ void uniffi_slim_bindings_fn_method_completionhandle_wait_for(uint64_t ptr, Rust
 uint64_t uniffi_slim_bindings_fn_method_completionhandle_wait_for_async(uint64_t ptr, RustBuffer timeout
 );
 #endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_CLONE_IDENTITYPROVIDER
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_CLONE_IDENTITYPROVIDER
+uint64_t uniffi_slim_bindings_fn_clone_identityprovider(uint64_t handle, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_FREE_IDENTITYPROVIDER
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_FREE_IDENTITYPROVIDER
+void uniffi_slim_bindings_fn_free_identityprovider(uint64_t handle, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_INIT_CALLBACK_VTABLE_IDENTITYPROVIDER
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_INIT_CALLBACK_VTABLE_IDENTITYPROVIDER
+void uniffi_slim_bindings_fn_init_callback_vtable_identityprovider(UniffiVTableCallbackInterfaceIdentityProvider* vtable
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_IDENTITYPROVIDER_INITIALIZE
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_IDENTITYPROVIDER_INITIALIZE
+uint64_t uniffi_slim_bindings_fn_method_identityprovider_initialize(uint64_t ptr
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_IDENTITYPROVIDER_GET_TOKEN
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_IDENTITYPROVIDER_GET_TOKEN
+RustBuffer uniffi_slim_bindings_fn_method_identityprovider_get_token(uint64_t ptr, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_IDENTITYPROVIDER_GET_ID
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_IDENTITYPROVIDER_GET_ID
+RustBuffer uniffi_slim_bindings_fn_method_identityprovider_get_id(uint64_t ptr, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_IDENTITYPROVIDER_GET_SIGNATURE_KEYS
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_IDENTITYPROVIDER_GET_SIGNATURE_KEYS
+RustBuffer uniffi_slim_bindings_fn_method_identityprovider_get_signature_keys(uint64_t ptr, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_IDENTITYPROVIDER_MLS_SIGNATURE_KEYS_INSTALLED
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_IDENTITYPROVIDER_MLS_SIGNATURE_KEYS_INSTALLED
+int8_t uniffi_slim_bindings_fn_method_identityprovider_mls_signature_keys_installed(uint64_t ptr, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_IDENTITYPROVIDER_SET_SIGNATURE_KEYS
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_IDENTITYPROVIDER_SET_SIGNATURE_KEYS
+void uniffi_slim_bindings_fn_method_identityprovider_set_signature_keys(uint64_t ptr, RustBuffer private_key, RustBuffer public_key, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_IDENTITYPROVIDER_EXPORT_IDENTITY
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_IDENTITYPROVIDER_EXPORT_IDENTITY
+RustBuffer uniffi_slim_bindings_fn_method_identityprovider_export_identity(uint64_t ptr, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_IDENTITYPROVIDER_HOLDS_LONG_TERM_SIGNING_KEY
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_IDENTITYPROVIDER_HOLDS_LONG_TERM_SIGNING_KEY
+int8_t uniffi_slim_bindings_fn_method_identityprovider_holds_long_term_signing_key(uint64_t ptr, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_IDENTITYPROVIDER_RESTORE_IDENTITY
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_IDENTITYPROVIDER_RESTORE_IDENTITY
+void uniffi_slim_bindings_fn_method_identityprovider_restore_identity(uint64_t ptr, RustBuffer identity, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_CLONE_IDENTITYVERIFIER
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_CLONE_IDENTITYVERIFIER
+uint64_t uniffi_slim_bindings_fn_clone_identityverifier(uint64_t handle, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_FREE_IDENTITYVERIFIER
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_FREE_IDENTITYVERIFIER
+void uniffi_slim_bindings_fn_free_identityverifier(uint64_t handle, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_INIT_CALLBACK_VTABLE_IDENTITYVERIFIER
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_INIT_CALLBACK_VTABLE_IDENTITYVERIFIER
+void uniffi_slim_bindings_fn_init_callback_vtable_identityverifier(UniffiVTableCallbackInterfaceIdentityVerifier* vtable
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_IDENTITYVERIFIER_INITIALIZE
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_IDENTITYVERIFIER_INITIALIZE
+uint64_t uniffi_slim_bindings_fn_method_identityverifier_initialize(uint64_t ptr
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_IDENTITYVERIFIER_VERIFY_ASYNC
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_IDENTITYVERIFIER_VERIFY_ASYNC
+uint64_t uniffi_slim_bindings_fn_method_identityverifier_verify_async(uint64_t ptr, RustBuffer token
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_IDENTITYVERIFIER_VERIFY
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_IDENTITYVERIFIER_VERIFY
+void uniffi_slim_bindings_fn_method_identityverifier_verify(uint64_t ptr, RustBuffer token, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_IDENTITYVERIFIER_GET_CLAIMS
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_IDENTITYVERIFIER_GET_CLAIMS
+RustBuffer uniffi_slim_bindings_fn_method_identityverifier_get_claims(uint64_t ptr, RustBuffer token, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_IDENTITYVERIFIER_GET_SUBJECT
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_IDENTITYVERIFIER_GET_SUBJECT
+RustBuffer uniffi_slim_bindings_fn_method_identityverifier_get_subject(uint64_t ptr, RustBuffer token, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_IDENTITYVERIFIER_GET_PUBLIC_KEY
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_IDENTITYVERIFIER_GET_PUBLIC_KEY
+RustBuffer uniffi_slim_bindings_fn_method_identityverifier_get_public_key(uint64_t ptr, RustBuffer token, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_IDENTITYVERIFIER_VERIFY_KEY_BINDING
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_IDENTITYVERIFIER_VERIFY_KEY_BINDING
+void uniffi_slim_bindings_fn_method_identityverifier_verify_key_binding(uint64_t ptr, RustBuffer token, RustBuffer public_key, RustCallStatus *out_status
+);
+#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_CLONE_NAME
 #define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_CLONE_NAME
 uint64_t uniffi_slim_bindings_fn_clone_name(uint64_t handle, RustCallStatus *out_status
@@ -630,6 +1016,16 @@ uint64_t uniffi_slim_bindings_fn_constructor_service_new(RustBuffer name, RustCa
 uint64_t uniffi_slim_bindings_fn_constructor_service_new_with_config(RustBuffer name, RustBuffer config, RustCallStatus *out_status
 );
 #endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_SERVICE_CREATE_APP_WITH_CUSTOM_IDENTITY_AND_PERSISTENCE
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_SERVICE_CREATE_APP_WITH_CUSTOM_IDENTITY_AND_PERSISTENCE
+uint64_t uniffi_slim_bindings_fn_method_service_create_app_with_custom_identity_and_persistence(uint64_t ptr, uint64_t name, uint64_t identity_provider, uint64_t identity_verifier, RustBuffer direction, RustBuffer persistence, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_SERVICE_CREATE_APP_WITH_CUSTOM_IDENTITY_AND_PERSISTENCE_ASYNC
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_SERVICE_CREATE_APP_WITH_CUSTOM_IDENTITY_AND_PERSISTENCE_ASYNC
+uint64_t uniffi_slim_bindings_fn_method_service_create_app_with_custom_identity_and_persistence_async(uint64_t ptr, uint64_t name, uint64_t identity_provider, uint64_t identity_verifier, RustBuffer direction, RustBuffer persistence
+);
+#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_SERVICE_CREATE_APP_WITH_PERSISTENCE
 #define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_SERVICE_CREATE_APP_WITH_PERSISTENCE
 uint64_t uniffi_slim_bindings_fn_method_service_create_app_with_persistence(uint64_t ptr, uint64_t name, RustBuffer identity_provider_config, RustBuffer identity_verifier_config, RustBuffer direction, RustBuffer persistence, RustCallStatus *out_status
@@ -663,6 +1059,26 @@ uint64_t uniffi_slim_bindings_fn_method_service_create_app(uint64_t ptr, uint64_
 #ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_SERVICE_CREATE_APP_ASYNC
 #define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_SERVICE_CREATE_APP_ASYNC
 uint64_t uniffi_slim_bindings_fn_method_service_create_app_async(uint64_t ptr, uint64_t base_name, RustBuffer identity_provider_config, RustBuffer identity_verifier_config
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_SERVICE_CREATE_APP_WITH_CUSTOM_IDENTITY
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_SERVICE_CREATE_APP_WITH_CUSTOM_IDENTITY
+uint64_t uniffi_slim_bindings_fn_method_service_create_app_with_custom_identity(uint64_t ptr, uint64_t name, uint64_t identity_provider, uint64_t identity_verifier, RustBuffer direction, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_SERVICE_CREATE_APP_WITH_CUSTOM_IDENTITY_ASYNC
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_SERVICE_CREATE_APP_WITH_CUSTOM_IDENTITY_ASYNC
+uint64_t uniffi_slim_bindings_fn_method_service_create_app_with_custom_identity_async(uint64_t ptr, uint64_t name, uint64_t identity_provider, uint64_t identity_verifier, RustBuffer direction
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_SERVICE_CREATE_APP_WITH_DID_KEY
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_SERVICE_CREATE_APP_WITH_DID_KEY
+uint64_t uniffi_slim_bindings_fn_method_service_create_app_with_did_key(uint64_t ptr, uint64_t name, RustBuffer private_key_pem, RustBuffer trusted_keys, RustBuffer direction, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_SERVICE_CREATE_APP_WITH_DID_KEY_ASYNC
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_SERVICE_CREATE_APP_WITH_DID_KEY_ASYNC
+uint64_t uniffi_slim_bindings_fn_method_service_create_app_with_did_key_async(uint64_t ptr, uint64_t name, RustBuffer private_key_pem, RustBuffer trusted_keys, RustBuffer direction
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_METHOD_SERVICE_CREATE_APP_WITH_DIRECTION
@@ -1020,6 +1436,17 @@ int8_t uniffi_slim_bindings_fn_func_is_initialized(RustCallStatus *out_status
 #define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_FUNC_SHUTDOWN_BLOCKING
 void uniffi_slim_bindings_fn_func_shutdown_blocking(RustCallStatus *out_status
     
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_FUNC_GENERATE_SIGNATURE_KEYS
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_FUNC_GENERATE_SIGNATURE_KEYS
+RustBuffer uniffi_slim_bindings_fn_func_generate_signature_keys(RustCallStatus *out_status
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_FUNC_DID_KEY_OF_PRIVATE_KEY
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_FUNC_DID_KEY_OF_PRIVATE_KEY
+RustBuffer uniffi_slim_bindings_fn_func_did_key_of_private_key(RustBuffer private_key_pem, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_FN_FUNC_NEW_RUNTIME_CONFIG
@@ -1430,6 +1857,18 @@ uint16_t uniffi_slim_bindings_checksum_func_shutdown_blocking(void
     
 );
 #endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_FUNC_GENERATE_SIGNATURE_KEYS
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_FUNC_GENERATE_SIGNATURE_KEYS
+uint16_t uniffi_slim_bindings_checksum_func_generate_signature_keys(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_FUNC_DID_KEY_OF_PRIVATE_KEY
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_FUNC_DID_KEY_OF_PRIVATE_KEY
+uint16_t uniffi_slim_bindings_checksum_func_did_key_of_private_key(void
+    
+);
+#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_FUNC_NEW_RUNTIME_CONFIG
 #define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_FUNC_NEW_RUNTIME_CONFIG
 uint16_t uniffi_slim_bindings_checksum_func_new_runtime_config(void
@@ -1688,6 +2127,102 @@ uint16_t uniffi_slim_bindings_checksum_method_completionhandle_wait_for_async(vo
     
 );
 #endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_IDENTITYPROVIDER_INITIALIZE
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_IDENTITYPROVIDER_INITIALIZE
+uint16_t uniffi_slim_bindings_checksum_method_identityprovider_initialize(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_IDENTITYPROVIDER_GET_TOKEN
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_IDENTITYPROVIDER_GET_TOKEN
+uint16_t uniffi_slim_bindings_checksum_method_identityprovider_get_token(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_IDENTITYPROVIDER_GET_ID
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_IDENTITYPROVIDER_GET_ID
+uint16_t uniffi_slim_bindings_checksum_method_identityprovider_get_id(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_IDENTITYPROVIDER_GET_SIGNATURE_KEYS
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_IDENTITYPROVIDER_GET_SIGNATURE_KEYS
+uint16_t uniffi_slim_bindings_checksum_method_identityprovider_get_signature_keys(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_IDENTITYPROVIDER_MLS_SIGNATURE_KEYS_INSTALLED
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_IDENTITYPROVIDER_MLS_SIGNATURE_KEYS_INSTALLED
+uint16_t uniffi_slim_bindings_checksum_method_identityprovider_mls_signature_keys_installed(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_IDENTITYPROVIDER_SET_SIGNATURE_KEYS
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_IDENTITYPROVIDER_SET_SIGNATURE_KEYS
+uint16_t uniffi_slim_bindings_checksum_method_identityprovider_set_signature_keys(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_IDENTITYPROVIDER_EXPORT_IDENTITY
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_IDENTITYPROVIDER_EXPORT_IDENTITY
+uint16_t uniffi_slim_bindings_checksum_method_identityprovider_export_identity(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_IDENTITYPROVIDER_HOLDS_LONG_TERM_SIGNING_KEY
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_IDENTITYPROVIDER_HOLDS_LONG_TERM_SIGNING_KEY
+uint16_t uniffi_slim_bindings_checksum_method_identityprovider_holds_long_term_signing_key(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_IDENTITYPROVIDER_RESTORE_IDENTITY
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_IDENTITYPROVIDER_RESTORE_IDENTITY
+uint16_t uniffi_slim_bindings_checksum_method_identityprovider_restore_identity(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_IDENTITYVERIFIER_INITIALIZE
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_IDENTITYVERIFIER_INITIALIZE
+uint16_t uniffi_slim_bindings_checksum_method_identityverifier_initialize(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_IDENTITYVERIFIER_VERIFY_ASYNC
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_IDENTITYVERIFIER_VERIFY_ASYNC
+uint16_t uniffi_slim_bindings_checksum_method_identityverifier_verify_async(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_IDENTITYVERIFIER_VERIFY
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_IDENTITYVERIFIER_VERIFY
+uint16_t uniffi_slim_bindings_checksum_method_identityverifier_verify(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_IDENTITYVERIFIER_GET_CLAIMS
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_IDENTITYVERIFIER_GET_CLAIMS
+uint16_t uniffi_slim_bindings_checksum_method_identityverifier_get_claims(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_IDENTITYVERIFIER_GET_SUBJECT
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_IDENTITYVERIFIER_GET_SUBJECT
+uint16_t uniffi_slim_bindings_checksum_method_identityverifier_get_subject(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_IDENTITYVERIFIER_GET_PUBLIC_KEY
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_IDENTITYVERIFIER_GET_PUBLIC_KEY
+uint16_t uniffi_slim_bindings_checksum_method_identityverifier_get_public_key(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_IDENTITYVERIFIER_VERIFY_KEY_BINDING
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_IDENTITYVERIFIER_VERIFY_KEY_BINDING
+uint16_t uniffi_slim_bindings_checksum_method_identityverifier_verify_key_binding(void
+    
+);
+#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_NAME_COMPONENTS
 #define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_NAME_COMPONENTS
 uint16_t uniffi_slim_bindings_checksum_method_name_components(void
@@ -1697,6 +2232,18 @@ uint16_t uniffi_slim_bindings_checksum_method_name_components(void
 #ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_NAME_ID
 #define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_NAME_ID
 uint16_t uniffi_slim_bindings_checksum_method_name_id(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_SERVICE_CREATE_APP_WITH_CUSTOM_IDENTITY_AND_PERSISTENCE
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_SERVICE_CREATE_APP_WITH_CUSTOM_IDENTITY_AND_PERSISTENCE
+uint16_t uniffi_slim_bindings_checksum_method_service_create_app_with_custom_identity_and_persistence(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_SERVICE_CREATE_APP_WITH_CUSTOM_IDENTITY_AND_PERSISTENCE_ASYNC
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_SERVICE_CREATE_APP_WITH_CUSTOM_IDENTITY_AND_PERSISTENCE_ASYNC
+uint16_t uniffi_slim_bindings_checksum_method_service_create_app_with_custom_identity_and_persistence_async(void
     
 );
 #endif
@@ -1739,6 +2286,30 @@ uint16_t uniffi_slim_bindings_checksum_method_service_create_app(void
 #ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_SERVICE_CREATE_APP_ASYNC
 #define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_SERVICE_CREATE_APP_ASYNC
 uint16_t uniffi_slim_bindings_checksum_method_service_create_app_async(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_SERVICE_CREATE_APP_WITH_CUSTOM_IDENTITY
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_SERVICE_CREATE_APP_WITH_CUSTOM_IDENTITY
+uint16_t uniffi_slim_bindings_checksum_method_service_create_app_with_custom_identity(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_SERVICE_CREATE_APP_WITH_CUSTOM_IDENTITY_ASYNC
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_SERVICE_CREATE_APP_WITH_CUSTOM_IDENTITY_ASYNC
+uint16_t uniffi_slim_bindings_checksum_method_service_create_app_with_custom_identity_async(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_SERVICE_CREATE_APP_WITH_DID_KEY
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_SERVICE_CREATE_APP_WITH_DID_KEY
+uint16_t uniffi_slim_bindings_checksum_method_service_create_app_with_did_key(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_SERVICE_CREATE_APP_WITH_DID_KEY_ASYNC
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_METHOD_SERVICE_CREATE_APP_WITH_DID_KEY_ASYNC
+uint16_t uniffi_slim_bindings_checksum_method_service_create_app_with_did_key_async(void
     
 );
 #endif
@@ -2078,6 +2649,30 @@ uint16_t uniffi_slim_bindings_checksum_constructor_app_new(void
     
 );
 #endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_CONSTRUCTOR_APP_NEW_WITH_CUSTOM_IDENTITY
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_CONSTRUCTOR_APP_NEW_WITH_CUSTOM_IDENTITY
+uint16_t uniffi_slim_bindings_checksum_constructor_app_new_with_custom_identity(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_CONSTRUCTOR_APP_NEW_WITH_CUSTOM_IDENTITY_ASYNC
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_CONSTRUCTOR_APP_NEW_WITH_CUSTOM_IDENTITY_ASYNC
+uint16_t uniffi_slim_bindings_checksum_constructor_app_new_with_custom_identity_async(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_CONSTRUCTOR_APP_NEW_WITH_DID_KEY
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_CONSTRUCTOR_APP_NEW_WITH_DID_KEY
+uint16_t uniffi_slim_bindings_checksum_constructor_app_new_with_did_key(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_CONSTRUCTOR_APP_NEW_WITH_DID_KEY_ASYNC
+#define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_CONSTRUCTOR_APP_NEW_WITH_DID_KEY_ASYNC
+uint16_t uniffi_slim_bindings_checksum_constructor_app_new_with_did_key_async(void
+    
+);
+#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_CONSTRUCTOR_APP_NEW_WITH_DIRECTION
 #define UNIFFI_FFIDEF_UNIFFI_SLIM_BINDINGS_CHECKSUM_CONSTRUCTOR_APP_NEW_WITH_DIRECTION
 uint16_t uniffi_slim_bindings_checksum_constructor_app_new_with_direction(void
@@ -2127,6 +2722,26 @@ uint32_t ffi_slim_bindings_uniffi_contract_version(void
 );
 #endif
 
+ void slim_bindings_custom_identity_cgo_dispatchCallbackInterfaceIdentityProviderMethod0(uint64_t uniffi_handle, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFutureDroppedCallbackStruct* uniffi_out_dropped_callback);
+ void slim_bindings_custom_identity_cgo_dispatchCallbackInterfaceIdentityProviderMethod1(uint64_t uniffi_handle, RustBuffer* uniffi_out_return, RustCallStatus* callStatus );
+ void slim_bindings_custom_identity_cgo_dispatchCallbackInterfaceIdentityProviderMethod2(uint64_t uniffi_handle, RustBuffer* uniffi_out_return, RustCallStatus* callStatus );
+ void slim_bindings_custom_identity_cgo_dispatchCallbackInterfaceIdentityProviderMethod3(uint64_t uniffi_handle, RustBuffer* uniffi_out_return, RustCallStatus* callStatus );
+ void slim_bindings_custom_identity_cgo_dispatchCallbackInterfaceIdentityProviderMethod4(uint64_t uniffi_handle, int8_t* uniffi_out_return, RustCallStatus* callStatus );
+ void slim_bindings_custom_identity_cgo_dispatchCallbackInterfaceIdentityProviderMethod5(uint64_t uniffi_handle, RustBuffer private_key, RustBuffer public_key, void* uniffi_out_return, RustCallStatus* callStatus );
+ void slim_bindings_custom_identity_cgo_dispatchCallbackInterfaceIdentityProviderMethod6(uint64_t uniffi_handle, RustBuffer* uniffi_out_return, RustCallStatus* callStatus );
+ void slim_bindings_custom_identity_cgo_dispatchCallbackInterfaceIdentityProviderMethod7(uint64_t uniffi_handle, int8_t* uniffi_out_return, RustCallStatus* callStatus );
+ void slim_bindings_custom_identity_cgo_dispatchCallbackInterfaceIdentityProviderMethod8(uint64_t uniffi_handle, RustBuffer identity, void* uniffi_out_return, RustCallStatus* callStatus );
+ void slim_bindings_custom_identity_cgo_dispatchCallbackInterfaceIdentityProviderFree(uint64_t handle);
+uint64_t slim_bindings_custom_identity_cgo_dispatchCallbackInterfaceIdentityProviderClone(uint64_t handle);
+ void slim_bindings_custom_identity_cgo_dispatchCallbackInterfaceIdentityVerifierMethod0(uint64_t uniffi_handle, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFutureDroppedCallbackStruct* uniffi_out_dropped_callback);
+ void slim_bindings_custom_identity_cgo_dispatchCallbackInterfaceIdentityVerifierMethod1(uint64_t uniffi_handle, RustBuffer token, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFutureDroppedCallbackStruct* uniffi_out_dropped_callback);
+ void slim_bindings_custom_identity_cgo_dispatchCallbackInterfaceIdentityVerifierMethod2(uint64_t uniffi_handle, RustBuffer token, void* uniffi_out_return, RustCallStatus* callStatus );
+ void slim_bindings_custom_identity_cgo_dispatchCallbackInterfaceIdentityVerifierMethod3(uint64_t uniffi_handle, RustBuffer token, RustBuffer* uniffi_out_return, RustCallStatus* callStatus );
+ void slim_bindings_custom_identity_cgo_dispatchCallbackInterfaceIdentityVerifierMethod4(uint64_t uniffi_handle, RustBuffer token, RustBuffer* uniffi_out_return, RustCallStatus* callStatus );
+ void slim_bindings_custom_identity_cgo_dispatchCallbackInterfaceIdentityVerifierMethod5(uint64_t uniffi_handle, RustBuffer token, RustBuffer* uniffi_out_return, RustCallStatus* callStatus );
+ void slim_bindings_custom_identity_cgo_dispatchCallbackInterfaceIdentityVerifierMethod6(uint64_t uniffi_handle, RustBuffer token, RustBuffer public_key, void* uniffi_out_return, RustCallStatus* callStatus );
+ void slim_bindings_custom_identity_cgo_dispatchCallbackInterfaceIdentityVerifierFree(uint64_t handle);
+uint64_t slim_bindings_custom_identity_cgo_dispatchCallbackInterfaceIdentityVerifierClone(uint64_t handle);
 
 #ifdef _WIN32
 __declspec(dllexport) void slim_bindings_uniffiFutureContinuationCallback(uint64_t, int8_t);

@@ -2,11 +2,11 @@ package slim_rpc
 
 /*
 #cgo CFLAGS: -I${SRCDIR}
-#cgo linux,amd64 LDFLAGS: -L${SRCDIR}/.. -L${SRCDIR}/../../../../../../../.cgo-cache/slim-bindings/v3.3.9 -lslim_bindings_x86_64_linux_gnu -lm
-#cgo linux,arm64 LDFLAGS: -L${SRCDIR}/.. -L${SRCDIR}/../../../../../../../.cgo-cache/slim-bindings/v3.3.9 -lslim_bindings_aarch64_linux_gnu -lm
-#cgo darwin,amd64 LDFLAGS: -L${SRCDIR}/.. -L${SRCDIR}/../../../../../../../.cgo-cache/slim-bindings/v3.3.9 -lslim_bindings_x86_64_darwin -Wl,-undefined,dynamic_lookup
-#cgo darwin,arm64 LDFLAGS: -L${SRCDIR}/.. -L${SRCDIR}/../../../../../../../.cgo-cache/slim-bindings/v3.3.9 -lslim_bindings_aarch64_darwin -Wl,-undefined,dynamic_lookup
-#cgo windows,amd64 LDFLAGS: -L${SRCDIR}/.. -L${SRCDIR}/../../../../../../../.cgo-cache/slim-bindings/v3.3.9 -lslim_bindings_x86_64_windows_gnu -lws2_32 -lbcrypt -ladvapi32 -luserenv -lntdll -lgcc_eh -lgcc -lkernel32 -lole32
+#cgo linux,amd64 LDFLAGS: -L${SRCDIR}/.. -L${SRCDIR}/../../../../../../../.cgo-cache/slim-bindings/v3.4.0 -lslim_bindings_x86_64_linux_gnu -lm
+#cgo linux,arm64 LDFLAGS: -L${SRCDIR}/.. -L${SRCDIR}/../../../../../../../.cgo-cache/slim-bindings/v3.4.0 -lslim_bindings_aarch64_linux_gnu -lm
+#cgo darwin,amd64 LDFLAGS: -L${SRCDIR}/.. -L${SRCDIR}/../../../../../../../.cgo-cache/slim-bindings/v3.4.0 -lslim_bindings_x86_64_darwin -Wl,-undefined,dynamic_lookup
+#cgo darwin,arm64 LDFLAGS: -L${SRCDIR}/.. -L${SRCDIR}/../../../../../../../.cgo-cache/slim-bindings/v3.4.0 -lslim_bindings_aarch64_darwin -Wl,-undefined,dynamic_lookup
+#cgo windows,amd64 LDFLAGS: -L${SRCDIR}/.. -L${SRCDIR}/../../../../../../../.cgo-cache/slim-bindings/v3.4.0 -lslim_bindings_x86_64_windows_gnu -lws2_32 -lbcrypt -ladvapi32 -luserenv -lntdll -lgcc_eh -lgcc -lkernel32 -lole32
 #include <slim_rpc.h>
 */
 import "C"
@@ -686,9 +686,18 @@ func uniffiCheckChecksums() {
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_rpc_checksum_method_bidistreamhandler_cancel()
+		})
+		if checksum != 45555 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_rpc: uniffi_slim_rpc_checksum_method_bidistreamhandler_cancel: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_slim_rpc_checksum_method_bidistreamhandler_close_send()
 		})
-		if checksum != 8554 {
+		if checksum != 16764 {
 			// If this happens try cleaning and rebuilding your project
 			panic("slim_rpc: uniffi_slim_rpc_checksum_method_bidistreamhandler_close_send: UniFFI API checksum mismatch")
 		}
@@ -740,9 +749,18 @@ func uniffiCheckChecksums() {
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_rpc_checksum_method_multicastbidistreamhandler_cancel()
+		})
+		if checksum != 20908 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_rpc: uniffi_slim_rpc_checksum_method_multicastbidistreamhandler_cancel: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_slim_rpc_checksum_method_multicastbidistreamhandler_close_send()
 		})
-		if checksum != 43173 {
+		if checksum != 806 {
 			// If this happens try cleaning and rebuilding your project
 			panic("slim_rpc: uniffi_slim_rpc_checksum_method_multicastbidistreamhandler_close_send: UniFFI API checksum mismatch")
 		}
@@ -794,6 +812,15 @@ func uniffiCheckChecksums() {
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_rpc_checksum_method_multicastresponsereader_cancel()
+		})
+		if checksum != 36199 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_rpc: uniffi_slim_rpc_checksum_method_multicastresponsereader_cancel: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_slim_rpc_checksum_method_multicastresponsereader_next()
 		})
 		if checksum != 61701 {
@@ -826,6 +853,15 @@ func uniffiCheckChecksums() {
 		if checksum != 54349 {
 			// If this happens try cleaning and rebuilding your project
 			panic("slim_rpc: uniffi_slim_rpc_checksum_method_requeststream_next_async: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_rpc_checksum_method_requeststreamwriter_cancel()
+		})
+		if checksum != 45482 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_rpc: uniffi_slim_rpc_checksum_method_requeststreamwriter_cancel: UniFFI API checksum mismatch")
 		}
 	}
 	{
@@ -943,6 +979,15 @@ func uniffiCheckChecksums() {
 		if checksum != 13763 {
 			// If this happens try cleaning and rebuilding your project
 			panic("slim_rpc: uniffi_slim_rpc_checksum_method_responsesink_send_error_async: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_rpc_checksum_method_responsestreamreader_cancel()
+		})
+		if checksum != 18749 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_rpc: uniffi_slim_rpc_checksum_method_responsestreamreader_cancel: UniFFI API checksum mismatch")
 		}
 	}
 	{
@@ -1332,7 +1377,17 @@ func (ffiObject *FfiObject) freeRustArcPtr() {
 //
 // Allows sending and receiving messages concurrently.
 type BidiStreamHandlerInterface interface {
+	// Cancel the call: the server stops its handler.
+	//
+	// Responses already received can still be read; after them, `recv`
+	// returns a `Cancelled` error, and `send` fails. Does nothing if the call
+	// has finished.
+	Cancel()
 	// Close the request stream (no more messages will be sent)
+	//
+	// This only ends the request side. The server keeps running the call and
+	// its responses can still be received; use [`cancel`](Self::cancel) to
+	// stop it.
 	CloseSend() error
 	// Close the request stream (async version)
 	CloseSendAsync() error
@@ -1353,7 +1408,26 @@ type BidiStreamHandler struct {
 	ffiObject FfiObject
 }
 
+// Cancel the call: the server stops its handler.
+//
+// Responses already received can still be read; after them, `recv`
+// returns a `Cancelled` error, and `send` fails. Does nothing if the call
+// has finished.
+func (_self *BidiStreamHandler) Cancel() {
+	_pointer := _self.ffiObject.incrementPointer("*BidiStreamHandler")
+	defer _self.ffiObject.decrementPointer()
+	rustCall(func(_uniffiStatus *C.RustCallStatus) bool {
+		C.uniffi_slim_rpc_fn_method_bidistreamhandler_cancel(
+			_pointer, _uniffiStatus)
+		return false
+	})
+}
+
 // Close the request stream (no more messages will be sent)
+//
+// This only ends the request side. The server keeps running the call and
+// its responses can still be received; use [`cancel`](Self::cancel) to
+// stop it.
 func (_self *BidiStreamHandler) CloseSend() error {
 	_pointer := _self.ffiObject.incrementPointer("*BidiStreamHandler")
 	defer _self.ffiObject.decrementPointer()
@@ -2204,8 +2278,18 @@ func (_ FfiDestroyerContext) Destroy(value *Context) {
 // responses via [`recv`](Self::recv) / [`recv_async`](Self::recv_async). Each
 // response item carries the source member's identity.
 type MulticastBidiStreamHandlerInterface interface {
+	// Cancel the call: every member stops its handler.
+	//
+	// Responses already received can still be read; after them, `recv`
+	// returns a `Cancelled` error, and `send` fails. Does nothing if the call
+	// has finished.
+	Cancel()
 	// Close the request stream — signals that no more messages will be sent
 	// (blocking).
+	//
+	// This only ends the request side. The members keep running the call and
+	// their responses can still be received; use [`cancel`](Self::cancel) to
+	// stop it.
 	CloseSend() error
 	// Close the request stream (async).
 	CloseSendAsync() error
@@ -2230,8 +2314,27 @@ type MulticastBidiStreamHandler struct {
 	ffiObject FfiObject
 }
 
+// Cancel the call: every member stops its handler.
+//
+// Responses already received can still be read; after them, `recv`
+// returns a `Cancelled` error, and `send` fails. Does nothing if the call
+// has finished.
+func (_self *MulticastBidiStreamHandler) Cancel() {
+	_pointer := _self.ffiObject.incrementPointer("*MulticastBidiStreamHandler")
+	defer _self.ffiObject.decrementPointer()
+	rustCall(func(_uniffiStatus *C.RustCallStatus) bool {
+		C.uniffi_slim_rpc_fn_method_multicastbidistreamhandler_cancel(
+			_pointer, _uniffiStatus)
+		return false
+	})
+}
+
 // Close the request stream — signals that no more messages will be sent
 // (blocking).
+//
+// This only ends the request side. The members keep running the call and
+// their responses can still be received; use [`cancel`](Self::cancel) to
+// stop it.
 func (_self *MulticastBidiStreamHandler) CloseSend() error {
 	_pointer := _self.ffiObject.incrementPointer("*MulticastBidiStreamHandler")
 	defer _self.ffiObject.decrementPointer()
@@ -2423,6 +2526,11 @@ func (_ FfiDestroyerMulticastBidiStreamHandler) Destroy(value *MulticastBidiStre
 // Allows pulling `RpcMulticastItem`s from a GROUP response stream one at a
 // time. Each item carries the source member's identity alongside the payload.
 type MulticastResponseReaderInterface interface {
+	// Cancel the call: every member stops its handler.
+	//
+	// Responses already received can still be read; after them, `next`
+	// returns a `Cancelled` error. Does nothing if the call has finished.
+	Cancel()
 	// Pull the next item from the multicast response stream (blocking).
 	Next() MulticastStreamMessage
 	// Pull the next item from the multicast response stream (async).
@@ -2435,6 +2543,20 @@ type MulticastResponseReaderInterface interface {
 // time. Each item carries the source member's identity alongside the payload.
 type MulticastResponseReader struct {
 	ffiObject FfiObject
+}
+
+// Cancel the call: every member stops its handler.
+//
+// Responses already received can still be read; after them, `next`
+// returns a `Cancelled` error. Does nothing if the call has finished.
+func (_self *MulticastResponseReader) Cancel() {
+	_pointer := _self.ffiObject.incrementPointer("*MulticastResponseReader")
+	defer _self.ffiObject.decrementPointer()
+	rustCall(func(_uniffiStatus *C.RustCallStatus) bool {
+		C.uniffi_slim_rpc_fn_method_multicastresponsereader_cancel(
+			_pointer, _uniffiStatus)
+		return false
+	})
 }
 
 // Pull the next item from the multicast response stream (blocking).
@@ -2668,6 +2790,11 @@ func (_ FfiDestroyerRequestStream) Destroy(value *RequestStream) {
 //
 // Allows sending multiple request messages and getting a final response.
 type RequestStreamWriterInterface interface {
+	// Cancel the call: the server stops its handler.
+	//
+	// `send` and `finalize_stream` then return a `Cancelled` error. Does
+	// nothing if the call has finished.
+	Cancel()
 	// Finalize the stream and get the response (async version)
 	//
 	// **Deprecated**: Use [`finalize_stream_async`](Self::finalize_stream_async) instead.
@@ -2687,6 +2814,20 @@ type RequestStreamWriterInterface interface {
 // Allows sending multiple request messages and getting a final response.
 type RequestStreamWriter struct {
 	ffiObject FfiObject
+}
+
+// Cancel the call: the server stops its handler.
+//
+// `send` and `finalize_stream` then return a `Cancelled` error. Does
+// nothing if the call has finished.
+func (_self *RequestStreamWriter) Cancel() {
+	_pointer := _self.ffiObject.incrementPointer("*RequestStreamWriter")
+	defer _self.ffiObject.decrementPointer()
+	rustCall(func(_uniffiStatus *C.RustCallStatus) bool {
+		C.uniffi_slim_rpc_fn_method_requeststreamwriter_cancel(
+			_pointer, _uniffiStatus)
+		return false
+	})
 }
 
 // Finalize the stream and get the response (async version)
@@ -3172,6 +3313,11 @@ func (_ FfiDestroyerResponseSink) Destroy(value *ResponseSink) {
 //
 // Allows pulling messages from a server response stream one at a time.
 type ResponseStreamReaderInterface interface {
+	// Cancel the call: the server stops its handler.
+	//
+	// Messages already received can still be read; after them, `next`
+	// returns a `Cancelled` error. Does nothing if the call has finished.
+	Cancel()
 	// Pull the next message from the response stream (blocking version)
 	//
 	// Returns a StreamMessage indicating the result
@@ -3187,6 +3333,20 @@ type ResponseStreamReaderInterface interface {
 // Allows pulling messages from a server response stream one at a time.
 type ResponseStreamReader struct {
 	ffiObject FfiObject
+}
+
+// Cancel the call: the server stops its handler.
+//
+// Messages already received can still be read; after them, `next`
+// returns a `Cancelled` error. Does nothing if the call has finished.
+func (_self *ResponseStreamReader) Cancel() {
+	_pointer := _self.ffiObject.incrementPointer("*ResponseStreamReader")
+	defer _self.ffiObject.decrementPointer()
+	rustCall(func(_uniffiStatus *C.RustCallStatus) bool {
+		C.uniffi_slim_rpc_fn_method_responsestreamreader_cancel(
+			_pointer, _uniffiStatus)
+		return false
+	})
 }
 
 // Pull the next message from the response stream (blocking version)

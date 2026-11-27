@@ -2,11 +2,11 @@ package slim_bindings
 
 /*
 #cgo CFLAGS: -I${SRCDIR}
-#cgo linux,amd64 LDFLAGS: -L${SRCDIR} -L${SRCDIR}/../../../../../../.cgo-cache/slim-bindings/v3.3.9 -lslim_bindings_x86_64_linux_gnu -lm
-#cgo linux,arm64 LDFLAGS: -L${SRCDIR} -L${SRCDIR}/../../../../../../.cgo-cache/slim-bindings/v3.3.9 -lslim_bindings_aarch64_linux_gnu -lm
-#cgo darwin,amd64 LDFLAGS: -L${SRCDIR} -L${SRCDIR}/../../../../../../.cgo-cache/slim-bindings/v3.3.9 -lslim_bindings_x86_64_darwin -Wl,-undefined,dynamic_lookup
-#cgo darwin,arm64 LDFLAGS: -L${SRCDIR} -L${SRCDIR}/../../../../../../.cgo-cache/slim-bindings/v3.3.9 -lslim_bindings_aarch64_darwin -Wl,-undefined,dynamic_lookup
-#cgo windows,amd64 LDFLAGS: -L${SRCDIR} -L${SRCDIR}/../../../../../../.cgo-cache/slim-bindings/v3.3.9 -lslim_bindings_x86_64_windows_gnu -lws2_32 -lbcrypt -ladvapi32 -luserenv -lntdll -lgcc_eh -lgcc -lkernel32 -lole32
+#cgo linux,amd64 LDFLAGS: -L${SRCDIR} -L${SRCDIR}/../../../../../../.cgo-cache/slim-bindings/v3.4.0 -lslim_bindings_x86_64_linux_gnu -lm
+#cgo linux,arm64 LDFLAGS: -L${SRCDIR} -L${SRCDIR}/../../../../../../.cgo-cache/slim-bindings/v3.4.0 -lslim_bindings_aarch64_linux_gnu -lm
+#cgo darwin,amd64 LDFLAGS: -L${SRCDIR} -L${SRCDIR}/../../../../../../.cgo-cache/slim-bindings/v3.4.0 -lslim_bindings_x86_64_darwin -Wl,-undefined,dynamic_lookup
+#cgo darwin,arm64 LDFLAGS: -L${SRCDIR} -L${SRCDIR}/../../../../../../.cgo-cache/slim-bindings/v3.4.0 -lslim_bindings_aarch64_darwin -Wl,-undefined,dynamic_lookup
+#cgo windows,amd64 LDFLAGS: -L${SRCDIR} -L${SRCDIR}/../../../../../../.cgo-cache/slim-bindings/v3.4.0 -lslim_bindings_x86_64_windows_gnu -lws2_32 -lbcrypt -ladvapi32 -luserenv -lntdll -lgcc_eh -lgcc -lkernel32 -lole32
 #include <slim_bindings.h>
 */
 import "C"
@@ -14,12 +14,14 @@ import "C"
 import (
 	"bytes"
 	"encoding/binary"
+	"errors"
 	"fmt"
 	"io"
 	"math"
 	"reflect"
 	"runtime"
 	"runtime/cgo"
+	"sync"
 	"sync/atomic"
 	"time"
 	"unsafe"
@@ -366,6 +368,8 @@ func readFloat64(reader io.Reader) float64 {
 
 func init() {
 
+	FfiConverterIdentityProviderINSTANCE.register()
+	FfiConverterIdentityVerifierINSTANCE.register()
 	uniffiCheckChecksums()
 }
 
@@ -495,6 +499,24 @@ func uniffiCheckChecksums() {
 		if checksum != 20848 {
 			// If this happens try cleaning and rebuilding your project
 			panic("slim_bindings: uniffi_slim_bindings_checksum_func_shutdown_blocking: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_func_generate_signature_keys()
+		})
+		if checksum != 59791 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_func_generate_signature_keys: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_func_did_key_of_private_key()
+		})
+		if checksum != 62867 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_func_did_key_of_private_key: UniFFI API checksum mismatch")
 		}
 	}
 	{
@@ -886,6 +908,150 @@ func uniffiCheckChecksums() {
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_method_identityprovider_initialize()
+		})
+		if checksum != 63359 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_method_identityprovider_initialize: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_method_identityprovider_get_token()
+		})
+		if checksum != 1236 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_method_identityprovider_get_token: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_method_identityprovider_get_id()
+		})
+		if checksum != 42205 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_method_identityprovider_get_id: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_method_identityprovider_get_signature_keys()
+		})
+		if checksum != 16731 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_method_identityprovider_get_signature_keys: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_method_identityprovider_mls_signature_keys_installed()
+		})
+		if checksum != 8442 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_method_identityprovider_mls_signature_keys_installed: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_method_identityprovider_set_signature_keys()
+		})
+		if checksum != 22322 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_method_identityprovider_set_signature_keys: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_method_identityprovider_export_identity()
+		})
+		if checksum != 9307 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_method_identityprovider_export_identity: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_method_identityprovider_holds_long_term_signing_key()
+		})
+		if checksum != 25878 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_method_identityprovider_holds_long_term_signing_key: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_method_identityprovider_restore_identity()
+		})
+		if checksum != 58771 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_method_identityprovider_restore_identity: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_method_identityverifier_initialize()
+		})
+		if checksum != 62304 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_method_identityverifier_initialize: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_method_identityverifier_verify_async()
+		})
+		if checksum != 31210 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_method_identityverifier_verify_async: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_method_identityverifier_verify()
+		})
+		if checksum != 16064 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_method_identityverifier_verify: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_method_identityverifier_get_claims()
+		})
+		if checksum != 51422 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_method_identityverifier_get_claims: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_method_identityverifier_get_subject()
+		})
+		if checksum != 17007 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_method_identityverifier_get_subject: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_method_identityverifier_get_public_key()
+		})
+		if checksum != 23820 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_method_identityverifier_get_public_key: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_method_identityverifier_verify_key_binding()
+		})
+		if checksum != 57678 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_method_identityverifier_verify_key_binding: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_slim_bindings_checksum_method_name_components()
 		})
 		if checksum != 3255 {
@@ -900,6 +1066,24 @@ func uniffiCheckChecksums() {
 		if checksum != 54694 {
 			// If this happens try cleaning and rebuilding your project
 			panic("slim_bindings: uniffi_slim_bindings_checksum_method_name_id: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_method_service_create_app_with_custom_identity_and_persistence()
+		})
+		if checksum != 18772 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_method_service_create_app_with_custom_identity_and_persistence: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_method_service_create_app_with_custom_identity_and_persistence_async()
+		})
+		if checksum != 58523 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_method_service_create_app_with_custom_identity_and_persistence_async: UniFFI API checksum mismatch")
 		}
 	}
 	{
@@ -963,6 +1147,42 @@ func uniffiCheckChecksums() {
 		if checksum != 35376 {
 			// If this happens try cleaning and rebuilding your project
 			panic("slim_bindings: uniffi_slim_bindings_checksum_method_service_create_app_async: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_method_service_create_app_with_custom_identity()
+		})
+		if checksum != 25666 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_method_service_create_app_with_custom_identity: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_method_service_create_app_with_custom_identity_async()
+		})
+		if checksum != 33170 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_method_service_create_app_with_custom_identity_async: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_method_service_create_app_with_did_key()
+		})
+		if checksum != 23649 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_method_service_create_app_with_did_key: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_method_service_create_app_with_did_key_async()
+		})
+		if checksum != 58673 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_method_service_create_app_with_did_key_async: UniFFI API checksum mismatch")
 		}
 	}
 	{
@@ -1471,6 +1691,42 @@ func uniffiCheckChecksums() {
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_constructor_app_new_with_custom_identity()
+		})
+		if checksum != 20821 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_constructor_app_new_with_custom_identity: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_constructor_app_new_with_custom_identity_async()
+		})
+		if checksum != 32868 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_constructor_app_new_with_custom_identity_async: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_constructor_app_new_with_did_key()
+		})
+		if checksum != 54846 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_constructor_app_new_with_did_key: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_slim_bindings_checksum_constructor_app_new_with_did_key_async()
+		})
+		if checksum != 24337 {
+			// If this happens try cleaning and rebuilding your project
+			panic("slim_bindings: uniffi_slim_bindings_checksum_constructor_app_new_with_did_key_async: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_slim_bindings_checksum_constructor_app_new_with_direction()
 		})
 		if checksum != 42578 {
@@ -1958,6 +2214,134 @@ func NewApp(baseName *Name, identityProviderConfig IdentityProviderConfig, ident
 	} else {
 		return FfiConverterAppINSTANCE.Lift(_uniffiRV), nil
 	}
+}
+
+// Create a new App whose identity is implemented in the foreign language
+//
+// Unlike [`App::new`], which selects a built-in mechanism through a config enum,
+// this takes the provider and verifier objects directly.
+//
+// # Arguments
+// * `base_name` - The base name for the app (without ID)
+// * `identity_provider` - Proves this app's identity to others
+// * `identity_verifier` - Verifies the identity of others
+// * `direction` - Traffic direction for sessions
+//
+// # Example
+//
+// ```rust,no_run
+// # use std::sync::Arc;
+// # use slim_bindings::*;
+// # fn demo(
+// #     name: Arc<Name>,
+// #     provider: Arc<dyn IdentityProvider>,
+// #     verifier: Arc<dyn IdentityVerifier>,
+// # ) -> Result<(), SlimError> {
+// let app = App::new_with_custom_identity(name, provider, verifier, Direction::Bidirectional)?;
+// # Ok(()) }
+// ```
+//
+// # Blocking
+//
+// This constructor blocks the calling thread while the provider's and verifier's
+// async `initialize` run. Do not call it from inside an event loop of a language
+// whose callbacks need that loop (e.g. Python asyncio): it deadlocks. Use
+// [`App::new_with_custom_identity_async`] there.
+func AppNewWithCustomIdentity(baseName *Name, identityProvider IdentityProvider, identityVerifier IdentityVerifier, direction Direction) (*App, error) {
+	_uniffiRV, _uniffiErr := rustCallWithError[*SlimError](FfiConverterSlimError{}, func(_uniffiStatus *C.RustCallStatus) C.uint64_t {
+		return C.uniffi_slim_bindings_fn_constructor_app_new_with_custom_identity(FfiConverterNameINSTANCE.Lower(baseName), FfiConverterIdentityProviderINSTANCE.Lower(identityProvider), FfiConverterIdentityVerifierINSTANCE.Lower(identityVerifier), FfiConverterDirectionINSTANCE.Lower(direction), _uniffiStatus)
+	})
+	if _uniffiErr != nil {
+		var _uniffiDefaultValue *App
+		return _uniffiDefaultValue, _uniffiErr
+	} else {
+		return FfiConverterAppINSTANCE.Lift(_uniffiRV), nil
+	}
+}
+
+// Create a new App whose identity is implemented in the foreign language (async version)
+//
+// Same as [`App::new_with_custom_identity`], but awaits the provider's and
+// verifier's `initialize` instead of blocking. Prefer it from async code.
+func AppNewWithCustomIdentityAsync(baseName *Name, identityProvider IdentityProvider, identityVerifier IdentityVerifier, direction Direction) (*App, error) {
+	res, err := uniffiRustCallAsync[*SlimError](
+		FfiConverterSlimErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) C.uint64_t {
+			res := C.ffi_slim_bindings_rust_future_complete_u64(handle, status)
+			return res
+		},
+		// liftFn
+		func(ffi C.uint64_t) *App {
+			return FfiConverterAppINSTANCE.Lift(ffi)
+		},
+		C.uniffi_slim_bindings_fn_constructor_app_new_with_custom_identity_async(FfiConverterNameINSTANCE.Lower(baseName), FfiConverterIdentityProviderINSTANCE.Lower(identityProvider), FfiConverterIdentityVerifierINSTANCE.Lower(identityVerifier), FfiConverterDirectionINSTANCE.Lower(direction)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_slim_bindings_rust_future_poll_u64(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_slim_bindings_rust_future_free_u64(handle)
+		},
+	)
+
+	if err == nil {
+		return res, nil
+	}
+
+	return res, err
+}
+
+// Create a new App whose identity is a `did:key` (blocking version)
+//
+// The app signs with an Ed25519 key and accepts the peers that a trust anchor lists.
+// It uses the global service. See [`crate::Service::create_app_with_did_key_async`]
+// for the arguments.
+func AppNewWithDidKey(name *Name, privateKeyPem string, trustedKeys string, direction Direction) (*App, error) {
+	_uniffiRV, _uniffiErr := rustCallWithError[*SlimError](FfiConverterSlimError{}, func(_uniffiStatus *C.RustCallStatus) C.uint64_t {
+		return C.uniffi_slim_bindings_fn_constructor_app_new_with_did_key(FfiConverterNameINSTANCE.Lower(name), FfiConverterStringINSTANCE.Lower(privateKeyPem), FfiConverterStringINSTANCE.Lower(trustedKeys), FfiConverterDirectionINSTANCE.Lower(direction), _uniffiStatus)
+	})
+	if _uniffiErr != nil {
+		var _uniffiDefaultValue *App
+		return _uniffiDefaultValue, _uniffiErr
+	} else {
+		return FfiConverterAppINSTANCE.Lift(_uniffiRV), nil
+	}
+}
+
+// Create a new App whose identity is a `did:key` (async version)
+//
+// Same as [`App::new_with_did_key`], without blocking the caller. Prefer it from
+// async code.
+func AppNewWithDidKeyAsync(name *Name, privateKeyPem string, trustedKeys string, direction Direction) (*App, error) {
+	res, err := uniffiRustCallAsync[*SlimError](
+		FfiConverterSlimErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) C.uint64_t {
+			res := C.ffi_slim_bindings_rust_future_complete_u64(handle, status)
+			return res
+		},
+		// liftFn
+		func(ffi C.uint64_t) *App {
+			return FfiConverterAppINSTANCE.Lift(ffi)
+		},
+		C.uniffi_slim_bindings_fn_constructor_app_new_with_did_key_async(FfiConverterNameINSTANCE.Lower(name), FfiConverterStringINSTANCE.Lower(privateKeyPem), FfiConverterStringINSTANCE.Lower(trustedKeys), FfiConverterDirectionINSTANCE.Lower(direction)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_slim_bindings_rust_future_poll_u64(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_slim_bindings_rust_future_free_u64(handle)
+		},
+	)
+
+	if err == nil {
+		return res, nil
+	}
+
+	return res, err
 }
 
 // Create a new App with traffic direction (blocking version)
@@ -2963,6 +3347,1463 @@ func (_ FfiDestroyerCompletionHandle) Destroy(value *CompletionHandle) {
 	value.Destroy()
 }
 
+// Proves this app's identity to its peers. Implemented in the foreign language.
+//
+// `initialize` is async. The other methods are called synchronously from SLIM worker
+// threads (including from MLS), so they must not block for long and must be safe to
+// call concurrently; prefetch and cache anything that needs I/O.
+//
+// # Keys and tokens
+//
+// SLIM signs the control messages of every session with the provider's signature
+// key pair, with or without MLS, and the peer checks that signature with the key its
+// [`IdentityVerifier::get_public_key`] returns. A provider therefore must:
+//
+// 1. hold a signature key pair from the start (create one with
+// [`generate_signature_keys`] if you have none) and return it from
+// [`IdentityProvider::get_signature_keys`];
+// 2. return tokens that let the paired verifier recover its current public key and check
+// that the token is bound to it;
+// 3. replace the pair when [`IdentityProvider::set_signature_keys`] is called (MLS
+// does this) and carry the new public key in the next tokens.
+//
+// If the verifier cannot return the signer's key, new sessions fail with "identity
+// verification failed".
+//
+// # One provider object per app
+//
+// SLIM clones its handle to the provider for every session of an app, and all clones
+// call the same object, so the app and its sessions share one key pair. That is intended,
+// but it also means two apps given the same object share one key slot: rotating the keys
+// in one changes the other's. Give each app its own provider object. (Built-in identities
+// created from a config differ: a shared-secret identity shares its keys across clones
+// like this, while a JWT signer keeps a key pair per clone.)
+type IdentityProvider interface {
+	// One-time asynchronous setup (e.g. loading credentials, contacting an identity
+	// service), awaited while an app is created, before any other method. SLIM calls it
+	// once per app creation, so it runs again if you reuse the object for another app:
+	// make it idempotent. Use one provider object per app anyway (see below).
+	Initialize() error
+	// Return a token proving this app's identity. Called every time a token is
+	// needed, so implementations should cache and refresh as appropriate.
+	GetToken() (string, error)
+	// Return the identity (subject) the token carries.
+	GetId() (string, error)
+	// The signature key pair currently in use. SLIM signs session control messages
+	// with it, so it must always be available.
+	//
+	// Return the bytes you were given, unchanged (see [`SignatureKeys`] for the format).
+	//
+	// ```python
+	// def get_signature_keys(self):
+	// if self._keys is None:
+	// raise slim_bindings.IdentityCallbackError.Failed("no keys installed yet")
+	// return slim_bindings.SignatureKeys(self._keys.secret, self._keys.public)
+	// ```
+	GetSignatureKeys() (SignatureKeys, error)
+	// Whether SLIM's keys were installed through
+	// [`IdentityProvider::set_signature_keys`] or [`IdentityProvider::restore_identity`].
+	// Return false until then, even if you created a pair yourself: when MLS is used,
+	// SLIM generates and installs a pair only while this is false. If this fails, SLIM
+	// does not treat it as "not installed", which would replace the keys every session of
+	// the app shares: MLS setup for that session fails instead.
+	MlsSignatureKeysInstalled() (bool, error)
+	// Called when MLS is used, with the MLS signature key pair generated by SLIM.
+	// Both keys are raw bytes in the format described on [`SignatureKeys`]: keep them
+	// byte-for-byte and return them unchanged from `get_signature_keys`.
+	// Subsequent tokens should carry `public_key` (e.g. as a `pubkey` or `cnf` claim) so
+	// peers can recover it with [`IdentityVerifier::get_public_key`] and check the binding
+	// with [`IdentityVerifier::verify_key_binding`]. Replace your current pair with these.
+	//
+	// ```python
+	// def set_signature_keys(self, private_key, public_key):
+	// self._keys = Keys(private_key, public_key)
+	// self._token = self._mint_token(claims={"pubkey": base64.b64encode(public_key)})
+	// ```
+	SetSignatureKeys(privateKey []byte, publicKey []byte) error
+	// The persistable identity, or `None` if this provider does not support
+	// persistence. Used when the app is created with persistence enabled. If this fails,
+	// SLIM logs the error and does not update the session record, rather than saving it next
+	// to a stale identity. Make `export_identity` reliable: MLS group state is still saved.
+	//
+	// ```python
+	// def export_identity(self):
+	// return slim_bindings.IdentityExport(
+	// id=self._id,
+	// credential=self._secret,          # sensitive: stored encrypted
+	// signature_secret_key=self._keys.secret,
+	// signature_public_key=self._keys.public,
+	// )
+	//
+	// def restore_identity(self, identity):
+	// self._id, self._secret = identity.id, identity.credential
+	// self._keys = Keys(identity.signature_secret_key, identity.signature_public_key)
+	// self._installed = True
+	// ```
+	ExportIdentity() (*IdentityExport, error)
+	// Whether the MLS signing key is long-term, so persisted group state would
+	// expose it. When true, persistence requires a passphrase. If this fails, SLIM
+	// assumes it does when opening a persistent store, and fails to restore a persisted
+	// MLS group.
+	HoldsLongTermSigningKey() (bool, error)
+	// Adopt an identity returned earlier by [`IdentityProvider::export_identity`],
+	// so the provider presents the same id and MLS keys as before a restart. The
+	// keys count as installed afterwards.
+	//
+	// Be all-or-nothing: on failure leave the provider as it was. SLIM keeps using the
+	// same object when the restore fails, so a half-applied restore would leak into it.
+	// Any failure turns persistence off and leaves the stored identity alone: with a
+	// fresh identity, SLIM would install new MLS keys, and the persisted groups were
+	// created with the old ones. [`IdentityCallbackError::IdentityMismatch`] says the
+	// persisted identity is not yours, which is logged as such.
+	RestoreIdentity(identity IdentityExport) error
+}
+
+// Proves this app's identity to its peers. Implemented in the foreign language.
+//
+// `initialize` is async. The other methods are called synchronously from SLIM worker
+// threads (including from MLS), so they must not block for long and must be safe to
+// call concurrently; prefetch and cache anything that needs I/O.
+//
+// # Keys and tokens
+//
+// SLIM signs the control messages of every session with the provider's signature
+// key pair, with or without MLS, and the peer checks that signature with the key its
+// [`IdentityVerifier::get_public_key`] returns. A provider therefore must:
+//
+// 1. hold a signature key pair from the start (create one with
+// [`generate_signature_keys`] if you have none) and return it from
+// [`IdentityProvider::get_signature_keys`];
+// 2. return tokens that let the paired verifier recover its current public key and check
+// that the token is bound to it;
+// 3. replace the pair when [`IdentityProvider::set_signature_keys`] is called (MLS
+// does this) and carry the new public key in the next tokens.
+//
+// If the verifier cannot return the signer's key, new sessions fail with "identity
+// verification failed".
+//
+// # One provider object per app
+//
+// SLIM clones its handle to the provider for every session of an app, and all clones
+// call the same object, so the app and its sessions share one key pair. That is intended,
+// but it also means two apps given the same object share one key slot: rotating the keys
+// in one changes the other's. Give each app its own provider object. (Built-in identities
+// created from a config differ: a shared-secret identity shares its keys across clones
+// like this, while a JWT signer keeps a key pair per clone.)
+type IdentityProviderImpl struct {
+	ffiObject FfiObject
+}
+
+// One-time asynchronous setup (e.g. loading credentials, contacting an identity
+// service), awaited while an app is created, before any other method. SLIM calls it
+// once per app creation, so it runs again if you reuse the object for another app:
+// make it idempotent. Use one provider object per app anyway (see below).
+func (_self *IdentityProviderImpl) Initialize() error {
+	_pointer := _self.ffiObject.incrementPointer("IdentityProvider")
+	defer _self.ffiObject.decrementPointer()
+	_, err := uniffiRustCallAsync[*IdentityCallbackError](
+		FfiConverterIdentityCallbackErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) struct{} {
+			C.ffi_slim_bindings_rust_future_complete_void(handle, status)
+			return struct{}{}
+		},
+		// liftFn
+		func(_ struct{}) struct{} { return struct{}{} },
+		C.uniffi_slim_bindings_fn_method_identityprovider_initialize(
+			_pointer),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_slim_bindings_rust_future_poll_void(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_slim_bindings_rust_future_free_void(handle)
+		},
+	)
+
+	if err == nil {
+		return nil
+	}
+
+	return err
+}
+
+// Return a token proving this app's identity. Called every time a token is
+// needed, so implementations should cache and refresh as appropriate.
+func (_self *IdentityProviderImpl) GetToken() (string, error) {
+	_pointer := _self.ffiObject.incrementPointer("IdentityProvider")
+	defer _self.ffiObject.decrementPointer()
+	_uniffiRV, _uniffiErr := rustCallWithError[*IdentityCallbackError](FfiConverterIdentityCallbackError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+		return GoRustBuffer{
+			inner: C.uniffi_slim_bindings_fn_method_identityprovider_get_token(
+				_pointer, _uniffiStatus),
+		}
+	})
+	if _uniffiErr != nil {
+		var _uniffiDefaultValue string
+		return _uniffiDefaultValue, _uniffiErr
+	} else {
+		return FfiConverterStringINSTANCE.Lift(_uniffiRV), nil
+	}
+}
+
+// Return the identity (subject) the token carries.
+func (_self *IdentityProviderImpl) GetId() (string, error) {
+	_pointer := _self.ffiObject.incrementPointer("IdentityProvider")
+	defer _self.ffiObject.decrementPointer()
+	_uniffiRV, _uniffiErr := rustCallWithError[*IdentityCallbackError](FfiConverterIdentityCallbackError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+		return GoRustBuffer{
+			inner: C.uniffi_slim_bindings_fn_method_identityprovider_get_id(
+				_pointer, _uniffiStatus),
+		}
+	})
+	if _uniffiErr != nil {
+		var _uniffiDefaultValue string
+		return _uniffiDefaultValue, _uniffiErr
+	} else {
+		return FfiConverterStringINSTANCE.Lift(_uniffiRV), nil
+	}
+}
+
+// The signature key pair currently in use. SLIM signs session control messages
+// with it, so it must always be available.
+//
+// Return the bytes you were given, unchanged (see [`SignatureKeys`] for the format).
+//
+// ```python
+// def get_signature_keys(self):
+// if self._keys is None:
+// raise slim_bindings.IdentityCallbackError.Failed("no keys installed yet")
+// return slim_bindings.SignatureKeys(self._keys.secret, self._keys.public)
+// ```
+func (_self *IdentityProviderImpl) GetSignatureKeys() (SignatureKeys, error) {
+	_pointer := _self.ffiObject.incrementPointer("IdentityProvider")
+	defer _self.ffiObject.decrementPointer()
+	_uniffiRV, _uniffiErr := rustCallWithError[*IdentityCallbackError](FfiConverterIdentityCallbackError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+		return GoRustBuffer{
+			inner: C.uniffi_slim_bindings_fn_method_identityprovider_get_signature_keys(
+				_pointer, _uniffiStatus),
+		}
+	})
+	if _uniffiErr != nil {
+		var _uniffiDefaultValue SignatureKeys
+		return _uniffiDefaultValue, _uniffiErr
+	} else {
+		return FfiConverterSignatureKeysINSTANCE.Lift(_uniffiRV), nil
+	}
+}
+
+// Whether SLIM's keys were installed through
+// [`IdentityProvider::set_signature_keys`] or [`IdentityProvider::restore_identity`].
+// Return false until then, even if you created a pair yourself: when MLS is used,
+// SLIM generates and installs a pair only while this is false. If this fails, SLIM
+// does not treat it as "not installed", which would replace the keys every session of
+// the app shares: MLS setup for that session fails instead.
+func (_self *IdentityProviderImpl) MlsSignatureKeysInstalled() (bool, error) {
+	_pointer := _self.ffiObject.incrementPointer("IdentityProvider")
+	defer _self.ffiObject.decrementPointer()
+	_uniffiRV, _uniffiErr := rustCallWithError[*IdentityCallbackError](FfiConverterIdentityCallbackError{}, func(_uniffiStatus *C.RustCallStatus) C.int8_t {
+		return C.uniffi_slim_bindings_fn_method_identityprovider_mls_signature_keys_installed(
+			_pointer, _uniffiStatus)
+	})
+	if _uniffiErr != nil {
+		var _uniffiDefaultValue bool
+		return _uniffiDefaultValue, _uniffiErr
+	} else {
+		return FfiConverterBoolINSTANCE.Lift(_uniffiRV), nil
+	}
+}
+
+// Called when MLS is used, with the MLS signature key pair generated by SLIM.
+// Both keys are raw bytes in the format described on [`SignatureKeys`]: keep them
+// byte-for-byte and return them unchanged from `get_signature_keys`.
+// Subsequent tokens should carry `public_key` (e.g. as a `pubkey` or `cnf` claim) so
+// peers can recover it with [`IdentityVerifier::get_public_key`] and check the binding
+// with [`IdentityVerifier::verify_key_binding`]. Replace your current pair with these.
+//
+// ```python
+// def set_signature_keys(self, private_key, public_key):
+// self._keys = Keys(private_key, public_key)
+// self._token = self._mint_token(claims={"pubkey": base64.b64encode(public_key)})
+// ```
+func (_self *IdentityProviderImpl) SetSignatureKeys(privateKey []byte, publicKey []byte) error {
+	_pointer := _self.ffiObject.incrementPointer("IdentityProvider")
+	defer _self.ffiObject.decrementPointer()
+	_, _uniffiErr := rustCallWithError[*IdentityCallbackError](FfiConverterIdentityCallbackError{}, func(_uniffiStatus *C.RustCallStatus) bool {
+		C.uniffi_slim_bindings_fn_method_identityprovider_set_signature_keys(
+			_pointer, FfiConverterBytesINSTANCE.Lower(privateKey), FfiConverterBytesINSTANCE.Lower(publicKey), _uniffiStatus)
+		return false
+	})
+	return _uniffiErr.AsError()
+}
+
+// The persistable identity, or `None` if this provider does not support
+// persistence. Used when the app is created with persistence enabled. If this fails,
+// SLIM logs the error and does not update the session record, rather than saving it next
+// to a stale identity. Make `export_identity` reliable: MLS group state is still saved.
+//
+// ```python
+// def export_identity(self):
+// return slim_bindings.IdentityExport(
+// id=self._id,
+// credential=self._secret,          # sensitive: stored encrypted
+// signature_secret_key=self._keys.secret,
+// signature_public_key=self._keys.public,
+// )
+//
+// def restore_identity(self, identity):
+// self._id, self._secret = identity.id, identity.credential
+// self._keys = Keys(identity.signature_secret_key, identity.signature_public_key)
+// self._installed = True
+// ```
+func (_self *IdentityProviderImpl) ExportIdentity() (*IdentityExport, error) {
+	_pointer := _self.ffiObject.incrementPointer("IdentityProvider")
+	defer _self.ffiObject.decrementPointer()
+	_uniffiRV, _uniffiErr := rustCallWithError[*IdentityCallbackError](FfiConverterIdentityCallbackError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+		return GoRustBuffer{
+			inner: C.uniffi_slim_bindings_fn_method_identityprovider_export_identity(
+				_pointer, _uniffiStatus),
+		}
+	})
+	if _uniffiErr != nil {
+		var _uniffiDefaultValue *IdentityExport
+		return _uniffiDefaultValue, _uniffiErr
+	} else {
+		return FfiConverterOptionalIdentityExportINSTANCE.Lift(_uniffiRV), nil
+	}
+}
+
+// Whether the MLS signing key is long-term, so persisted group state would
+// expose it. When true, persistence requires a passphrase. If this fails, SLIM
+// assumes it does when opening a persistent store, and fails to restore a persisted
+// MLS group.
+func (_self *IdentityProviderImpl) HoldsLongTermSigningKey() (bool, error) {
+	_pointer := _self.ffiObject.incrementPointer("IdentityProvider")
+	defer _self.ffiObject.decrementPointer()
+	_uniffiRV, _uniffiErr := rustCallWithError[*IdentityCallbackError](FfiConverterIdentityCallbackError{}, func(_uniffiStatus *C.RustCallStatus) C.int8_t {
+		return C.uniffi_slim_bindings_fn_method_identityprovider_holds_long_term_signing_key(
+			_pointer, _uniffiStatus)
+	})
+	if _uniffiErr != nil {
+		var _uniffiDefaultValue bool
+		return _uniffiDefaultValue, _uniffiErr
+	} else {
+		return FfiConverterBoolINSTANCE.Lift(_uniffiRV), nil
+	}
+}
+
+// Adopt an identity returned earlier by [`IdentityProvider::export_identity`],
+// so the provider presents the same id and MLS keys as before a restart. The
+// keys count as installed afterwards.
+//
+// Be all-or-nothing: on failure leave the provider as it was. SLIM keeps using the
+// same object when the restore fails, so a half-applied restore would leak into it.
+// Any failure turns persistence off and leaves the stored identity alone: with a
+// fresh identity, SLIM would install new MLS keys, and the persisted groups were
+// created with the old ones. [`IdentityCallbackError::IdentityMismatch`] says the
+// persisted identity is not yours, which is logged as such.
+func (_self *IdentityProviderImpl) RestoreIdentity(identity IdentityExport) error {
+	_pointer := _self.ffiObject.incrementPointer("IdentityProvider")
+	defer _self.ffiObject.decrementPointer()
+	_, _uniffiErr := rustCallWithError[*IdentityCallbackError](FfiConverterIdentityCallbackError{}, func(_uniffiStatus *C.RustCallStatus) bool {
+		C.uniffi_slim_bindings_fn_method_identityprovider_restore_identity(
+			_pointer, FfiConverterIdentityExportINSTANCE.Lower(identity), _uniffiStatus)
+		return false
+	})
+	return _uniffiErr.AsError()
+}
+func (object *IdentityProviderImpl) Destroy() {
+	runtime.SetFinalizer(object, nil)
+	object.ffiObject.destroy()
+}
+
+type FfiConverterIdentityProvider struct {
+	handleMap *concurrentHandleMap[IdentityProvider]
+}
+
+var FfiConverterIdentityProviderINSTANCE = FfiConverterIdentityProvider{
+	handleMap: newConcurrentHandleMap[IdentityProvider](),
+}
+
+func (c FfiConverterIdentityProvider) Lift(handle C.uint64_t) IdentityProvider {
+	if uint64(handle)&1 == 0 {
+		// Rust-generated handle (even), construct a new object wrapping the handle
+		result := &IdentityProviderImpl{
+			newFfiObject(
+				handle,
+				func(handle C.uint64_t, status *C.RustCallStatus) C.uint64_t {
+					return C.uniffi_slim_bindings_fn_clone_identityprovider(handle, status)
+				},
+				func(handle C.uint64_t, status *C.RustCallStatus) {
+					C.uniffi_slim_bindings_fn_free_identityprovider(handle, status)
+				},
+			),
+		}
+		runtime.SetFinalizer(result, (*IdentityProviderImpl).Destroy)
+		return result
+	} else {
+		// Go-generated handle (odd), retrieve from the handle map
+		val, ok := c.handleMap.tryGet(uint64(handle))
+		if !ok {
+			panic(fmt.Errorf("no callback in handle map: %d", handle))
+		}
+		c.handleMap.remove(uint64(handle))
+		return val
+	}
+}
+
+func (c FfiConverterIdentityProvider) Read(reader io.Reader) IdentityProvider {
+	return c.Lift(C.uint64_t(readUint64(reader)))
+}
+
+func (c FfiConverterIdentityProvider) Lower(value IdentityProvider) C.uint64_t {
+	// TODO: this is bad - all synchronization from ObjectRuntime.go is discarded here,
+	// because the handle will be decremented immediately after this function returns,
+	// and someone will be left holding onto a non-locked handle.
+	if val, ok := value.(*IdentityProviderImpl); ok {
+		// Rust-backed object, clone the handle
+		handle := val.ffiObject.incrementPointer("IdentityProvider")
+		defer val.ffiObject.decrementPointer()
+		return handle
+	} else {
+		// Go-backed object, insert into handle map
+		return C.uint64_t(c.handleMap.insert(value))
+	}
+}
+
+func (c FfiConverterIdentityProvider) Write(writer io.Writer, value IdentityProvider) {
+	writeUint64(writer, uint64(c.Lower(value)))
+}
+
+func LiftFromExternalIdentityProvider(handle uint64) IdentityProvider {
+	return FfiConverterIdentityProviderINSTANCE.Lift(C.uint64_t(handle))
+}
+
+func LowerToExternalIdentityProvider(value IdentityProvider) uint64 {
+	return uint64(FfiConverterIdentityProviderINSTANCE.Lower(value))
+}
+
+type FfiDestroyerIdentityProvider struct{}
+
+func (_ FfiDestroyerIdentityProvider) Destroy(value IdentityProvider) {
+	if val, ok := value.(*IdentityProviderImpl); ok {
+		val.Destroy()
+	}
+}
+
+type uniffiCallbackResult C.int8_t
+
+const (
+	uniffiIdxCallbackFree               uniffiCallbackResult = 0
+	uniffiCallbackResultSuccess         uniffiCallbackResult = 0
+	uniffiCallbackResultError           uniffiCallbackResult = 1
+	uniffiCallbackUnexpectedResultError uniffiCallbackResult = 2
+	uniffiCallbackCancelled             uniffiCallbackResult = 3
+)
+
+type concurrentHandleMap[T any] struct {
+	handles       map[uint64]T
+	currentHandle uint64
+	lock          sync.RWMutex
+}
+
+func newConcurrentHandleMap[T any]() *concurrentHandleMap[T] {
+	return &concurrentHandleMap[T]{
+		handles:       map[uint64]T{},
+		currentHandle: 1,
+	}
+}
+
+func (cm *concurrentHandleMap[T]) insert(obj T) uint64 {
+	cm.lock.Lock()
+	defer cm.lock.Unlock()
+
+	handle := cm.currentHandle
+	cm.currentHandle = cm.currentHandle + 2
+	cm.handles[handle] = obj
+	return handle
+}
+
+func (cm *concurrentHandleMap[T]) remove(handle uint64) {
+	cm.lock.Lock()
+	defer cm.lock.Unlock()
+
+	delete(cm.handles, handle)
+}
+
+func (cm *concurrentHandleMap[T]) tryGet(handle uint64) (T, bool) {
+	cm.lock.RLock()
+	defer cm.lock.RUnlock()
+
+	val, ok := cm.handles[handle]
+	return val, ok
+}
+
+//export slim_bindings_custom_identity_cgo_dispatchCallbackInterfaceIdentityProviderMethod0
+func slim_bindings_custom_identity_cgo_dispatchCallbackInterfaceIdentityProviderMethod0(uniffiHandle C.uint64_t, uniffiFutureCallback C.UniffiForeignFutureCompleteVoid, uniffiCallbackData C.uint64_t, uniffiOutDroppedCallback *C.UniffiForeignFutureDroppedCallbackStruct) {
+	handle := uint64(uniffiHandle)
+	uniffiObj, ok := FfiConverterIdentityProviderINSTANCE.handleMap.tryGet(handle)
+	if !ok {
+		panic(fmt.Errorf("no callback in handle map: %d", handle))
+	}
+
+	result := make(chan C.UniffiForeignFutureResultVoid, 1)
+	cancel := make(chan struct{}, 1)
+	guardHandle := cgo.NewHandle(cancel)
+	*uniffiOutDroppedCallback = C.UniffiForeignFutureDroppedCallbackStruct{
+		handle: C.uint64_t(guardHandle),
+		free:   C.UniffiForeignFutureDroppedCallback(C.slim_bindings_uniffiFreeGorutine),
+	}
+
+	// Wait for compleation or cancel
+	go func() {
+		select {
+		case <-cancel:
+		case res := <-result:
+			C.call_UniffiForeignFutureCompleteVoid(uniffiFutureCallback, uniffiCallbackData, res)
+		}
+	}()
+
+	// Eval callback asynchroniously
+	go func() {
+		asyncResult := &C.UniffiForeignFutureResultVoid{}
+		callStatus := &asyncResult.callStatus
+		defer func() {
+			result <- *asyncResult
+		}()
+
+		err :=
+			uniffiObj.Initialize()
+
+		if err != nil {
+			var actualError *IdentityCallbackError
+			if errors.As(err, &actualError) {
+				*callStatus = C.RustCallStatus{
+					code:     C.int8_t(uniffiCallbackResultError),
+					errorBuf: FfiConverterIdentityCallbackErrorINSTANCE.Lower(actualError),
+				}
+			} else {
+				*callStatus = C.RustCallStatus{
+					code: C.int8_t(uniffiCallbackUnexpectedResultError),
+				}
+			}
+			return
+		}
+
+	}()
+}
+
+//export slim_bindings_custom_identity_cgo_dispatchCallbackInterfaceIdentityProviderMethod1
+func slim_bindings_custom_identity_cgo_dispatchCallbackInterfaceIdentityProviderMethod1(uniffiHandle C.uint64_t, uniffiOutReturn *C.RustBuffer, callStatus *C.RustCallStatus) {
+	handle := uint64(uniffiHandle)
+	uniffiObj, ok := FfiConverterIdentityProviderINSTANCE.handleMap.tryGet(handle)
+	if !ok {
+		panic(fmt.Errorf("no callback in handle map: %d", handle))
+	}
+
+	res, err :=
+		uniffiObj.GetToken()
+
+	if err != nil {
+		var actualError *IdentityCallbackError
+		if errors.As(err, &actualError) {
+			*callStatus = C.RustCallStatus{
+				code:     C.int8_t(uniffiCallbackResultError),
+				errorBuf: FfiConverterIdentityCallbackErrorINSTANCE.Lower(actualError),
+			}
+		} else {
+			*callStatus = C.RustCallStatus{
+				code: C.int8_t(uniffiCallbackUnexpectedResultError),
+			}
+		}
+		return
+	}
+
+	*uniffiOutReturn = FfiConverterStringINSTANCE.Lower(res)
+}
+
+//export slim_bindings_custom_identity_cgo_dispatchCallbackInterfaceIdentityProviderMethod2
+func slim_bindings_custom_identity_cgo_dispatchCallbackInterfaceIdentityProviderMethod2(uniffiHandle C.uint64_t, uniffiOutReturn *C.RustBuffer, callStatus *C.RustCallStatus) {
+	handle := uint64(uniffiHandle)
+	uniffiObj, ok := FfiConverterIdentityProviderINSTANCE.handleMap.tryGet(handle)
+	if !ok {
+		panic(fmt.Errorf("no callback in handle map: %d", handle))
+	}
+
+	res, err :=
+		uniffiObj.GetId()
+
+	if err != nil {
+		var actualError *IdentityCallbackError
+		if errors.As(err, &actualError) {
+			*callStatus = C.RustCallStatus{
+				code:     C.int8_t(uniffiCallbackResultError),
+				errorBuf: FfiConverterIdentityCallbackErrorINSTANCE.Lower(actualError),
+			}
+		} else {
+			*callStatus = C.RustCallStatus{
+				code: C.int8_t(uniffiCallbackUnexpectedResultError),
+			}
+		}
+		return
+	}
+
+	*uniffiOutReturn = FfiConverterStringINSTANCE.Lower(res)
+}
+
+//export slim_bindings_custom_identity_cgo_dispatchCallbackInterfaceIdentityProviderMethod3
+func slim_bindings_custom_identity_cgo_dispatchCallbackInterfaceIdentityProviderMethod3(uniffiHandle C.uint64_t, uniffiOutReturn *C.RustBuffer, callStatus *C.RustCallStatus) {
+	handle := uint64(uniffiHandle)
+	uniffiObj, ok := FfiConverterIdentityProviderINSTANCE.handleMap.tryGet(handle)
+	if !ok {
+		panic(fmt.Errorf("no callback in handle map: %d", handle))
+	}
+
+	res, err :=
+		uniffiObj.GetSignatureKeys()
+
+	if err != nil {
+		var actualError *IdentityCallbackError
+		if errors.As(err, &actualError) {
+			*callStatus = C.RustCallStatus{
+				code:     C.int8_t(uniffiCallbackResultError),
+				errorBuf: FfiConverterIdentityCallbackErrorINSTANCE.Lower(actualError),
+			}
+		} else {
+			*callStatus = C.RustCallStatus{
+				code: C.int8_t(uniffiCallbackUnexpectedResultError),
+			}
+		}
+		return
+	}
+
+	*uniffiOutReturn = FfiConverterSignatureKeysINSTANCE.Lower(res)
+}
+
+//export slim_bindings_custom_identity_cgo_dispatchCallbackInterfaceIdentityProviderMethod4
+func slim_bindings_custom_identity_cgo_dispatchCallbackInterfaceIdentityProviderMethod4(uniffiHandle C.uint64_t, uniffiOutReturn *C.int8_t, callStatus *C.RustCallStatus) {
+	handle := uint64(uniffiHandle)
+	uniffiObj, ok := FfiConverterIdentityProviderINSTANCE.handleMap.tryGet(handle)
+	if !ok {
+		panic(fmt.Errorf("no callback in handle map: %d", handle))
+	}
+
+	res, err :=
+		uniffiObj.MlsSignatureKeysInstalled()
+
+	if err != nil {
+		var actualError *IdentityCallbackError
+		if errors.As(err, &actualError) {
+			*callStatus = C.RustCallStatus{
+				code:     C.int8_t(uniffiCallbackResultError),
+				errorBuf: FfiConverterIdentityCallbackErrorINSTANCE.Lower(actualError),
+			}
+		} else {
+			*callStatus = C.RustCallStatus{
+				code: C.int8_t(uniffiCallbackUnexpectedResultError),
+			}
+		}
+		return
+	}
+
+	*uniffiOutReturn = FfiConverterBoolINSTANCE.Lower(res)
+}
+
+//export slim_bindings_custom_identity_cgo_dispatchCallbackInterfaceIdentityProviderMethod5
+func slim_bindings_custom_identity_cgo_dispatchCallbackInterfaceIdentityProviderMethod5(uniffiHandle C.uint64_t, privateKey C.RustBuffer, publicKey C.RustBuffer, uniffiOutReturn *C.void, callStatus *C.RustCallStatus) {
+	handle := uint64(uniffiHandle)
+	uniffiObj, ok := FfiConverterIdentityProviderINSTANCE.handleMap.tryGet(handle)
+	if !ok {
+		panic(fmt.Errorf("no callback in handle map: %d", handle))
+	}
+
+	err :=
+		uniffiObj.SetSignatureKeys(
+			FfiConverterBytesINSTANCE.Lift(GoRustBuffer{
+				inner: privateKey,
+			}),
+			FfiConverterBytesINSTANCE.Lift(GoRustBuffer{
+				inner: publicKey,
+			}),
+		)
+
+	if err != nil {
+		var actualError *IdentityCallbackError
+		if errors.As(err, &actualError) {
+			*callStatus = C.RustCallStatus{
+				code:     C.int8_t(uniffiCallbackResultError),
+				errorBuf: FfiConverterIdentityCallbackErrorINSTANCE.Lower(actualError),
+			}
+		} else {
+			*callStatus = C.RustCallStatus{
+				code: C.int8_t(uniffiCallbackUnexpectedResultError),
+			}
+		}
+		return
+	}
+
+}
+
+//export slim_bindings_custom_identity_cgo_dispatchCallbackInterfaceIdentityProviderMethod6
+func slim_bindings_custom_identity_cgo_dispatchCallbackInterfaceIdentityProviderMethod6(uniffiHandle C.uint64_t, uniffiOutReturn *C.RustBuffer, callStatus *C.RustCallStatus) {
+	handle := uint64(uniffiHandle)
+	uniffiObj, ok := FfiConverterIdentityProviderINSTANCE.handleMap.tryGet(handle)
+	if !ok {
+		panic(fmt.Errorf("no callback in handle map: %d", handle))
+	}
+
+	res, err :=
+		uniffiObj.ExportIdentity()
+
+	if err != nil {
+		var actualError *IdentityCallbackError
+		if errors.As(err, &actualError) {
+			*callStatus = C.RustCallStatus{
+				code:     C.int8_t(uniffiCallbackResultError),
+				errorBuf: FfiConverterIdentityCallbackErrorINSTANCE.Lower(actualError),
+			}
+		} else {
+			*callStatus = C.RustCallStatus{
+				code: C.int8_t(uniffiCallbackUnexpectedResultError),
+			}
+		}
+		return
+	}
+
+	*uniffiOutReturn = FfiConverterOptionalIdentityExportINSTANCE.Lower(res)
+}
+
+//export slim_bindings_custom_identity_cgo_dispatchCallbackInterfaceIdentityProviderMethod7
+func slim_bindings_custom_identity_cgo_dispatchCallbackInterfaceIdentityProviderMethod7(uniffiHandle C.uint64_t, uniffiOutReturn *C.int8_t, callStatus *C.RustCallStatus) {
+	handle := uint64(uniffiHandle)
+	uniffiObj, ok := FfiConverterIdentityProviderINSTANCE.handleMap.tryGet(handle)
+	if !ok {
+		panic(fmt.Errorf("no callback in handle map: %d", handle))
+	}
+
+	res, err :=
+		uniffiObj.HoldsLongTermSigningKey()
+
+	if err != nil {
+		var actualError *IdentityCallbackError
+		if errors.As(err, &actualError) {
+			*callStatus = C.RustCallStatus{
+				code:     C.int8_t(uniffiCallbackResultError),
+				errorBuf: FfiConverterIdentityCallbackErrorINSTANCE.Lower(actualError),
+			}
+		} else {
+			*callStatus = C.RustCallStatus{
+				code: C.int8_t(uniffiCallbackUnexpectedResultError),
+			}
+		}
+		return
+	}
+
+	*uniffiOutReturn = FfiConverterBoolINSTANCE.Lower(res)
+}
+
+//export slim_bindings_custom_identity_cgo_dispatchCallbackInterfaceIdentityProviderMethod8
+func slim_bindings_custom_identity_cgo_dispatchCallbackInterfaceIdentityProviderMethod8(uniffiHandle C.uint64_t, identity C.RustBuffer, uniffiOutReturn *C.void, callStatus *C.RustCallStatus) {
+	handle := uint64(uniffiHandle)
+	uniffiObj, ok := FfiConverterIdentityProviderINSTANCE.handleMap.tryGet(handle)
+	if !ok {
+		panic(fmt.Errorf("no callback in handle map: %d", handle))
+	}
+
+	err :=
+		uniffiObj.RestoreIdentity(
+			FfiConverterIdentityExportINSTANCE.Lift(GoRustBuffer{
+				inner: identity,
+			}),
+		)
+
+	if err != nil {
+		var actualError *IdentityCallbackError
+		if errors.As(err, &actualError) {
+			*callStatus = C.RustCallStatus{
+				code:     C.int8_t(uniffiCallbackResultError),
+				errorBuf: FfiConverterIdentityCallbackErrorINSTANCE.Lower(actualError),
+			}
+		} else {
+			*callStatus = C.RustCallStatus{
+				code: C.int8_t(uniffiCallbackUnexpectedResultError),
+			}
+		}
+		return
+	}
+
+}
+
+var UniffiVTableCallbackInterfaceIdentityProviderINSTANCE = C.UniffiVTableCallbackInterfaceIdentityProvider{
+	uniffiFree:                (C.UniffiCallbackInterfaceFree)(C.slim_bindings_custom_identity_cgo_dispatchCallbackInterfaceIdentityProviderFree),
+	uniffiClone:               (C.UniffiCallbackInterfaceClone)(C.slim_bindings_custom_identity_cgo_dispatchCallbackInterfaceIdentityProviderClone),
+	initialize:                (C.UniffiCallbackInterfaceIdentityProviderMethod0)(C.slim_bindings_custom_identity_cgo_dispatchCallbackInterfaceIdentityProviderMethod0),
+	getToken:                  (C.UniffiCallbackInterfaceIdentityProviderMethod1)(C.slim_bindings_custom_identity_cgo_dispatchCallbackInterfaceIdentityProviderMethod1),
+	getId:                     (C.UniffiCallbackInterfaceIdentityProviderMethod2)(C.slim_bindings_custom_identity_cgo_dispatchCallbackInterfaceIdentityProviderMethod2),
+	getSignatureKeys:          (C.UniffiCallbackInterfaceIdentityProviderMethod3)(C.slim_bindings_custom_identity_cgo_dispatchCallbackInterfaceIdentityProviderMethod3),
+	mlsSignatureKeysInstalled: (C.UniffiCallbackInterfaceIdentityProviderMethod4)(C.slim_bindings_custom_identity_cgo_dispatchCallbackInterfaceIdentityProviderMethod4),
+	setSignatureKeys:          (C.UniffiCallbackInterfaceIdentityProviderMethod5)(C.slim_bindings_custom_identity_cgo_dispatchCallbackInterfaceIdentityProviderMethod5),
+	exportIdentity:            (C.UniffiCallbackInterfaceIdentityProviderMethod6)(C.slim_bindings_custom_identity_cgo_dispatchCallbackInterfaceIdentityProviderMethod6),
+	holdsLongTermSigningKey:   (C.UniffiCallbackInterfaceIdentityProviderMethod7)(C.slim_bindings_custom_identity_cgo_dispatchCallbackInterfaceIdentityProviderMethod7),
+	restoreIdentity:           (C.UniffiCallbackInterfaceIdentityProviderMethod8)(C.slim_bindings_custom_identity_cgo_dispatchCallbackInterfaceIdentityProviderMethod8),
+}
+
+//export slim_bindings_custom_identity_cgo_dispatchCallbackInterfaceIdentityProviderFree
+func slim_bindings_custom_identity_cgo_dispatchCallbackInterfaceIdentityProviderFree(handle C.uint64_t) {
+	FfiConverterIdentityProviderINSTANCE.handleMap.remove(uint64(handle))
+}
+
+//export slim_bindings_custom_identity_cgo_dispatchCallbackInterfaceIdentityProviderClone
+func slim_bindings_custom_identity_cgo_dispatchCallbackInterfaceIdentityProviderClone(handle C.uint64_t) C.uint64_t {
+	val, ok := FfiConverterIdentityProviderINSTANCE.handleMap.tryGet(uint64(handle))
+	if !ok {
+		panic(fmt.Errorf("no callback in handle map: %d", handle))
+	}
+	return C.uint64_t(FfiConverterIdentityProviderINSTANCE.handleMap.insert(val))
+}
+
+func (c FfiConverterIdentityProvider) register() {
+	C.uniffi_slim_bindings_fn_init_callback_vtable_identityprovider(&UniffiVTableCallbackInterfaceIdentityProviderINSTANCE)
+}
+
+// Verifies the identity of peers. Implemented in the foreign language.
+//
+// `initialize` is async, so it may do I/O: fetch trust bundles or keys there, once.
+// Every other method is called synchronously from SLIM worker threads (including from
+// MLS), so it must not block for long and must be safe to call concurrently; verify
+// against what `initialize` fetched and what you refresh in the background.
+//
+// `verify_async` is no longer called: SLIM verifies tokens through the synchronous
+// methods only. It stays in the interface so existing implementations keep working,
+// and can be implemented by delegating to the synchronous `verify`.
+type IdentityVerifier interface {
+	// One-time asynchronous setup (e.g. fetching trust bundles or keys), awaited
+	// once while the app is being created, before any other method.
+	Initialize() error
+	// Not called any more: SLIM uses [`IdentityVerifier::verify`]. Implement it by
+	// delegating to `verify`.
+	VerifyAsync(token string) error
+	// Verify the token from a synchronous context. Fail if it is invalid or expired.
+	Verify(token string) error
+	// Verify the token and return its claims as a JSON object.
+	//
+	// Include a `sub` claim with the subject the token identifies. SLIM binds the name id of
+	// a peer to its subject, and with `SLIM_IDENTITY_BINDING=enforce` it drops a message
+	// whose id does not derive from it. Without a `sub` (or `id`) claim there is no
+	// subject to bind to, so none of those checks run for the peer.
+	GetClaims(token string) (string, error)
+	// Verify the token and return the subject it identifies.
+	GetSubject(token string) (string, error)
+	// Verify the token and return the public key its holder signs session control messages
+	// with, as raw bytes in the format described on [`SignatureKeys`]. SLIM checks the
+	// signature of a control message with this key, so it must be the key the sender's
+	// [`IdentityProvider::get_signature_keys`] returns. Where the token carries the key is
+	// up to your scheme.
+	//
+	// ```python
+	// def get_public_key(self, token):
+	// claims = self._decode_and_verify(token)
+	// return base64.b64decode(claims["pubkey"])
+	// ```
+	GetPublicKey(token string) ([]byte, error)
+	// Verify the token and check that it is bound to `public_key`, the MLS
+	// signature public key of the peer, as raw bytes in the format described on
+	// [`SignatureKeys`]. What "bound" means is up to your scheme (a claim holding the key,
+	// a DPoP `cnf`/`jkt` thumbprint, ...). If the token carries the key as a base64
+	// string, compare after decoding it, not the other way round. Fail with
+	// [`IdentityCallbackError::PublicKeyMismatch`] if bound to a different key.
+	//
+	// Only MLS calls this. If your scheme has no MLS support, fail with
+	// [`IdentityCallbackError::Failed`]; MLS then reports the error, and sessions without
+	// MLS are unaffected. [`IdentityVerifier::get_public_key`] is different: sessions need
+	// it, with or without MLS.
+	//
+	// ```python
+	// def verify_key_binding(self, token, public_key):
+	// claims = self._decode_and_verify(token)
+	// if base64.b64decode(claims["pubkey"]) != public_key:
+	// raise slim_bindings.IdentityCallbackError.PublicKeyMismatch("token bound to another key")
+	// ```
+	VerifyKeyBinding(token string, publicKey []byte) error
+}
+
+// Verifies the identity of peers. Implemented in the foreign language.
+//
+// `initialize` is async, so it may do I/O: fetch trust bundles or keys there, once.
+// Every other method is called synchronously from SLIM worker threads (including from
+// MLS), so it must not block for long and must be safe to call concurrently; verify
+// against what `initialize` fetched and what you refresh in the background.
+//
+// `verify_async` is no longer called: SLIM verifies tokens through the synchronous
+// methods only. It stays in the interface so existing implementations keep working,
+// and can be implemented by delegating to the synchronous `verify`.
+type IdentityVerifierImpl struct {
+	ffiObject FfiObject
+}
+
+// One-time asynchronous setup (e.g. fetching trust bundles or keys), awaited
+// once while the app is being created, before any other method.
+func (_self *IdentityVerifierImpl) Initialize() error {
+	_pointer := _self.ffiObject.incrementPointer("IdentityVerifier")
+	defer _self.ffiObject.decrementPointer()
+	_, err := uniffiRustCallAsync[*IdentityCallbackError](
+		FfiConverterIdentityCallbackErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) struct{} {
+			C.ffi_slim_bindings_rust_future_complete_void(handle, status)
+			return struct{}{}
+		},
+		// liftFn
+		func(_ struct{}) struct{} { return struct{}{} },
+		C.uniffi_slim_bindings_fn_method_identityverifier_initialize(
+			_pointer),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_slim_bindings_rust_future_poll_void(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_slim_bindings_rust_future_free_void(handle)
+		},
+	)
+
+	if err == nil {
+		return nil
+	}
+
+	return err
+}
+
+// Not called any more: SLIM uses [`IdentityVerifier::verify`]. Implement it by
+// delegating to `verify`.
+func (_self *IdentityVerifierImpl) VerifyAsync(token string) error {
+	_pointer := _self.ffiObject.incrementPointer("IdentityVerifier")
+	defer _self.ffiObject.decrementPointer()
+	_, err := uniffiRustCallAsync[*IdentityCallbackError](
+		FfiConverterIdentityCallbackErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) struct{} {
+			C.ffi_slim_bindings_rust_future_complete_void(handle, status)
+			return struct{}{}
+		},
+		// liftFn
+		func(_ struct{}) struct{} { return struct{}{} },
+		C.uniffi_slim_bindings_fn_method_identityverifier_verify_async(
+			_pointer, FfiConverterStringINSTANCE.Lower(token)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_slim_bindings_rust_future_poll_void(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_slim_bindings_rust_future_free_void(handle)
+		},
+	)
+
+	if err == nil {
+		return nil
+	}
+
+	return err
+}
+
+// Verify the token from a synchronous context. Fail if it is invalid or expired.
+func (_self *IdentityVerifierImpl) Verify(token string) error {
+	_pointer := _self.ffiObject.incrementPointer("IdentityVerifier")
+	defer _self.ffiObject.decrementPointer()
+	_, _uniffiErr := rustCallWithError[*IdentityCallbackError](FfiConverterIdentityCallbackError{}, func(_uniffiStatus *C.RustCallStatus) bool {
+		C.uniffi_slim_bindings_fn_method_identityverifier_verify(
+			_pointer, FfiConverterStringINSTANCE.Lower(token), _uniffiStatus)
+		return false
+	})
+	return _uniffiErr.AsError()
+}
+
+// Verify the token and return its claims as a JSON object.
+//
+// Include a `sub` claim with the subject the token identifies. SLIM binds the name id of
+// a peer to its subject, and with `SLIM_IDENTITY_BINDING=enforce` it drops a message
+// whose id does not derive from it. Without a `sub` (or `id`) claim there is no
+// subject to bind to, so none of those checks run for the peer.
+func (_self *IdentityVerifierImpl) GetClaims(token string) (string, error) {
+	_pointer := _self.ffiObject.incrementPointer("IdentityVerifier")
+	defer _self.ffiObject.decrementPointer()
+	_uniffiRV, _uniffiErr := rustCallWithError[*IdentityCallbackError](FfiConverterIdentityCallbackError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+		return GoRustBuffer{
+			inner: C.uniffi_slim_bindings_fn_method_identityverifier_get_claims(
+				_pointer, FfiConverterStringINSTANCE.Lower(token), _uniffiStatus),
+		}
+	})
+	if _uniffiErr != nil {
+		var _uniffiDefaultValue string
+		return _uniffiDefaultValue, _uniffiErr
+	} else {
+		return FfiConverterStringINSTANCE.Lift(_uniffiRV), nil
+	}
+}
+
+// Verify the token and return the subject it identifies.
+func (_self *IdentityVerifierImpl) GetSubject(token string) (string, error) {
+	_pointer := _self.ffiObject.incrementPointer("IdentityVerifier")
+	defer _self.ffiObject.decrementPointer()
+	_uniffiRV, _uniffiErr := rustCallWithError[*IdentityCallbackError](FfiConverterIdentityCallbackError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+		return GoRustBuffer{
+			inner: C.uniffi_slim_bindings_fn_method_identityverifier_get_subject(
+				_pointer, FfiConverterStringINSTANCE.Lower(token), _uniffiStatus),
+		}
+	})
+	if _uniffiErr != nil {
+		var _uniffiDefaultValue string
+		return _uniffiDefaultValue, _uniffiErr
+	} else {
+		return FfiConverterStringINSTANCE.Lift(_uniffiRV), nil
+	}
+}
+
+// Verify the token and return the public key its holder signs session control messages
+// with, as raw bytes in the format described on [`SignatureKeys`]. SLIM checks the
+// signature of a control message with this key, so it must be the key the sender's
+// [`IdentityProvider::get_signature_keys`] returns. Where the token carries the key is
+// up to your scheme.
+//
+// ```python
+// def get_public_key(self, token):
+// claims = self._decode_and_verify(token)
+// return base64.b64decode(claims["pubkey"])
+// ```
+func (_self *IdentityVerifierImpl) GetPublicKey(token string) ([]byte, error) {
+	_pointer := _self.ffiObject.incrementPointer("IdentityVerifier")
+	defer _self.ffiObject.decrementPointer()
+	_uniffiRV, _uniffiErr := rustCallWithError[*IdentityCallbackError](FfiConverterIdentityCallbackError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+		return GoRustBuffer{
+			inner: C.uniffi_slim_bindings_fn_method_identityverifier_get_public_key(
+				_pointer, FfiConverterStringINSTANCE.Lower(token), _uniffiStatus),
+		}
+	})
+	if _uniffiErr != nil {
+		var _uniffiDefaultValue []byte
+		return _uniffiDefaultValue, _uniffiErr
+	} else {
+		return FfiConverterBytesINSTANCE.Lift(_uniffiRV), nil
+	}
+}
+
+// Verify the token and check that it is bound to `public_key`, the MLS
+// signature public key of the peer, as raw bytes in the format described on
+// [`SignatureKeys`]. What "bound" means is up to your scheme (a claim holding the key,
+// a DPoP `cnf`/`jkt` thumbprint, ...). If the token carries the key as a base64
+// string, compare after decoding it, not the other way round. Fail with
+// [`IdentityCallbackError::PublicKeyMismatch`] if bound to a different key.
+//
+// Only MLS calls this. If your scheme has no MLS support, fail with
+// [`IdentityCallbackError::Failed`]; MLS then reports the error, and sessions without
+// MLS are unaffected. [`IdentityVerifier::get_public_key`] is different: sessions need
+// it, with or without MLS.
+//
+// ```python
+// def verify_key_binding(self, token, public_key):
+// claims = self._decode_and_verify(token)
+// if base64.b64decode(claims["pubkey"]) != public_key:
+// raise slim_bindings.IdentityCallbackError.PublicKeyMismatch("token bound to another key")
+// ```
+func (_self *IdentityVerifierImpl) VerifyKeyBinding(token string, publicKey []byte) error {
+	_pointer := _self.ffiObject.incrementPointer("IdentityVerifier")
+	defer _self.ffiObject.decrementPointer()
+	_, _uniffiErr := rustCallWithError[*IdentityCallbackError](FfiConverterIdentityCallbackError{}, func(_uniffiStatus *C.RustCallStatus) bool {
+		C.uniffi_slim_bindings_fn_method_identityverifier_verify_key_binding(
+			_pointer, FfiConverterStringINSTANCE.Lower(token), FfiConverterBytesINSTANCE.Lower(publicKey), _uniffiStatus)
+		return false
+	})
+	return _uniffiErr.AsError()
+}
+func (object *IdentityVerifierImpl) Destroy() {
+	runtime.SetFinalizer(object, nil)
+	object.ffiObject.destroy()
+}
+
+type FfiConverterIdentityVerifier struct {
+	handleMap *concurrentHandleMap[IdentityVerifier]
+}
+
+var FfiConverterIdentityVerifierINSTANCE = FfiConverterIdentityVerifier{
+	handleMap: newConcurrentHandleMap[IdentityVerifier](),
+}
+
+func (c FfiConverterIdentityVerifier) Lift(handle C.uint64_t) IdentityVerifier {
+	if uint64(handle)&1 == 0 {
+		// Rust-generated handle (even), construct a new object wrapping the handle
+		result := &IdentityVerifierImpl{
+			newFfiObject(
+				handle,
+				func(handle C.uint64_t, status *C.RustCallStatus) C.uint64_t {
+					return C.uniffi_slim_bindings_fn_clone_identityverifier(handle, status)
+				},
+				func(handle C.uint64_t, status *C.RustCallStatus) {
+					C.uniffi_slim_bindings_fn_free_identityverifier(handle, status)
+				},
+			),
+		}
+		runtime.SetFinalizer(result, (*IdentityVerifierImpl).Destroy)
+		return result
+	} else {
+		// Go-generated handle (odd), retrieve from the handle map
+		val, ok := c.handleMap.tryGet(uint64(handle))
+		if !ok {
+			panic(fmt.Errorf("no callback in handle map: %d", handle))
+		}
+		c.handleMap.remove(uint64(handle))
+		return val
+	}
+}
+
+func (c FfiConverterIdentityVerifier) Read(reader io.Reader) IdentityVerifier {
+	return c.Lift(C.uint64_t(readUint64(reader)))
+}
+
+func (c FfiConverterIdentityVerifier) Lower(value IdentityVerifier) C.uint64_t {
+	// TODO: this is bad - all synchronization from ObjectRuntime.go is discarded here,
+	// because the handle will be decremented immediately after this function returns,
+	// and someone will be left holding onto a non-locked handle.
+	if val, ok := value.(*IdentityVerifierImpl); ok {
+		// Rust-backed object, clone the handle
+		handle := val.ffiObject.incrementPointer("IdentityVerifier")
+		defer val.ffiObject.decrementPointer()
+		return handle
+	} else {
+		// Go-backed object, insert into handle map
+		return C.uint64_t(c.handleMap.insert(value))
+	}
+}
+
+func (c FfiConverterIdentityVerifier) Write(writer io.Writer, value IdentityVerifier) {
+	writeUint64(writer, uint64(c.Lower(value)))
+}
+
+func LiftFromExternalIdentityVerifier(handle uint64) IdentityVerifier {
+	return FfiConverterIdentityVerifierINSTANCE.Lift(C.uint64_t(handle))
+}
+
+func LowerToExternalIdentityVerifier(value IdentityVerifier) uint64 {
+	return uint64(FfiConverterIdentityVerifierINSTANCE.Lower(value))
+}
+
+type FfiDestroyerIdentityVerifier struct{}
+
+func (_ FfiDestroyerIdentityVerifier) Destroy(value IdentityVerifier) {
+	if val, ok := value.(*IdentityVerifierImpl); ok {
+		val.Destroy()
+	}
+}
+
+//export slim_bindings_custom_identity_cgo_dispatchCallbackInterfaceIdentityVerifierMethod0
+func slim_bindings_custom_identity_cgo_dispatchCallbackInterfaceIdentityVerifierMethod0(uniffiHandle C.uint64_t, uniffiFutureCallback C.UniffiForeignFutureCompleteVoid, uniffiCallbackData C.uint64_t, uniffiOutDroppedCallback *C.UniffiForeignFutureDroppedCallbackStruct) {
+	handle := uint64(uniffiHandle)
+	uniffiObj, ok := FfiConverterIdentityVerifierINSTANCE.handleMap.tryGet(handle)
+	if !ok {
+		panic(fmt.Errorf("no callback in handle map: %d", handle))
+	}
+
+	result := make(chan C.UniffiForeignFutureResultVoid, 1)
+	cancel := make(chan struct{}, 1)
+	guardHandle := cgo.NewHandle(cancel)
+	*uniffiOutDroppedCallback = C.UniffiForeignFutureDroppedCallbackStruct{
+		handle: C.uint64_t(guardHandle),
+		free:   C.UniffiForeignFutureDroppedCallback(C.slim_bindings_uniffiFreeGorutine),
+	}
+
+	// Wait for compleation or cancel
+	go func() {
+		select {
+		case <-cancel:
+		case res := <-result:
+			C.call_UniffiForeignFutureCompleteVoid(uniffiFutureCallback, uniffiCallbackData, res)
+		}
+	}()
+
+	// Eval callback asynchroniously
+	go func() {
+		asyncResult := &C.UniffiForeignFutureResultVoid{}
+		callStatus := &asyncResult.callStatus
+		defer func() {
+			result <- *asyncResult
+		}()
+
+		err :=
+			uniffiObj.Initialize()
+
+		if err != nil {
+			var actualError *IdentityCallbackError
+			if errors.As(err, &actualError) {
+				*callStatus = C.RustCallStatus{
+					code:     C.int8_t(uniffiCallbackResultError),
+					errorBuf: FfiConverterIdentityCallbackErrorINSTANCE.Lower(actualError),
+				}
+			} else {
+				*callStatus = C.RustCallStatus{
+					code: C.int8_t(uniffiCallbackUnexpectedResultError),
+				}
+			}
+			return
+		}
+
+	}()
+}
+
+//export slim_bindings_custom_identity_cgo_dispatchCallbackInterfaceIdentityVerifierMethod1
+func slim_bindings_custom_identity_cgo_dispatchCallbackInterfaceIdentityVerifierMethod1(uniffiHandle C.uint64_t, token C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteVoid, uniffiCallbackData C.uint64_t, uniffiOutDroppedCallback *C.UniffiForeignFutureDroppedCallbackStruct) {
+	handle := uint64(uniffiHandle)
+	uniffiObj, ok := FfiConverterIdentityVerifierINSTANCE.handleMap.tryGet(handle)
+	if !ok {
+		panic(fmt.Errorf("no callback in handle map: %d", handle))
+	}
+
+	result := make(chan C.UniffiForeignFutureResultVoid, 1)
+	cancel := make(chan struct{}, 1)
+	guardHandle := cgo.NewHandle(cancel)
+	*uniffiOutDroppedCallback = C.UniffiForeignFutureDroppedCallbackStruct{
+		handle: C.uint64_t(guardHandle),
+		free:   C.UniffiForeignFutureDroppedCallback(C.slim_bindings_uniffiFreeGorutine),
+	}
+
+	// Wait for compleation or cancel
+	go func() {
+		select {
+		case <-cancel:
+		case res := <-result:
+			C.call_UniffiForeignFutureCompleteVoid(uniffiFutureCallback, uniffiCallbackData, res)
+		}
+	}()
+
+	// Eval callback asynchroniously
+	go func() {
+		asyncResult := &C.UniffiForeignFutureResultVoid{}
+		callStatus := &asyncResult.callStatus
+		defer func() {
+			result <- *asyncResult
+		}()
+
+		err :=
+			uniffiObj.VerifyAsync(
+				FfiConverterStringINSTANCE.Lift(GoRustBuffer{
+					inner: token,
+				}),
+			)
+
+		if err != nil {
+			var actualError *IdentityCallbackError
+			if errors.As(err, &actualError) {
+				*callStatus = C.RustCallStatus{
+					code:     C.int8_t(uniffiCallbackResultError),
+					errorBuf: FfiConverterIdentityCallbackErrorINSTANCE.Lower(actualError),
+				}
+			} else {
+				*callStatus = C.RustCallStatus{
+					code: C.int8_t(uniffiCallbackUnexpectedResultError),
+				}
+			}
+			return
+		}
+
+	}()
+}
+
+//export slim_bindings_custom_identity_cgo_dispatchCallbackInterfaceIdentityVerifierMethod2
+func slim_bindings_custom_identity_cgo_dispatchCallbackInterfaceIdentityVerifierMethod2(uniffiHandle C.uint64_t, token C.RustBuffer, uniffiOutReturn *C.void, callStatus *C.RustCallStatus) {
+	handle := uint64(uniffiHandle)
+	uniffiObj, ok := FfiConverterIdentityVerifierINSTANCE.handleMap.tryGet(handle)
+	if !ok {
+		panic(fmt.Errorf("no callback in handle map: %d", handle))
+	}
+
+	err :=
+		uniffiObj.Verify(
+			FfiConverterStringINSTANCE.Lift(GoRustBuffer{
+				inner: token,
+			}),
+		)
+
+	if err != nil {
+		var actualError *IdentityCallbackError
+		if errors.As(err, &actualError) {
+			*callStatus = C.RustCallStatus{
+				code:     C.int8_t(uniffiCallbackResultError),
+				errorBuf: FfiConverterIdentityCallbackErrorINSTANCE.Lower(actualError),
+			}
+		} else {
+			*callStatus = C.RustCallStatus{
+				code: C.int8_t(uniffiCallbackUnexpectedResultError),
+			}
+		}
+		return
+	}
+
+}
+
+//export slim_bindings_custom_identity_cgo_dispatchCallbackInterfaceIdentityVerifierMethod3
+func slim_bindings_custom_identity_cgo_dispatchCallbackInterfaceIdentityVerifierMethod3(uniffiHandle C.uint64_t, token C.RustBuffer, uniffiOutReturn *C.RustBuffer, callStatus *C.RustCallStatus) {
+	handle := uint64(uniffiHandle)
+	uniffiObj, ok := FfiConverterIdentityVerifierINSTANCE.handleMap.tryGet(handle)
+	if !ok {
+		panic(fmt.Errorf("no callback in handle map: %d", handle))
+	}
+
+	res, err :=
+		uniffiObj.GetClaims(
+			FfiConverterStringINSTANCE.Lift(GoRustBuffer{
+				inner: token,
+			}),
+		)
+
+	if err != nil {
+		var actualError *IdentityCallbackError
+		if errors.As(err, &actualError) {
+			*callStatus = C.RustCallStatus{
+				code:     C.int8_t(uniffiCallbackResultError),
+				errorBuf: FfiConverterIdentityCallbackErrorINSTANCE.Lower(actualError),
+			}
+		} else {
+			*callStatus = C.RustCallStatus{
+				code: C.int8_t(uniffiCallbackUnexpectedResultError),
+			}
+		}
+		return
+	}
+
+	*uniffiOutReturn = FfiConverterStringINSTANCE.Lower(res)
+}
+
+//export slim_bindings_custom_identity_cgo_dispatchCallbackInterfaceIdentityVerifierMethod4
+func slim_bindings_custom_identity_cgo_dispatchCallbackInterfaceIdentityVerifierMethod4(uniffiHandle C.uint64_t, token C.RustBuffer, uniffiOutReturn *C.RustBuffer, callStatus *C.RustCallStatus) {
+	handle := uint64(uniffiHandle)
+	uniffiObj, ok := FfiConverterIdentityVerifierINSTANCE.handleMap.tryGet(handle)
+	if !ok {
+		panic(fmt.Errorf("no callback in handle map: %d", handle))
+	}
+
+	res, err :=
+		uniffiObj.GetSubject(
+			FfiConverterStringINSTANCE.Lift(GoRustBuffer{
+				inner: token,
+			}),
+		)
+
+	if err != nil {
+		var actualError *IdentityCallbackError
+		if errors.As(err, &actualError) {
+			*callStatus = C.RustCallStatus{
+				code:     C.int8_t(uniffiCallbackResultError),
+				errorBuf: FfiConverterIdentityCallbackErrorINSTANCE.Lower(actualError),
+			}
+		} else {
+			*callStatus = C.RustCallStatus{
+				code: C.int8_t(uniffiCallbackUnexpectedResultError),
+			}
+		}
+		return
+	}
+
+	*uniffiOutReturn = FfiConverterStringINSTANCE.Lower(res)
+}
+
+//export slim_bindings_custom_identity_cgo_dispatchCallbackInterfaceIdentityVerifierMethod5
+func slim_bindings_custom_identity_cgo_dispatchCallbackInterfaceIdentityVerifierMethod5(uniffiHandle C.uint64_t, token C.RustBuffer, uniffiOutReturn *C.RustBuffer, callStatus *C.RustCallStatus) {
+	handle := uint64(uniffiHandle)
+	uniffiObj, ok := FfiConverterIdentityVerifierINSTANCE.handleMap.tryGet(handle)
+	if !ok {
+		panic(fmt.Errorf("no callback in handle map: %d", handle))
+	}
+
+	res, err :=
+		uniffiObj.GetPublicKey(
+			FfiConverterStringINSTANCE.Lift(GoRustBuffer{
+				inner: token,
+			}),
+		)
+
+	if err != nil {
+		var actualError *IdentityCallbackError
+		if errors.As(err, &actualError) {
+			*callStatus = C.RustCallStatus{
+				code:     C.int8_t(uniffiCallbackResultError),
+				errorBuf: FfiConverterIdentityCallbackErrorINSTANCE.Lower(actualError),
+			}
+		} else {
+			*callStatus = C.RustCallStatus{
+				code: C.int8_t(uniffiCallbackUnexpectedResultError),
+			}
+		}
+		return
+	}
+
+	*uniffiOutReturn = FfiConverterBytesINSTANCE.Lower(res)
+}
+
+//export slim_bindings_custom_identity_cgo_dispatchCallbackInterfaceIdentityVerifierMethod6
+func slim_bindings_custom_identity_cgo_dispatchCallbackInterfaceIdentityVerifierMethod6(uniffiHandle C.uint64_t, token C.RustBuffer, publicKey C.RustBuffer, uniffiOutReturn *C.void, callStatus *C.RustCallStatus) {
+	handle := uint64(uniffiHandle)
+	uniffiObj, ok := FfiConverterIdentityVerifierINSTANCE.handleMap.tryGet(handle)
+	if !ok {
+		panic(fmt.Errorf("no callback in handle map: %d", handle))
+	}
+
+	err :=
+		uniffiObj.VerifyKeyBinding(
+			FfiConverterStringINSTANCE.Lift(GoRustBuffer{
+				inner: token,
+			}),
+			FfiConverterBytesINSTANCE.Lift(GoRustBuffer{
+				inner: publicKey,
+			}),
+		)
+
+	if err != nil {
+		var actualError *IdentityCallbackError
+		if errors.As(err, &actualError) {
+			*callStatus = C.RustCallStatus{
+				code:     C.int8_t(uniffiCallbackResultError),
+				errorBuf: FfiConverterIdentityCallbackErrorINSTANCE.Lower(actualError),
+			}
+		} else {
+			*callStatus = C.RustCallStatus{
+				code: C.int8_t(uniffiCallbackUnexpectedResultError),
+			}
+		}
+		return
+	}
+
+}
+
+var UniffiVTableCallbackInterfaceIdentityVerifierINSTANCE = C.UniffiVTableCallbackInterfaceIdentityVerifier{
+	uniffiFree:       (C.UniffiCallbackInterfaceFree)(C.slim_bindings_custom_identity_cgo_dispatchCallbackInterfaceIdentityVerifierFree),
+	uniffiClone:      (C.UniffiCallbackInterfaceClone)(C.slim_bindings_custom_identity_cgo_dispatchCallbackInterfaceIdentityVerifierClone),
+	initialize:       (C.UniffiCallbackInterfaceIdentityVerifierMethod0)(C.slim_bindings_custom_identity_cgo_dispatchCallbackInterfaceIdentityVerifierMethod0),
+	verifyAsync:      (C.UniffiCallbackInterfaceIdentityVerifierMethod1)(C.slim_bindings_custom_identity_cgo_dispatchCallbackInterfaceIdentityVerifierMethod1),
+	verify:           (C.UniffiCallbackInterfaceIdentityVerifierMethod2)(C.slim_bindings_custom_identity_cgo_dispatchCallbackInterfaceIdentityVerifierMethod2),
+	getClaims:        (C.UniffiCallbackInterfaceIdentityVerifierMethod3)(C.slim_bindings_custom_identity_cgo_dispatchCallbackInterfaceIdentityVerifierMethod3),
+	getSubject:       (C.UniffiCallbackInterfaceIdentityVerifierMethod4)(C.slim_bindings_custom_identity_cgo_dispatchCallbackInterfaceIdentityVerifierMethod4),
+	getPublicKey:     (C.UniffiCallbackInterfaceIdentityVerifierMethod5)(C.slim_bindings_custom_identity_cgo_dispatchCallbackInterfaceIdentityVerifierMethod5),
+	verifyKeyBinding: (C.UniffiCallbackInterfaceIdentityVerifierMethod6)(C.slim_bindings_custom_identity_cgo_dispatchCallbackInterfaceIdentityVerifierMethod6),
+}
+
+//export slim_bindings_custom_identity_cgo_dispatchCallbackInterfaceIdentityVerifierFree
+func slim_bindings_custom_identity_cgo_dispatchCallbackInterfaceIdentityVerifierFree(handle C.uint64_t) {
+	FfiConverterIdentityVerifierINSTANCE.handleMap.remove(uint64(handle))
+}
+
+//export slim_bindings_custom_identity_cgo_dispatchCallbackInterfaceIdentityVerifierClone
+func slim_bindings_custom_identity_cgo_dispatchCallbackInterfaceIdentityVerifierClone(handle C.uint64_t) C.uint64_t {
+	val, ok := FfiConverterIdentityVerifierINSTANCE.handleMap.tryGet(uint64(handle))
+	if !ok {
+		panic(fmt.Errorf("no callback in handle map: %d", handle))
+	}
+	return C.uint64_t(FfiConverterIdentityVerifierINSTANCE.handleMap.insert(val))
+}
+
+func (c FfiConverterIdentityVerifier) register() {
+	C.uniffi_slim_bindings_fn_init_callback_vtable_identityverifier(&UniffiVTableCallbackInterfaceIdentityVerifierINSTANCE)
+}
+
 // Name type for SLIM (Secure Low-Latency Interactive Messaging)
 type NameInterface interface {
 	// Get the name components as a vector of strings
@@ -3128,6 +4969,44 @@ func (_ FfiDestroyerName) Destroy(value *Name) {
 
 // Service wrapper for uniffi bindings
 type ServiceInterface interface {
+	// Blocking wrapper around
+	// [`Service::create_app_with_custom_identity_and_persistence_async`].
+	CreateAppWithCustomIdentityAndPersistence(name *Name, identityProvider IdentityProvider, identityVerifier IdentityVerifier, direction Direction, persistence PersistenceConfig) (*App, error)
+	// Create an app whose identity is provided by objects (foreign-language
+	// implementations), with restorable MLS/session
+	// state persisted under `persistence.path` (async).
+	//
+	// Persistence uses the provider's `export_identity` / `restore_identity`
+	// hooks; a provider whose `export_identity` returns `None` persists no identity, and
+	// one whose `export_identity` fails stops its session records from being updated.
+	// Restore the app's sessions after a restart with [`App::restore_sessions`].
+	//
+	// # Example
+	//
+	// ```rust,no_run
+	// # use std::sync::Arc;
+	// # use slim_bindings::*;
+	// # async fn demo(
+	// #     service: Arc<Service>,
+	// #     name: Arc<Name>,
+	// #     provider: Arc<dyn IdentityProvider>,
+	// #     verifier: Arc<dyn IdentityVerifier>,
+	// # ) -> Result<(), SlimError> {
+	// let app = service
+	// .create_app_with_custom_identity_and_persistence_async(
+	// name,
+	// provider,
+	// verifier,
+	// Direction::Bidirectional,
+	// PersistenceConfig {
+	// path: "/var/lib/myapp/slim".into(),
+	// passphrase: Some("a-strong-passphrase".into()),
+	// },
+	// )
+	// .await?;
+	// # Ok(()) }
+	// ```
+	CreateAppWithCustomIdentityAndPersistenceAsync(name *Name, identityProvider IdentityProvider, identityVerifier IdentityVerifier, direction Direction, persistence PersistenceConfig) (*App, error)
 	// Blocking wrapper around [`Service::create_app_with_persistence_async`].
 	CreateAppWithPersistence(name *Name, identityProviderConfig IdentityProviderConfig, identityVerifierConfig IdentityVerifierConfig, direction Direction, persistence PersistenceConfig) (*App, error)
 	// Create an app with restorable MLS/session state persisted under
@@ -3171,6 +5050,41 @@ type ServiceInterface interface {
 	// * `Ok(Arc<App>)` - Successfully created adapter
 	// * `Err(SlimError)` - If adapter creation fails
 	CreateAppAsync(baseName *Name, identityProviderConfig IdentityProviderConfig, identityVerifierConfig IdentityVerifierConfig) (*App, error)
+	// Create a new App whose identity is provided by foreign-language objects - blocking version
+	//
+	// Blocks while the objects' async `initialize` run; see
+	// [`crate::App::new_with_custom_identity`] for when not to use it.
+	CreateAppWithCustomIdentity(name *Name, identityProvider IdentityProvider, identityVerifier IdentityVerifier, direction Direction) (*App, error)
+	// Create a new App whose identity is provided by foreign-language objects (async version)
+	//
+	// `identity_provider` proves this app's identity; `identity_verifier` verifies peers.
+	CreateAppWithCustomIdentityAsync(name *Name, identityProvider IdentityProvider, identityVerifier IdentityVerifier, direction Direction) (*App, error)
+	// Create a new App whose identity is a `did:key` (blocking version)
+	//
+	// See [`Service::create_app_with_did_key_async`] for the arguments.
+	CreateAppWithDidKey(name *Name, privateKeyPem string, trustedKeys string, direction Direction) (*App, error)
+	// Create a new App whose identity is a `did:key` (async version)
+	//
+	// The app signs with an Ed25519 key and accepts the peers whose public keys it
+	// trusts. The provider and the verifier are built from the two arguments and
+	// initialized before the app is created.
+	//
+	// # Arguments
+	// * `name` - The base name for the app (without ID)
+	// * `private_key_pem` - The app's Ed25519 private key, a PKCS#8 PEM document
+	// (`-----BEGIN PRIVATE KEY-----`, as `openssl genpkey -algorithm ed25519` writes).
+	// The app's identity is the `did:key` of that key (see
+	// [`crate::did_key_of_private_key`]).
+	// * `trusted_keys` - The JWKS (JSON) of the trust anchor: the public keys of the peers
+	// the app accepts, as `OKP` `Ed25519` JWKs. A token's subject must be the `did:key`
+	// of the key that signed it. It has to list the app's own key too, since MLS
+	// verifies the app's own token against it.
+	// * `direction` - Traffic direction: Send, Recv, Bidirectional, or None
+	//
+	// # Returns
+	// * `Ok(Arc<App>)` - Successfully created app
+	// * `Err(SlimError)` - If a key is invalid, or the app cannot be created
+	CreateAppWithDidKeyAsync(name *Name, privateKeyPem string, trustedKeys string, direction Direction) (*App, error)
 	// Create a new App with authentication configuration and traffic direction (blocking version)
 	//
 	// This method initializes authentication providers/verifiers and creates an App
@@ -3268,6 +5182,90 @@ func ServiceNewWithConfig(name string, config ServiceConfig) *Service {
 	return FfiConverterServiceINSTANCE.Lift(rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint64_t {
 		return C.uniffi_slim_bindings_fn_constructor_service_new_with_config(FfiConverterStringINSTANCE.Lower(name), FfiConverterServiceConfigINSTANCE.Lower(config), _uniffiStatus)
 	}))
+}
+
+// Blocking wrapper around
+// [`Service::create_app_with_custom_identity_and_persistence_async`].
+func (_self *Service) CreateAppWithCustomIdentityAndPersistence(name *Name, identityProvider IdentityProvider, identityVerifier IdentityVerifier, direction Direction, persistence PersistenceConfig) (*App, error) {
+	_pointer := _self.ffiObject.incrementPointer("*Service")
+	defer _self.ffiObject.decrementPointer()
+	_uniffiRV, _uniffiErr := rustCallWithError[*SlimError](FfiConverterSlimError{}, func(_uniffiStatus *C.RustCallStatus) C.uint64_t {
+		return C.uniffi_slim_bindings_fn_method_service_create_app_with_custom_identity_and_persistence(
+			_pointer, FfiConverterNameINSTANCE.Lower(name), FfiConverterIdentityProviderINSTANCE.Lower(identityProvider), FfiConverterIdentityVerifierINSTANCE.Lower(identityVerifier), FfiConverterDirectionINSTANCE.Lower(direction), FfiConverterPersistenceConfigINSTANCE.Lower(persistence), _uniffiStatus)
+	})
+	if _uniffiErr != nil {
+		var _uniffiDefaultValue *App
+		return _uniffiDefaultValue, _uniffiErr
+	} else {
+		return FfiConverterAppINSTANCE.Lift(_uniffiRV), nil
+	}
+}
+
+// Create an app whose identity is provided by objects (foreign-language
+// implementations), with restorable MLS/session
+// state persisted under `persistence.path` (async).
+//
+// Persistence uses the provider's `export_identity` / `restore_identity`
+// hooks; a provider whose `export_identity` returns `None` persists no identity, and
+// one whose `export_identity` fails stops its session records from being updated.
+// Restore the app's sessions after a restart with [`App::restore_sessions`].
+//
+// # Example
+//
+// ```rust,no_run
+// # use std::sync::Arc;
+// # use slim_bindings::*;
+// # async fn demo(
+// #     service: Arc<Service>,
+// #     name: Arc<Name>,
+// #     provider: Arc<dyn IdentityProvider>,
+// #     verifier: Arc<dyn IdentityVerifier>,
+// # ) -> Result<(), SlimError> {
+// let app = service
+// .create_app_with_custom_identity_and_persistence_async(
+// name,
+// provider,
+// verifier,
+// Direction::Bidirectional,
+// PersistenceConfig {
+// path: "/var/lib/myapp/slim".into(),
+// passphrase: Some("a-strong-passphrase".into()),
+// },
+// )
+// .await?;
+// # Ok(()) }
+// ```
+func (_self *Service) CreateAppWithCustomIdentityAndPersistenceAsync(name *Name, identityProvider IdentityProvider, identityVerifier IdentityVerifier, direction Direction, persistence PersistenceConfig) (*App, error) {
+	_pointer := _self.ffiObject.incrementPointer("*Service")
+	defer _self.ffiObject.decrementPointer()
+	res, err := uniffiRustCallAsync[*SlimError](
+		FfiConverterSlimErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) C.uint64_t {
+			res := C.ffi_slim_bindings_rust_future_complete_u64(handle, status)
+			return res
+		},
+		// liftFn
+		func(ffi C.uint64_t) *App {
+			return FfiConverterAppINSTANCE.Lift(ffi)
+		},
+		C.uniffi_slim_bindings_fn_method_service_create_app_with_custom_identity_and_persistence_async(
+			_pointer, FfiConverterNameINSTANCE.Lower(name), FfiConverterIdentityProviderINSTANCE.Lower(identityProvider), FfiConverterIdentityVerifierINSTANCE.Lower(identityVerifier), FfiConverterDirectionINSTANCE.Lower(direction), FfiConverterPersistenceConfigINSTANCE.Lower(persistence)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_slim_bindings_rust_future_poll_u64(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_slim_bindings_rust_future_free_u64(handle)
+		},
+	)
+
+	if err == nil {
+		return res, nil
+	}
+
+	return res, err
 }
 
 // Blocking wrapper around [`Service::create_app_with_persistence_async`].
@@ -3444,6 +5442,133 @@ func (_self *Service) CreateAppAsync(baseName *Name, identityProviderConfig Iden
 		},
 		C.uniffi_slim_bindings_fn_method_service_create_app_async(
 			_pointer, FfiConverterNameINSTANCE.Lower(baseName), FfiConverterIdentityProviderConfigINSTANCE.Lower(identityProviderConfig), FfiConverterIdentityVerifierConfigINSTANCE.Lower(identityVerifierConfig)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_slim_bindings_rust_future_poll_u64(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_slim_bindings_rust_future_free_u64(handle)
+		},
+	)
+
+	if err == nil {
+		return res, nil
+	}
+
+	return res, err
+}
+
+// Create a new App whose identity is provided by foreign-language objects - blocking version
+//
+// Blocks while the objects' async `initialize` run; see
+// [`crate::App::new_with_custom_identity`] for when not to use it.
+func (_self *Service) CreateAppWithCustomIdentity(name *Name, identityProvider IdentityProvider, identityVerifier IdentityVerifier, direction Direction) (*App, error) {
+	_pointer := _self.ffiObject.incrementPointer("*Service")
+	defer _self.ffiObject.decrementPointer()
+	_uniffiRV, _uniffiErr := rustCallWithError[*SlimError](FfiConverterSlimError{}, func(_uniffiStatus *C.RustCallStatus) C.uint64_t {
+		return C.uniffi_slim_bindings_fn_method_service_create_app_with_custom_identity(
+			_pointer, FfiConverterNameINSTANCE.Lower(name), FfiConverterIdentityProviderINSTANCE.Lower(identityProvider), FfiConverterIdentityVerifierINSTANCE.Lower(identityVerifier), FfiConverterDirectionINSTANCE.Lower(direction), _uniffiStatus)
+	})
+	if _uniffiErr != nil {
+		var _uniffiDefaultValue *App
+		return _uniffiDefaultValue, _uniffiErr
+	} else {
+		return FfiConverterAppINSTANCE.Lift(_uniffiRV), nil
+	}
+}
+
+// Create a new App whose identity is provided by foreign-language objects (async version)
+//
+// `identity_provider` proves this app's identity; `identity_verifier` verifies peers.
+func (_self *Service) CreateAppWithCustomIdentityAsync(name *Name, identityProvider IdentityProvider, identityVerifier IdentityVerifier, direction Direction) (*App, error) {
+	_pointer := _self.ffiObject.incrementPointer("*Service")
+	defer _self.ffiObject.decrementPointer()
+	res, err := uniffiRustCallAsync[*SlimError](
+		FfiConverterSlimErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) C.uint64_t {
+			res := C.ffi_slim_bindings_rust_future_complete_u64(handle, status)
+			return res
+		},
+		// liftFn
+		func(ffi C.uint64_t) *App {
+			return FfiConverterAppINSTANCE.Lift(ffi)
+		},
+		C.uniffi_slim_bindings_fn_method_service_create_app_with_custom_identity_async(
+			_pointer, FfiConverterNameINSTANCE.Lower(name), FfiConverterIdentityProviderINSTANCE.Lower(identityProvider), FfiConverterIdentityVerifierINSTANCE.Lower(identityVerifier), FfiConverterDirectionINSTANCE.Lower(direction)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_slim_bindings_rust_future_poll_u64(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_slim_bindings_rust_future_free_u64(handle)
+		},
+	)
+
+	if err == nil {
+		return res, nil
+	}
+
+	return res, err
+}
+
+// Create a new App whose identity is a `did:key` (blocking version)
+//
+// See [`Service::create_app_with_did_key_async`] for the arguments.
+func (_self *Service) CreateAppWithDidKey(name *Name, privateKeyPem string, trustedKeys string, direction Direction) (*App, error) {
+	_pointer := _self.ffiObject.incrementPointer("*Service")
+	defer _self.ffiObject.decrementPointer()
+	_uniffiRV, _uniffiErr := rustCallWithError[*SlimError](FfiConverterSlimError{}, func(_uniffiStatus *C.RustCallStatus) C.uint64_t {
+		return C.uniffi_slim_bindings_fn_method_service_create_app_with_did_key(
+			_pointer, FfiConverterNameINSTANCE.Lower(name), FfiConverterStringINSTANCE.Lower(privateKeyPem), FfiConverterStringINSTANCE.Lower(trustedKeys), FfiConverterDirectionINSTANCE.Lower(direction), _uniffiStatus)
+	})
+	if _uniffiErr != nil {
+		var _uniffiDefaultValue *App
+		return _uniffiDefaultValue, _uniffiErr
+	} else {
+		return FfiConverterAppINSTANCE.Lift(_uniffiRV), nil
+	}
+}
+
+// Create a new App whose identity is a `did:key` (async version)
+//
+// The app signs with an Ed25519 key and accepts the peers whose public keys it
+// trusts. The provider and the verifier are built from the two arguments and
+// initialized before the app is created.
+//
+// # Arguments
+// * `name` - The base name for the app (without ID)
+// * `private_key_pem` - The app's Ed25519 private key, a PKCS#8 PEM document
+// (`-----BEGIN PRIVATE KEY-----`, as `openssl genpkey -algorithm ed25519` writes).
+// The app's identity is the `did:key` of that key (see
+// [`crate::did_key_of_private_key`]).
+// * `trusted_keys` - The JWKS (JSON) of the trust anchor: the public keys of the peers
+// the app accepts, as `OKP` `Ed25519` JWKs. A token's subject must be the `did:key`
+// of the key that signed it. It has to list the app's own key too, since MLS
+// verifies the app's own token against it.
+// * `direction` - Traffic direction: Send, Recv, Bidirectional, or None
+//
+// # Returns
+// * `Ok(Arc<App>)` - Successfully created app
+// * `Err(SlimError)` - If a key is invalid, or the app cannot be created
+func (_self *Service) CreateAppWithDidKeyAsync(name *Name, privateKeyPem string, trustedKeys string, direction Direction) (*App, error) {
+	_pointer := _self.ffiObject.incrementPointer("*Service")
+	defer _self.ffiObject.decrementPointer()
+	res, err := uniffiRustCallAsync[*SlimError](
+		FfiConverterSlimErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) C.uint64_t {
+			res := C.ffi_slim_bindings_rust_future_complete_u64(handle, status)
+			return res
+		},
+		// liftFn
+		func(ffi C.uint64_t) *App {
+			return FfiConverterAppINSTANCE.Lift(ffi)
+		},
+		C.uniffi_slim_bindings_fn_method_service_create_app_with_did_key_async(
+			_pointer, FfiConverterNameINSTANCE.Lower(name), FfiConverterStringINSTANCE.Lower(privateKeyPem), FfiConverterStringINSTANCE.Lower(trustedKeys), FfiConverterDirectionINSTANCE.Lower(direction)),
 		// pollFn
 		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
 			C.ffi_slim_bindings_rust_future_poll_u64(handle, continuation, data)
@@ -5548,6 +7673,66 @@ func (_ FfiDestroyerFixedIntervalBackoff) Destroy(value FixedIntervalBackoff) {
 	value.Destroy()
 }
 
+// A provider's persistable identity, saved so the app can be restored verbatim
+// after a restart. `credential` is sensitive: it ends up in the persisted store
+// (encrypted with the persistence passphrase), so treat it as a secret.
+type IdentityExport struct {
+	// Stable identity string.
+	Id string
+	// Provider credential material (e.g. a shared secret). Sensitive.
+	Credential []byte
+	// MLS signature secret key bytes, exactly as in [`SignatureKeys::secret_key`]
+	// (raw bytes, not PKCS#8 or base64). Sensitive.
+	SignatureSecretKey []byte
+	// MLS signature public key bytes, exactly as in [`SignatureKeys::public_key`].
+	SignaturePublicKey []byte
+}
+
+func (r *IdentityExport) Destroy() {
+	FfiDestroyerString{}.Destroy(r.Id)
+	FfiDestroyerBytes{}.Destroy(r.Credential)
+	FfiDestroyerBytes{}.Destroy(r.SignatureSecretKey)
+	FfiDestroyerBytes{}.Destroy(r.SignaturePublicKey)
+}
+
+type FfiConverterIdentityExport struct{}
+
+var FfiConverterIdentityExportINSTANCE = FfiConverterIdentityExport{}
+
+func (c FfiConverterIdentityExport) Lift(rb RustBufferI) IdentityExport {
+	return LiftFromRustBuffer[IdentityExport](c, rb)
+}
+
+func (c FfiConverterIdentityExport) Read(reader io.Reader) IdentityExport {
+	return IdentityExport{
+		FfiConverterStringINSTANCE.Read(reader),
+		FfiConverterBytesINSTANCE.Read(reader),
+		FfiConverterBytesINSTANCE.Read(reader),
+		FfiConverterBytesINSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterIdentityExport) Lower(value IdentityExport) C.RustBuffer {
+	return LowerIntoRustBuffer[IdentityExport](c, value)
+}
+
+func (c FfiConverterIdentityExport) LowerExternal(value IdentityExport) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[IdentityExport](c, value))
+}
+
+func (c FfiConverterIdentityExport) Write(writer io.Writer, value IdentityExport) {
+	FfiConverterStringINSTANCE.Write(writer, value.Id)
+	FfiConverterBytesINSTANCE.Write(writer, value.Credential)
+	FfiConverterBytesINSTANCE.Write(writer, value.SignatureSecretKey)
+	FfiConverterBytesINSTANCE.Write(writer, value.SignaturePublicKey)
+}
+
+type FfiDestroyerIdentityExport struct{}
+
+func (_ FfiDestroyerIdentityExport) Destroy(value IdentityExport) {
+	value.Destroy()
+}
+
 // JWT authentication configuration for server-side verification
 type JwtAuth struct {
 	// JWT key configuration (decoding key for verification)
@@ -6532,6 +8717,79 @@ func (_ FfiDestroyerSessionWithCompletion) Destroy(value SessionWithCompletion) 
 	value.Destroy()
 }
 
+// The MLS signature key pair of an identity.
+//
+// # Key format
+//
+// The keys are opaque bytes in the encoding of the MLS crypto provider (AWS-LC),
+// which depends on the ciphersuite the library was built with. The default is P-256;
+// building with the `curve25519` feature switches the whole build to Ed25519, so do not assume one format without knowing how your
+// SLIM library was built:
+//
+// | Build | `secret_key` | `public_key` |
+// |-------|--------------|--------------|
+// | default (P-256, ECDSA) | at most 32 bytes: the raw big-endian private scalar, see below | 65 bytes: uncompressed SEC1 point: the byte `0x04`, then X, then Y |
+// | `curve25519` (Ed25519) | 64 bytes: the 32-byte seed followed by the 32-byte public key | 32 bytes: the raw Ed25519 public key |
+//
+// A P-256 secret key is the 32-byte scalar with leading zero bytes removed, so about one
+// key in 256 is shorter than 32 bytes. Do not check for an exact length or store it in a
+// fixed-size slot; SLIM also accepts the scalar left-padded to 32 bytes.
+//
+// Neither key is PKCS#8, PEM, DER or base64 encoded, and the public key carries no
+// DER wrapper. SLIM generates the pair and hands it to
+// [`IdentityProvider::set_signature_keys`]; store and return those exact bytes
+// from [`IdentityProvider::get_signature_keys`] and [`IdentityProvider::export_identity`].
+// A provider that supplies its own keys must produce them in the format above.
+//
+// How a token carries the public key, for [`IdentityVerifier::get_public_key`] and
+// [`IdentityVerifier::verify_key_binding`], is up to the scheme. If you put it in a claim
+// as text, use standard base64 (RFC 4648 section 4, with `=` padding).
+type SignatureKeys struct {
+	// Private signing key, in the format described on [`SignatureKeys`].
+	SecretKey []byte
+	// Public key, in the format described on [`SignatureKeys`].
+	PublicKey []byte
+}
+
+func (r *SignatureKeys) Destroy() {
+	FfiDestroyerBytes{}.Destroy(r.SecretKey)
+	FfiDestroyerBytes{}.Destroy(r.PublicKey)
+}
+
+type FfiConverterSignatureKeys struct{}
+
+var FfiConverterSignatureKeysINSTANCE = FfiConverterSignatureKeys{}
+
+func (c FfiConverterSignatureKeys) Lift(rb RustBufferI) SignatureKeys {
+	return LiftFromRustBuffer[SignatureKeys](c, rb)
+}
+
+func (c FfiConverterSignatureKeys) Read(reader io.Reader) SignatureKeys {
+	return SignatureKeys{
+		FfiConverterBytesINSTANCE.Read(reader),
+		FfiConverterBytesINSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterSignatureKeys) Lower(value SignatureKeys) C.RustBuffer {
+	return LowerIntoRustBuffer[SignatureKeys](c, value)
+}
+
+func (c FfiConverterSignatureKeys) LowerExternal(value SignatureKeys) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[SignatureKeys](c, value))
+}
+
+func (c FfiConverterSignatureKeys) Write(writer io.Writer, value SignatureKeys) {
+	FfiConverterBytesINSTANCE.Write(writer, value.SecretKey)
+	FfiConverterBytesINSTANCE.Write(writer, value.PublicKey)
+}
+
+type FfiDestroyerSignatureKeys struct{}
+
+func (_ FfiDestroyerSignatureKeys) Destroy(value SignatureKeys) {
+	value.Destroy()
+}
+
 // SPIRE configuration for SPIFFE Workload API integration
 type SpireConfig struct {
 	// Path to the SPIFFE Workload API socket (None => use SPIFFE_ENDPOINT_SOCKET env var)
@@ -7255,6 +9513,205 @@ func (FfiConverterDirection) Write(writer io.Writer, value Direction) {
 type FfiDestroyerDirection struct{}
 
 func (_ FfiDestroyerDirection) Destroy(value Direction) {
+}
+
+// Error returned by foreign [`IdentityProvider`] / [`IdentityVerifier`] implementations.
+type IdentityCallbackError struct {
+	err error
+}
+
+// Convenience method to turn *IdentityCallbackError into error
+// Avoiding treating nil pointer as non nil error interface
+func (err *IdentityCallbackError) AsError() error {
+	if err == nil {
+		return nil
+	} else {
+		return err
+	}
+}
+
+func (err IdentityCallbackError) Error() string {
+	return fmt.Sprintf("IdentityCallbackError: %s", err.err.Error())
+}
+
+func (err IdentityCallbackError) Unwrap() error {
+	return err.err
+}
+
+// Err* are used for checking error type with `errors.Is`
+var ErrIdentityCallbackErrorFailed = fmt.Errorf("IdentityCallbackErrorFailed")
+var ErrIdentityCallbackErrorPublicKeyMismatch = fmt.Errorf("IdentityCallbackErrorPublicKeyMismatch")
+var ErrIdentityCallbackErrorIdentityMismatch = fmt.Errorf("IdentityCallbackErrorIdentityMismatch")
+
+// Variant structs
+// Generic failure (invalid token, signing error, ...).
+type IdentityCallbackErrorFailed struct {
+	Message string
+}
+
+// Generic failure (invalid token, signing error, ...).
+func NewIdentityCallbackErrorFailed(
+	message string,
+) *IdentityCallbackError {
+	return &IdentityCallbackError{err: &IdentityCallbackErrorFailed{
+		Message: message}}
+}
+
+func (e IdentityCallbackErrorFailed) destroy() {
+	FfiDestroyerString{}.Destroy(e.Message)
+}
+
+func (err IdentityCallbackErrorFailed) Error() string {
+	return fmt.Sprint("Failed",
+		": ",
+
+		"Message=",
+		err.Message,
+	)
+}
+
+func (self IdentityCallbackErrorFailed) Is(target error) bool {
+	return target == ErrIdentityCallbackErrorFailed
+}
+
+// Only for [`IdentityVerifier::verify_key_binding`]: the token is valid but
+// bound to a different key than the one given.
+type IdentityCallbackErrorPublicKeyMismatch struct {
+	Message string
+}
+
+// Only for [`IdentityVerifier::verify_key_binding`]: the token is valid but
+// bound to a different key than the one given.
+func NewIdentityCallbackErrorPublicKeyMismatch(
+	message string,
+) *IdentityCallbackError {
+	return &IdentityCallbackError{err: &IdentityCallbackErrorPublicKeyMismatch{
+		Message: message}}
+}
+
+func (e IdentityCallbackErrorPublicKeyMismatch) destroy() {
+	FfiDestroyerString{}.Destroy(e.Message)
+}
+
+func (err IdentityCallbackErrorPublicKeyMismatch) Error() string {
+	return fmt.Sprint("PublicKeyMismatch",
+		": ",
+
+		"Message=",
+		err.Message,
+	)
+}
+
+func (self IdentityCallbackErrorPublicKeyMismatch) Is(target error) bool {
+	return target == ErrIdentityCallbackErrorPublicKeyMismatch
+}
+
+// Only for [`IdentityProvider::restore_identity`]: the persisted identity does not
+// belong to this provider (for instance it was issued for another key or subject).
+// SLIM then turns persistence off for the app, instead of resuming MLS state that
+// belongs to someone else. Any other error keeps the provider's current identity and
+// carries on with the persisted state.
+type IdentityCallbackErrorIdentityMismatch struct {
+	Message string
+}
+
+// Only for [`IdentityProvider::restore_identity`]: the persisted identity does not
+// belong to this provider (for instance it was issued for another key or subject).
+// SLIM then turns persistence off for the app, instead of resuming MLS state that
+// belongs to someone else. Any other error keeps the provider's current identity and
+// carries on with the persisted state.
+func NewIdentityCallbackErrorIdentityMismatch(
+	message string,
+) *IdentityCallbackError {
+	return &IdentityCallbackError{err: &IdentityCallbackErrorIdentityMismatch{
+		Message: message}}
+}
+
+func (e IdentityCallbackErrorIdentityMismatch) destroy() {
+	FfiDestroyerString{}.Destroy(e.Message)
+}
+
+func (err IdentityCallbackErrorIdentityMismatch) Error() string {
+	return fmt.Sprint("IdentityMismatch",
+		": ",
+
+		"Message=",
+		err.Message,
+	)
+}
+
+func (self IdentityCallbackErrorIdentityMismatch) Is(target error) bool {
+	return target == ErrIdentityCallbackErrorIdentityMismatch
+}
+
+type FfiConverterIdentityCallbackError struct{}
+
+var FfiConverterIdentityCallbackErrorINSTANCE = FfiConverterIdentityCallbackError{}
+
+func (c FfiConverterIdentityCallbackError) Lift(eb RustBufferI) *IdentityCallbackError {
+	return LiftFromRustBuffer[*IdentityCallbackError](c, eb)
+}
+
+func (c FfiConverterIdentityCallbackError) Lower(value *IdentityCallbackError) C.RustBuffer {
+	return LowerIntoRustBuffer[*IdentityCallbackError](c, value)
+}
+
+func (c FfiConverterIdentityCallbackError) LowerExternal(value *IdentityCallbackError) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[*IdentityCallbackError](c, value))
+}
+
+func (c FfiConverterIdentityCallbackError) Read(reader io.Reader) *IdentityCallbackError {
+	errorID := readUint32(reader)
+
+	switch errorID {
+	case 1:
+		return &IdentityCallbackError{&IdentityCallbackErrorFailed{
+			Message: FfiConverterStringINSTANCE.Read(reader),
+		}}
+	case 2:
+		return &IdentityCallbackError{&IdentityCallbackErrorPublicKeyMismatch{
+			Message: FfiConverterStringINSTANCE.Read(reader),
+		}}
+	case 3:
+		return &IdentityCallbackError{&IdentityCallbackErrorIdentityMismatch{
+			Message: FfiConverterStringINSTANCE.Read(reader),
+		}}
+	default:
+		panic(fmt.Sprintf("Unknown error code %d in FfiConverterIdentityCallbackError.Read()", errorID))
+	}
+}
+
+func (c FfiConverterIdentityCallbackError) Write(writer io.Writer, value *IdentityCallbackError) {
+	switch variantValue := value.err.(type) {
+	case *IdentityCallbackErrorFailed:
+		writeInt32(writer, 1)
+		FfiConverterStringINSTANCE.Write(writer, variantValue.Message)
+	case *IdentityCallbackErrorPublicKeyMismatch:
+		writeInt32(writer, 2)
+		FfiConverterStringINSTANCE.Write(writer, variantValue.Message)
+	case *IdentityCallbackErrorIdentityMismatch:
+		writeInt32(writer, 3)
+		FfiConverterStringINSTANCE.Write(writer, variantValue.Message)
+	default:
+		_ = variantValue
+		panic(fmt.Sprintf("invalid error value `%v` in FfiConverterIdentityCallbackError.Write", value))
+	}
+}
+
+type FfiDestroyerIdentityCallbackError struct{}
+
+func (_ FfiDestroyerIdentityCallbackError) Destroy(value *IdentityCallbackError) {
+	switch variantValue := value.err.(type) {
+	case IdentityCallbackErrorFailed:
+		variantValue.destroy()
+	case IdentityCallbackErrorPublicKeyMismatch:
+		variantValue.destroy()
+	case IdentityCallbackErrorIdentityMismatch:
+		variantValue.destroy()
+	default:
+		_ = variantValue
+		panic(fmt.Sprintf("invalid error value `%v` in FfiDestroyerIdentityCallbackError.Destroy", value))
+	}
 }
 
 // Identity provider configuration - used to prove identity to others
@@ -8835,6 +11292,47 @@ func (_ FfiDestroyerOptionalName) Destroy(value **Name) {
 	}
 }
 
+type FfiConverterOptionalIdentityExport struct{}
+
+var FfiConverterOptionalIdentityExportINSTANCE = FfiConverterOptionalIdentityExport{}
+
+func (c FfiConverterOptionalIdentityExport) Lift(rb RustBufferI) *IdentityExport {
+	return LiftFromRustBuffer[*IdentityExport](c, rb)
+}
+
+func (_ FfiConverterOptionalIdentityExport) Read(reader io.Reader) *IdentityExport {
+	if readInt8(reader) == 0 {
+		return nil
+	}
+	temp := FfiConverterIdentityExportINSTANCE.Read(reader)
+	return &temp
+}
+
+func (c FfiConverterOptionalIdentityExport) Lower(value *IdentityExport) C.RustBuffer {
+	return LowerIntoRustBuffer[*IdentityExport](c, value)
+}
+
+func (c FfiConverterOptionalIdentityExport) LowerExternal(value *IdentityExport) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[*IdentityExport](c, value))
+}
+
+func (_ FfiConverterOptionalIdentityExport) Write(writer io.Writer, value *IdentityExport) {
+	if value == nil {
+		writeInt8(writer, 0)
+	} else {
+		writeInt8(writer, 1)
+		FfiConverterIdentityExportINSTANCE.Write(writer, *value)
+	}
+}
+
+type FfiDestroyerOptionalIdentityExport struct{}
+
+func (_ FfiDestroyerOptionalIdentityExport) Destroy(value *IdentityExport) {
+	if value != nil {
+		FfiDestroyerIdentityExport{}.Destroy(*value)
+	}
+}
+
 type FfiConverterOptionalKeepaliveConfig struct{}
 
 var FfiConverterOptionalKeepaliveConfigINSTANCE = FfiConverterOptionalKeepaliveConfig{}
@@ -9906,6 +12404,49 @@ func ShutdownBlocking() error {
 		return false
 	})
 	return _uniffiErr.AsError()
+}
+
+// Generate a fresh signature key pair, in the format described on [`SignatureKeys`],
+// for the ciphersuite this library was built with.
+//
+// An [`IdentityProvider`] needs a key pair from the start (see
+// [`IdentityProvider::get_signature_keys`]), so a provider with no key of its own can
+// create one here instead of implementing the crypto itself.
+//
+// ```python
+// keys = slim_bindings.generate_signature_keys()
+// ```
+func GenerateSignatureKeys() (SignatureKeys, error) {
+	_uniffiRV, _uniffiErr := rustCallWithError[*SlimError](FfiConverterSlimError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+		return GoRustBuffer{
+			inner: C.uniffi_slim_bindings_fn_func_generate_signature_keys(_uniffiStatus),
+		}
+	})
+	if _uniffiErr != nil {
+		var _uniffiDefaultValue SignatureKeys
+		return _uniffiDefaultValue, _uniffiErr
+	} else {
+		return FfiConverterSignatureKeysINSTANCE.Lift(_uniffiRV), nil
+	}
+}
+
+// The `did:key` of an Ed25519 private key, a PKCS#8 PEM document
+// (`-----BEGIN PRIVATE KEY-----`).
+//
+// An app created with `create_app_with_did_key` has this identity; peers list the
+// matching public key in their trust anchor.
+func DidKeyOfPrivateKey(privateKeyPem string) (string, error) {
+	_uniffiRV, _uniffiErr := rustCallWithError[*SlimError](FfiConverterSlimError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+		return GoRustBuffer{
+			inner: C.uniffi_slim_bindings_fn_func_did_key_of_private_key(FfiConverterStringINSTANCE.Lower(privateKeyPem), _uniffiStatus),
+		}
+	})
+	if _uniffiErr != nil {
+		var _uniffiDefaultValue string
+		return _uniffiDefaultValue, _uniffiErr
+	} else {
+		return FfiConverterStringINSTANCE.Lift(_uniffiRV), nil
+	}
 }
 
 // Create a new BindingsRuntimeConfig with default values
